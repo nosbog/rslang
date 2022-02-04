@@ -1,0 +1,17 @@
+.header {
+  .nav {
+    border-bottom: 1px solid black;
+  
+    ul {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+    }
+  
+    li {
+      cursor: pointer;
+      padding: 10px 20px;
+    }
+  }
+}
