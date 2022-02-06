@@ -1,7 +1,8 @@
-@import './general.scss';
-@import '../ts/components/header/header.scss';
-@import '../ts/components/footer/footer.scss';
-@import '../ts/components/main/main.scss';
-@import '../ts/components/book/book.scss';
-@import '../ts/components/games/games.scss';
-@import '../ts/components/statistic/statistic.scss';
+@import "./constants";
+@import "./general";
+@import "../ts/components/header/header";
+@import "../ts/components/footer/footer";
+@import "../ts/components/main/main";
+@import "../ts/components/book/book";
+@import "../ts/components/games/games";
+@import "../ts/components/statistic/statistic";

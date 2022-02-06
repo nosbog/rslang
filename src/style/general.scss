@@ -4,14 +4,43 @@
   margin: 0;
 }
 
+html {
+  font-size: $font-size-html-1280;
+  font-family: $font-family;
+  color: $color-font;
+  background-color: $color-main-bg;
+}
+
 li {
   list-style-type: none;
 }
 
 a {
+  color: $color-font;
   text-decoration: none;
+  transition: $transition-hover;
+
+  &:hover {
+    color: $color-brand-4;
+  }
 }
 
 button {
   outline: none;
+}
+
+.wrapper {
+  max-width: 1200px;
+  width: 90%;
+  height: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &.wrapper_padding {
+    padding-top: 60px;
+    padding-bottom: 100px;
+  }
 }

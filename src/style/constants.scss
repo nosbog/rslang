@@ -1,0 +1,23 @@
+$color-main-bg: #f7faf6;
+$color-add-bg: #fff;
+$color-brand-1: #1d3557;
+$color-brand-2: #457b9d;
+$color-brand-3: #a8dadc;
+$color-brand-4: #e63946;
+$color-font: #192332;
+$color-card: #457b9d27;
+
+$font-family: 'Montserrat', "Helvetica", "Arial", sans-serif;
+
+$font-size-html-1280: 10px;
+
+$transition-hover: all 0.3s ease-in-out;
+
+@mixin box-shadow($opacity: .1) {
+  box-shadow: 1px 3px 4px rgba(0, 0, 0, $opacity);
+}
+
+@mixin box-shadow-hover($opacity: .2) {
+  @include box-shadow($opacity);
+  transform: scale(1.008);
+}
