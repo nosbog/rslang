@@ -1,6 +1,8 @@
+import { main as layout } from './layout';
+
 export default class Main {
   innerHtmlTemplate = `
-  <h1>Main Page</h1>
+  ${layout};
   `;
 
   componentElem: HTMLElement;

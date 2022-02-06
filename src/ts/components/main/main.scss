@@ -1,0 +1,237 @@
+.main__section {
+  position: relative;
+  user-select: none;
+  pointer-events: none;
+
+  .bg-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -5;
+  }
+
+  .section-heading {
+    font-size: 4rem;
+    padding-top: 40px;
+    margin-bottom: 100px;
+  }
+}
+
+.card {
+  background-color: $color-card;
+  border-radius: 5px;
+  @include box-shadow;
+  transition: $transition-hover;
+  z-index: 5;
+
+  &:hover {
+    @include box-shadow-hover; 
+  }
+}
+
+// ---------------------------- Separator
+
+.svg-separator {
+  position: absolute;
+  bottom: 0;
+
+  &.separator_aback {
+    z-index: -2;
+  }
+
+  &.separator_light path {
+    fill: $color-add-bg;
+  }
+}
+
+// ---------------------------- Greeting Section
+
+.greeting-section {
+  height: 100vh;
+  overflow: hidden;
+
+  .wrapper {
+    flex-direction: row;
+  }
+
+  .greeting__text {
+    margin-right: 10%;
+    margin-left: 10%;
+    font-size: 2.4rem;
+    text-align: right;
+
+    h1 {
+      font-size: 6rem;
+      font-weight: 500;
+    }
+
+    .bold  {
+      font-weight: 700;
+    }
+  }
+
+  .greeting__image {
+    max-width: 60%;
+  }
+
+  .greeting-bg svg {
+    transform: scale(.9);
+    transform-origin: 0 0;
+    width: 142.857143%;
+  }
+}
+
+// ---------------------------- Greeting BG
+
+.lines-container {
+  fill: none;
+  opacity: 0.15;
+  stroke-miterlimit: 10;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  animation-duration: 4s;
+  animation-name: show;
+
+  &:nth-child(1) {
+    stroke: $color-brand-1;
+    stroke-width: 6;
+    stroke-dasharray: 200;
+    stroke-dashoffset: 800;
+    animation-name: draw;
+  }
+
+  &:nth-child(2) {
+    stroke: $color-brand-3;
+    stroke-width: 12;
+  }
+
+  &:nth-child(3) {
+    stroke: $color-brand-2;
+    stroke-width: 12;
+  }
+
+  @keyframes draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  
+  @keyframes show {
+    0% {
+      opacity: 0.15;
+    }
+    50% {
+      opacity: 0.25;
+    }
+    100% {
+      opacity: 0.15;
+    }
+  }
+}
+
+// ---------------------------- Advantages Section
+
+.advantages-container {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.advantages__item {
+  min-width: 300px;
+  width: calc(100% / 3 - 30px);
+  height: 500px;
+  padding: 15px 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+
+  .advantages__image {
+    width: 70%;
+    margin: auto;
+    align-self: flex-start;
+  }
+  
+  .advantages__text {
+    height: 35%;
+    padding: 0 10px;
+  }
+  
+  .advantages__name {
+    margin-bottom: 10px;
+    padding-top: 20px;
+    font-size: 2.4rem;
+  }
+  
+  .advantages__desc {
+    font-size: 1.4rem;
+    line-height: 24px;
+    text-align: justify;
+  }
+}
+
+// ---------------------------- Video Section
+
+.video-section {
+  background-color: $color-add-bg;
+}
+
+.video-container {
+  position: relative;
+  min-height: 500px;
+  height: 100%;
+  width: 80%;
+  z-index: 10;
+
+  iframe {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// ---------------------------- Team Section
+
+.developer-container {
+  width: 80%;
+}
+
+.developer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  margin-bottom: 40px;
+
+  .developer__column {
+    padding: 10px 30px;
+  }
+  
+  .developer__image {
+    border-radius: 50%;
+    max-width: 200px;
+    background-color: #fff;
+  }
+  
+  .developer___name {
+    font-size: 2rem;
+    padding-bottom: 10px;
+  }
+  
+  .developer___desc {
+    font-size: 1.4rem;
+    line-height: 24px;
+    text-align: justify;
+  }
+
+  &:nth-child(1) {
+    flex-direction: row-reverse;
+
+    & .developer___name {
+      text-align: right;
+    }
+  }
+}
