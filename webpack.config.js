@@ -2,6 +2,7 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './src/ts/index.ts',
@@ -35,9 +36,15 @@ module.exports = {
   plugins: [
     new MiniCssExtractPlugin(),
     new HtmlWebpackPlugin({
-      title: 'async-race',
+      title: 'rs-lang',
       template: 'src/index.html'
-    })
+    }),
+    new CopyWebpackPlugin({ patterns: [
+      {
+        from: path.resolve(__dirname, 'src/assets'),
+        to: path.resolve(__dirname, 'dist/assets')
+      }
+    ]}),
   ],
 
   resolve: {
