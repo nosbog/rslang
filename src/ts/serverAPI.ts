@@ -20,7 +20,7 @@ export default class ServerAPI {
   // getUser
   // updateUser
   // deleteUser
-  // getNewUserTokens (doesn't work?!)
+  // getNewUserTokens (use refreshToken instead of token in request header)
 
   // /users/{id}/words
   // .
@@ -109,7 +109,7 @@ export default class ServerAPI {
       }
     });
 
-    const content: interfaceServer.User = await response.json();
+    const content: { id: string; name: string; email: string } = await response.json();
     return content;
   };
 
@@ -167,7 +167,7 @@ export default class ServerAPI {
       }
     });
 
-    const content: interfaceServer.AuthorizationContent = await response.json();
+    const content: { token: string; refreshToken: string } = await response.json();
     return content;
   };
 
