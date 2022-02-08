@@ -1,8 +1,18 @@
 @import "./constants";
+
 @import "./general";
+
 @import "../ts/components/header/header";
+
 @import "../ts/components/footer/footer";
+
 @import "../ts/components/main/main";
+
 @import "../ts/components/book/book";
-@import "../ts/components/games/games";
+
 @import "../ts/components/statistic/statistic";
+
+@import "../ts/components/games/games";
+@import "../ts/components/games/gameResult/gameResult";
+@import "../ts/components/games/sprint/sprint";
+@import "../ts/components/games/audioCall/audioCall";
