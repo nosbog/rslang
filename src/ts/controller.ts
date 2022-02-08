@@ -21,17 +21,21 @@ export default class Controller {
 
   games: Games;
 
+  contentURL = 'https://raw.githubusercontent.com/rolling-scopes-school/react-rslang-be/main/';
+
   constructor() {
     this.serverAPI = new ServerAPI();
+
     this.header = new Header();
     this.footer = new Footer();
     this.main = new Main();
     this.statistic = new Statistic();
     this.book = new Book();
-    this.games = new Games();
+    this.games = new Games(this.serverAPI, this.contentURL);
 
     this.createComponents();
     this.setListeners();
+
     this.showInitial();
   }
 
@@ -46,14 +50,23 @@ export default class Controller {
 
   setListeners() {
     this.header.setListeners({
+      showFooter: this.footer.showComponent,
       showMain: this.main.showComponent,
       showBook: this.book.showComponent,
       showGames: this.games.showComponent,
       showStatistic: this.statistic.showComponent
     });
+
+    this.games.setListeners();
   }
 
   showInitial() {
+    // contentElem is a wrapper for easy removal of components (such as book, games etc)
+    // !? its better to create the 'main' html tag. Rename 'main' component !?
+    const contentElem = document.createElement('div');
+    contentElem.classList.add('content');
+    document.body.append(contentElem);
+
     this.header.showComponent();
     this.main.showComponent();
     this.footer.showComponent();
