@@ -1,0 +1,69 @@
+.audioCall {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  &__round-result {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    &_show {
+      display: flex;
+    }
+
+    &__container {
+      display: flex;
+      gap: 5px;
+    }
+  }
+
+  &__options {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__option {
+    &_disabled {
+      pointer-events: none;
+    }
+
+    &_truthy-answer {
+      border: 3px solid green;
+    }
+
+    &_falsy-answer {
+      border: 3px solid red;
+    }
+  }
+
+  &__audioImg {
+    &_small {
+      width: 40px;
+    }
+    &_big {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 120px;
+    }
+  }
+
+  &__btn {
+    &_hide {
+      display: none !important;
+    }
+
+    &_continue {
+      display: block;
+    }
+
+    &_skip {
+      display: block;
+    }
+  }
+}
