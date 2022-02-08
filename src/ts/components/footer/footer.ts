@@ -25,11 +25,11 @@ export default class Footer {
     this.createThisComponent();
   }
 
-  showComponent() {
+  showComponent = () => {
     document.body.append(this.componentElem);
-  }
+  };
 
-  hideComponent() {
+  hideComponent = () => {
     document.body.querySelector('.footer')?.remove();
-  }
+  };
 }

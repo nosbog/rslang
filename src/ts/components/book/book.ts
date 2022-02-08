@@ -19,7 +19,8 @@ export default class Book {
   }
 
   showComponent = () => {
-    document.body.querySelector('.header')?.after(this.componentElem);
+    const contentElem = document.querySelector('.content') as HTMLElement;
+    contentElem.append(this.componentElem);
   };
 
   hideComponent = () => {
