@@ -22,11 +22,13 @@ export default class Header {
   }
 
   setThisListeners({
+    showFooter,
     showMain,
     showBook,
     showGames,
     showStatistic
   }: {
+    showFooter: () => void;
     showMain: () => void;
     showBook: () => void;
     showGames: () => void;
@@ -34,21 +36,25 @@ export default class Header {
   }) {
     this.componentElem.querySelector('#mainBtn')?.addEventListener('click', () => {
       this.resetContentComponents();
+      showFooter();
       showMain();
     });
 
     this.componentElem.querySelector('#bookBtn')?.addEventListener('click', () => {
       this.resetContentComponents();
+      showFooter();
       showBook();
     });
 
     this.componentElem.querySelector('#gamesBtn')?.addEventListener('click', () => {
       this.resetContentComponents();
+      showFooter();
       showGames();
     });
 
     this.componentElem.querySelector('#statisticBtn')?.addEventListener('click', () => {
       this.resetContentComponents();
+      showFooter();
       showStatistic();
     });
   }
@@ -58,17 +64,20 @@ export default class Header {
   }
 
   setListeners({
+    showFooter,
     showMain,
     showBook,
     showGames,
     showStatistic
   }: {
+    showFooter: () => void;
     showMain: () => void;
     showBook: () => void;
     showGames: () => void;
     showStatistic: () => void;
   }) {
     this.setThisListeners({
+      showFooter,
       showMain,
       showBook,
       showGames,
@@ -85,9 +94,7 @@ export default class Header {
   }
 
   resetContentComponents() {
-    document.body.querySelector('.main')?.remove();
-    document.body.querySelector('.book')?.remove();
-    document.body.querySelector('.games')?.remove();
-    document.body.querySelector('.statistic')?.remove();
+    const contentElem = document.querySelector('.content') as HTMLElement;
+    contentElem.innerHTML = '';
   }
 }
