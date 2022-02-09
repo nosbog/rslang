@@ -6,7 +6,9 @@ export default class Header {
       <li id="bookBtn">Учебник</li>
       <li id="gamesBtn">Мини-игры</li>
       <li id="statisticBtn">Статистика</li>
+      <li id="account">Аккаунт</li>
     </ul>
+    
   </nav>
   `;
 
@@ -22,12 +24,14 @@ export default class Header {
   }
 
   setThisListeners({
+    showAccount,
     showFooter,
     showMain,
     showBook,
     showGames,
     showStatistic
   }: {
+    showAccount: () => void;
     showFooter: () => void;
     showMain: () => void;
     showBook: () => void;
@@ -57,6 +61,12 @@ export default class Header {
       showFooter();
       showStatistic();
     });
+
+    this.componentElem.querySelector('#account')?.addEventListener('click', () => {
+      this.resetContentComponents();
+      showFooter();
+      showAccount();
+    });
   }
 
   createComponent() {
@@ -64,12 +74,14 @@ export default class Header {
   }
 
   setListeners({
+    showAccount,
     showFooter,
     showMain,
     showBook,
     showGames,
     showStatistic
   }: {
+    showAccount: () => void;
     showFooter: () => void;
     showMain: () => void;
     showBook: () => void;
@@ -77,6 +89,7 @@ export default class Header {
     showStatistic: () => void;
   }) {
     this.setThisListeners({
+      showAccount,
       showFooter,
       showMain,
       showBook,
