@@ -74,7 +74,7 @@ export const main: string = `
         Учите английский бесплатно, весело и эффективно!
       </p>
     </div>
-    <img src="./assets/svg/main.svg" alt="FunnyEnglish" class="greeting__image">
+    <img src="./assets/svg/main.svg" alt="FunnyEnglish" class="greeting__image" width="60%">
   </div>
   ${svgSeparator1}
   </section>
@@ -130,7 +130,7 @@ export const main: string = `
     <div class="developer-container">
       <div class="developer card">
         <div class="developer__column">
-          <img src="https://avatars.githubusercontent.com/u/83293276?v=4" alt="Богдан" class="developer__image">
+          <img src="https://avatars.githubusercontent.com/u/83293276?v=4" alt="Богдан" class="developer__image" width="200">
         </div>
         <div class="developer__column">
           <h3 class="developer___name">Богдан <a href="https://github.com/nosbog"><i class="fab fa-github"></i></a></h3>
@@ -139,7 +139,7 @@ export const main: string = `
       </div>
       <div class="developer card">
         <div class="developer__column">
-          <img src="https://avatars.githubusercontent.com/u/34840495?v=4" alt="Настя" class="developer__image">
+          <img src="https://avatars.githubusercontent.com/u/34840495?v=4" alt="Настя" class="developer__image" width="200">
         </div>
         <div class="developer__column">
           <h3 class="developer___name">Настя <a href="https://github.com/aytsaN"><i class="fab fa-github"></i></a></h3>
