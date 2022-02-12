@@ -2,7 +2,7 @@ import { main as layout } from './layout';
 
 export default class Main {
   innerHtmlTemplate = `
-  ${layout};
+    ${layout}
   `;
 
   componentElem: HTMLElement;

@@ -75,9 +75,8 @@
   }
 
   .greeting-bg svg {
-    transform: scale(.9);
-    transform-origin: 0 0;
-    width: 142.857143%;
+    position: absolute;
+    min-width: 2000px;
   }
 }
 
