@@ -1,17 +1,129 @@
 .header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  font-size: 1.6rem;
+  background-color: transparent;
+  z-index: 10;
+
   .nav {
-    border-bottom: 1px solid black;
-  
     ul {
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 5px;
+      gap: 10px;
     }
+  }
   
-    li {
-      cursor: pointer;
-      padding: 10px 20px;
+  .nav__item {
+    position: relative;
+    padding: 20px 10px;
+    cursor: pointer;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 10%;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: $color-brand-4;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.5s;
+    }
+
+    &:hover {
+      color: $color-dark;
+
+      &::after {
+        transform: scaleX(1);
+        transform-origin: left;
+      }
+    } 
+  }
+
+  .nav__item-account {
+    margin-left: 10px;
+  }
+
+  .hamburger {
+    display: none;
+    font-size: 2rem;
+    cursor: pointer;
+
+    svg path:nth-child(2) {
+      fill: $color-font;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-tablet) {
+  .header {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: $breakpoint-phone) {
+  .header {
+    justify-content: space-between;
+    padding: 0 10px;
+    font-size: 2rem;
+
+    .hamburger {
+      display: flex;
+
+      .hamburger_close {
+        display: none;
+      }
+    }
+
+    .nav {
+      position: absolute;
+      top: 0;
+      left: 0;
+      margin-top: 60px;
+      width: 100vw;
+      height: 100vh;
+      visibility: hidden;
+
+      ul {
+        flex-direction: column;
+      }
+    }
+
+    &.nav_active {
+      background-color: $color-add-bg;
+
+      .hamburger {
+        .hamburger_open {
+          display: none;
+        }
+
+        .hamburger_close {
+          display: block;
+        }  
+      }
+
+      .nav {
+        background-color: $color-add-bg;
+        z-index: 15;
+        visibility: visible;
+        
+        .nav__item {
+          width: 100%;
+          padding-left: 40px;
+        }
+      }
+
+      .nav__item {
+        &::after {
+          background: $color-brand-2;
+        }
+      }
     }
   }
 }

@@ -45,6 +45,11 @@ button {
   }
 }
 
+.body_fixed {
+  overflow: hidden;
+  position: fixed;
+}
+
 @media (max-width: $breakpoint-tablet) {
   .wrapper.wrapper_padding {
     padding-top: 10px;
