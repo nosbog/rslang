@@ -1,13 +1,29 @@
 .footer {
   padding: 20px 0;
-  border-top: 2px solid black;
 
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 20px;
 
+  font-size: 1.2rem;
+
   img {
-    width: 110px;
+    width: 8rem;
+    transition: $transition-hover;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}
+
+@media (max-width: $breakpoint-tablet) {
+  .footer {
+    font-size: 1rem;
+
+    img {
+      width: 6rem;
+    }
   }
 }
