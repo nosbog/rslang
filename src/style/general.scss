@@ -44,3 +44,16 @@ button {
     padding-bottom: 100px;
   }
 }
+
+@media (max-width: $breakpoint-tablet) {
+  .wrapper.wrapper_padding {
+    padding-top: 10px;
+    padding-bottom: 60px;
+  }
+}
+
+@media (max-width: $breakpoint-phone) {
+  .wrapper {
+    width: 98%;
+  }
+}
