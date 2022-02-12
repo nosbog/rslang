@@ -128,12 +128,12 @@
     }
 
     .greeting__image {
-      max-width: 50%;
+      width: 50%;
     }
   }
 }
 
-@media (max-width: $breakpoint-phone) {
+@media (max-width: $breakpoint-mobile) {
   .greeting-section {
 
     .greeting__text {
@@ -260,7 +260,7 @@
   }
 }
 
-@media (max-width: $breakpoint-phone) {
+@media (max-width: $breakpoint-mobile) {
   .advantages__item {
     position: relative;
 
@@ -299,7 +299,7 @@
   }
 }
 
-@media (max-width: $breakpoint-phone) {
+@media (max-width: $breakpoint-mobile) {
   .video-container {
     min-height: 200px;
   }

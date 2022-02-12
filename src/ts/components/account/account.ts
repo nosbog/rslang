@@ -5,18 +5,21 @@ import LocalStorageAPI from '../../localStorageAPI';
 
 export default class Account {
   innerHtmlTemplate = `
-    <div class="account__NotLoggedIn-container">
-      <button class="account__btn account__btn_logIn">Вкладка "Войти"</button>
-      <button class="account__btn account__btn_signUp">Вкладка "Регистрация"</button>
-      <div class="account__content"></div>
-    </div>
-    <div class="account__loggedIn-container">
-      <div class="account__data">
-        <p>Ваш аккаунт:</p>
-        <p class="account__data__name"></p>
-        <p class="account__data__email"></p>
+    <div class="wrapper wrapper_padding">
+      <div class="account__NotLoggedIn-container">
+        <button class="account__btn account__btn_logIn account__btn_active">Войти</button>
+        <button class="account__btn account__btn_signUp">Регистрация</button>
+        <div class="account__content"></div>
       </div>
-      <button class="account__btn account__btn_logOut">Выйти из аккаунта</button>
+      <div class="account__loggedIn-container">
+        <div class="account__data">
+          <h2>Мои данные</h2>
+          <p class="account__data__name">Ник: <span></span></p>
+          <p class="account__data__email">Почта: <span></span></p>
+        </div>
+        <button class="account__btn account__btn_logOut">Выйти из аккаунта</button>
+      </div>
+      <img src="./assets/svg/account.svg" alt="Get Started" class="account__image" width="60%">
     </div>
   `;
 
@@ -59,10 +62,10 @@ export default class Account {
     notLoggedInContainer.style.display = 'none';
 
     const dataNameElem = this.componentElem.querySelector(
-      '.account__data__name'
+      '.account__data__name span'
     ) as HTMLParagraphElement;
     const dataEmailElem = this.componentElem.querySelector(
-      '.account__data__email'
+      '.account__data__email span'
     ) as HTMLParagraphElement;
 
     dataNameElem.textContent = this.localStorageAPI.accountStorage.name;
@@ -101,6 +104,7 @@ export default class Account {
       ) as HTMLDivElement;
       accountContent.innerHTML = ``;
 
+      this.toggleTabs(singUpBtn);
       this.signUp.showComponent();
     });
     logInBtn.addEventListener('click', () => {
@@ -109,6 +113,7 @@ export default class Account {
       ) as HTMLDivElement;
       accountContent.innerHTML = ``;
 
+      this.toggleTabs(logInBtn);
       this.logIn.showComponent();
     });
   }
@@ -132,4 +137,9 @@ export default class Account {
   hideComponent = () => {
     document.querySelector('.book')?.remove();
   };
+
+  toggleTabs(btn: HTMLButtonElement) {
+    this.componentElem.querySelector('.account__btn_active')?.classList.remove('account__btn_active');
+    btn.classList.add('account__btn_active');
+  }
 }

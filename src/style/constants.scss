@@ -1,17 +1,21 @@
-$breakpoint-phone: 568px;
+$breakpoint-mobile: 568px;
 $breakpoint-tablet: 768px;
 $breakpoint-laptop-m: 1280px;
 $breakpoint-laptop-l: 1440px;
 
 $color-main-bg: #f7faf6;
 $color-add-bg: #fff;
+$color-add-bg-transparent: rgba(255, 255, 255, 0.7);
 $color-brand-1: #1d3557;
 $color-brand-2: #457b9d;
 $color-brand-3: #a8dadc;
 $color-brand-4: #e63946;
-$color-font: #192332;
+$color-font-dark: #192332;
+$color-font-light: #fff;
 $color-card: #457b9d27;
 $color-dark: #000;
+
+$height-footer: 75px;
 
 $font-family: 'Montserrat', "Helvetica", "Arial", sans-serif;
 

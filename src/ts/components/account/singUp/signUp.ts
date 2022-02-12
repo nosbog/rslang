@@ -4,8 +4,8 @@ export default class SignUp {
   innerHtmlTemplate = `
     <h2>Еще нет аккаунта</h2>
     <input class="account__input account__input_name" type="text" placeholder="name">
-    <input class="account__input account__input_email" type="text" placeholder="email">
-    <input class="account__input account__input_password" type="text" placeholder="password">
+    <input class="account__input account__input_email" type="email" placeholder="email">
+    <input class="account__input account__input_password" type="password" placeholder="password">
     <button class="signUp__btn_signUp">Зарегистрироваться</button>
   `;
 

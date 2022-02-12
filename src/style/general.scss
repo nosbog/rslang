@@ -7,7 +7,7 @@
 html {
   font-size: $font-size-html-1280;
   font-family: $font-family;
-  color: $color-font;
+  color: $color-font-dark;
   background-color: $color-main-bg;
 }
 
@@ -16,7 +16,7 @@ li {
 }
 
 a {
-  color: $color-font;
+  color: $color-font-dark;
   text-decoration: none;
   transition: $transition-hover;
 
@@ -26,6 +26,8 @@ a {
 }
 
 button {
+  font-family: $font-family;
+  color: $color-font-dark;
   outline: none;
 }
 
@@ -48,6 +50,7 @@ button {
 .body_fixed {
   overflow: hidden;
   position: fixed;
+  width: 100%;
 }
 
 @media (max-width: $breakpoint-tablet) {
@@ -57,7 +60,7 @@ button {
   }
 }
 
-@media (max-width: $breakpoint-phone) {
+@media (max-width: $breakpoint-mobile) {
   .wrapper {
     width: 98%;
   }

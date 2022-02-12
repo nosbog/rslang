@@ -4,8 +4,8 @@ import LocalStorageAPI from '../../../localStorageAPI';
 export default class LogIn {
   innerHtmlTemplate = `
     <h2>Уже есть аккаунт</h2>
-    <input class="account__input account__input_email" type="text" placeholder="email">
-    <input class="account__input account__input_password" type="text" placeholder="password">
+    <input class="account__input account__input_email" type="email" placeholder="email">
+    <input class="account__input account__input_password" type="password" placeholder="password">
     <button class="logIn__btn_logIn">Войти</button>
   `;
 
