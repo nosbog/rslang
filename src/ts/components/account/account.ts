@@ -14,8 +14,8 @@ export default class Account {
       <div class="account__loggedIn-container">
         <div class="account__data">
           <h2>Мои данные</h2>
-          <p class="account__data__name">Ник: <span></span></p>
-          <p class="account__data__email">Почта: <span></span></p>
+          <p class="account__data__name">Имя: <span></span></p>
+          <p class="account__data__email">Email: <span></span></p>
         </div>
         <button class="account__btn account__btn_logOut">Выйти из аккаунта</button>
       </div>
