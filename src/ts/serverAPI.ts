@@ -68,7 +68,7 @@ export default class ServerAPI {
     return content;
   };
 
-  getWordByWordId = async ({ wordId }: { wordId: number }) => {
+  getWordByWordId = async ({ wordId }: { wordId: string }) => {
     const url = new URL(`words/${wordId}`, this.baseUrl);
 
     const response = await fetch(url.href, {
@@ -171,7 +171,7 @@ export default class ServerAPI {
     return content;
   };
 
-  getUserWords = async ({ token, id }: { token: string; id: number }) => {
+  getUserWords = async ({ token, id }: { token: string; id: string }) => {
     const url = new URL(`users/${id}/words`, this.baseUrl);
 
     const response = await fetch(url.href, {
@@ -193,21 +193,21 @@ export default class ServerAPI {
     difficulty
   }: {
     token: string;
-    id: number;
+    id: string;
     wordId: string;
     difficulty: string;
   }) => {
     const url = new URL(`users/${id}/words/${wordId}`, this.baseUrl);
-    const body = { difficulty, optional: {} };
+    const body = { difficulty, optional: { test: 'test' } };
 
     const response = await fetch(url.href, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: 'application/json',
-        'Content-Type': 'application/json',
-        body: JSON.stringify(body)
-      }
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
     });
 
     const content: interfaceServer.UserWordContent = await response.json();
@@ -220,7 +220,7 @@ export default class ServerAPI {
     wordId
   }: {
     token: string;
-    id: number;
+    id: string;
     wordId: string;
   }) => {
     const url = new URL(`users/${id}/words/${wordId}`, this.baseUrl);
@@ -244,7 +244,7 @@ export default class ServerAPI {
     difficulty
   }: {
     token: string;
-    id: number;
+    id: string;
     wordId: string;
     difficulty: string;
   }) => {
@@ -256,16 +256,16 @@ export default class ServerAPI {
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: 'application/json',
-        'Content-Type': 'application/json',
-        body: JSON.stringify(body)
-      }
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
     });
 
     const content: interfaceServer.UserWordContent = await response.json();
     return content;
   };
 
-  deleteUserWord = async ({ token, id, wordId }: { token: string; id: number; wordId: string }) => {
+  deleteUserWord = async ({ token, id, wordId }: { token: string; id: string; wordId: string }) => {
     const url = new URL(`users/${id}/words/${wordId}`, this.baseUrl);
 
     const response = await fetch(url.href, {
@@ -280,7 +280,7 @@ export default class ServerAPI {
     return content;
   };
 
-  getStatistics = async ({ token, id }: { token: string; id: number }) => {
+  getStatistics = async ({ token, id }: { token: string; id: string }) => {
     const url = new URL(`users/${id}/statistics`, this.baseUrl);
 
     const response = await fetch(url.href, {
@@ -301,7 +301,7 @@ export default class ServerAPI {
     learnedWords
   }: {
     token: string;
-    id: number;
+    id: string;
     learnedWords: number;
   }) => {
     const url = new URL(`users/${id}/statistics`, this.baseUrl);
@@ -312,9 +312,9 @@ export default class ServerAPI {
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: 'application/json',
-        'Content-Type': 'application/json',
-        body: JSON.stringify(body)
-      }
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
     });
 
     const content: interfaceServer.StatisticsContent = await response.json();
