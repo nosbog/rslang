@@ -34,7 +34,7 @@ export default class Controller {
 
     this.localStorageAPI = new LocalStorageAPI(this.serverAPI);
 
-    this.header = new Header();
+    this.header = new Header(this.localStorageAPI);
     this.account = new Account(this.serverAPI, this.localStorageAPI);
     this.footer = new Footer();
     this.main = new Main();
@@ -60,7 +60,7 @@ export default class Controller {
 
   setListeners() {
     this.header.setListeners({
-      showAccount: this.account.showComponent,
+      showAccount: () => this.account.showComponent(this.header.updateHdrAccountItem),
       showFooter: this.footer.showComponent,
       showMain: this.main.showComponent,
       showBook: this.book.showComponent,
@@ -68,7 +68,7 @@ export default class Controller {
       showStatistic: this.statistic.showComponent
     });
 
-    this.account.setListeners();
+    this.account.setListeners(this.header.updateHdrAccountItem);
 
     this.games.setListeners();
   }

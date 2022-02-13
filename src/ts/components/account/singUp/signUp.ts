@@ -3,10 +3,13 @@ import ServerAPI from '../../../serverAPI';
 export default class SignUp {
   innerHtmlTemplate = `
     <h2>Еще нет аккаунта</h2>
-    <input class="account__input account__input_name" type="text" placeholder="name">
-    <input class="account__input account__input_email" type="text" placeholder="email">
-    <input class="account__input account__input_password" type="text" placeholder="password">
-    <button class="signUp__btn_signUp">Зарегистрироваться</button>
+    <div class="account__error-box"></div>
+    <form>
+      <input class="account__input account__input_name" type="text" placeholder="имя" required>
+      <input class="account__input account__input_email" type="email" placeholder="email" autocomplete="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{1,}$" required>
+      <input class="account__input account__input_password" type="password" placeholder="пароль" minlength="8" autocomplete="new-password" required>
+      <button type="button" class="signUp__btn_signUp">Зарегистрироваться</button>
+    </form>
   `;
 
   serverAPI: ServerAPI;
@@ -31,7 +34,7 @@ export default class SignUp {
     this.createThisComponent();
   }
 
-  setThisListeners() {
+  setThisListeners(updateHeader: (isLoggedIn: boolean, name: string) => void) {
     const signUpBtn = this.componentElem.querySelector('.signUp__btn_signUp') as HTMLButtonElement;
     signUpBtn.addEventListener('click', () => {
       const inputValues = this.getInputValues();
@@ -45,11 +48,25 @@ export default class SignUp {
         email,
         password
       });
+
+      // TODO: implement login after signup
+      // updateHeader(true, name);
+    });
+
+    const formInputs = this.componentElem.querySelectorAll<HTMLInputElement>('.account__input');
+    formInputs.forEach((input) => {
+      input.addEventListener('input', () => {
+        if (!input.validity.valid) {
+          input.classList.add('invalid');
+        } else {
+          input.classList.remove('invalid');
+        }
+      });
     });
   }
 
-  setListeners() {
-    this.setThisListeners();
+  setListeners(updateHeader: (isLoggedIn: boolean, name: string) => void) {
+    this.setThisListeners(updateHeader);
   }
 
   showComponent = () => {
@@ -123,12 +140,21 @@ export default class SignUp {
       }
     }
 
-    if (!nameValidation) alert('"Name" must contain at least one character');
-    if (!emailValidation) alert('"Email" must match: example@example.example');
-    if (!passwordValidation) alert('"Password" must contain at least 8 character');
+    if (!nameValidation) {
+      this.showValidationError('Имя должно содежать не менее 1 символа');
+    } else if (!emailValidation) {
+      this.showValidationError('Email должен иметь вид: example@mail.com');
+    } else if (!passwordValidation) {
+      this.showValidationError('Пароль должен содежать не менее 8 символов');
+    }
 
     return [nameValidation, emailValidation, passwordValidation].every(
       (isValid) => isValid === true
     );
+  }
+
+  showValidationError(errorText: string) {
+    const errorBox = this.componentElem.querySelector('.account__error-box') as HTMLElement;
+    errorBox.textContent = errorText;
   }
 }

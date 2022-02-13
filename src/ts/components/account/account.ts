@@ -5,18 +5,21 @@ import LocalStorageAPI from '../../localStorageAPI';
 
 export default class Account {
   innerHtmlTemplate = `
-    <div class="account__NotLoggedIn-container">
-      <button class="account__btn account__btn_logIn">Вкладка "Войти"</button>
-      <button class="account__btn account__btn_signUp">Вкладка "Регистрация"</button>
-      <div class="account__content"></div>
-    </div>
-    <div class="account__loggedIn-container">
-      <div class="account__data">
-        <p>Ваш аккаунт:</p>
-        <p class="account__data__name"></p>
-        <p class="account__data__email"></p>
+    <div class="wrapper wrapper_padding">
+      <div class="account__NotLoggedIn-container">
+        <button class="account__btn account__btn_logIn account__btn_active">Войти</button>
+        <button class="account__btn account__btn_signUp">Регистрация</button>
+        <div class="account__content"></div>
       </div>
-      <button class="account__btn account__btn_logOut">Выйти из аккаунта</button>
+      <div class="account__loggedIn-container">
+        <div class="account__data">
+          <h2>Мои данные</h2>
+          <p class="account__data__name">Имя: <span></span></p>
+          <p class="account__data__email">Email: <span></span></p>
+        </div>
+        <button class="account__btn account__btn_logOut">Выйти из аккаунта</button>
+      </div>
+      <img src="./assets/svg/account.svg" alt="Get Started" class="account__image" width="60%">
     </div>
   `;
 
@@ -59,20 +62,14 @@ export default class Account {
     notLoggedInContainer.style.display = 'none';
 
     const dataNameElem = this.componentElem.querySelector(
-      '.account__data__name'
+      '.account__data__name span'
     ) as HTMLParagraphElement;
     const dataEmailElem = this.componentElem.querySelector(
-      '.account__data__email'
+      '.account__data__email span'
     ) as HTMLParagraphElement;
 
     dataNameElem.textContent = this.localStorageAPI.accountStorage.name;
     dataEmailElem.textContent = this.localStorageAPI.accountStorage.email;
-
-    const logOutBtn = this.componentElem.querySelector('.account__btn_logOut') as HTMLButtonElement;
-    logOutBtn.addEventListener('click', () => {
-      this.localStorageAPI.fillDefaultAccountStorage();
-      document.body.querySelector('#account')?.dispatchEvent(new Event('click'));
-    });
   }
 
   createThisComponentNotLoggedIn() {
@@ -91,7 +88,7 @@ export default class Account {
     this.createThisComponent();
   }
 
-  setThisListeners() {
+  setThisListeners(updateHeader: (isLoggedIn: boolean, name: string) => void) {
     const singUpBtn = this.componentElem.querySelector('.account__btn_signUp') as HTMLButtonElement;
     const logInBtn = this.componentElem.querySelector('.account__btn_logIn') as HTMLButtonElement;
 
@@ -101,6 +98,7 @@ export default class Account {
       ) as HTMLDivElement;
       accountContent.innerHTML = ``;
 
+      this.toggleTabs(singUpBtn);
       this.signUp.showComponent();
     });
     logInBtn.addEventListener('click', () => {
@@ -109,21 +107,31 @@ export default class Account {
       ) as HTMLDivElement;
       accountContent.innerHTML = ``;
 
+      this.toggleTabs(logInBtn);
       this.logIn.showComponent();
+    });
+
+    const logOutBtn = this.componentElem.querySelector('.account__btn_logOut') as HTMLButtonElement;
+    logOutBtn.addEventListener('click', () => {
+      this.localStorageAPI.fillDefaultAccountStorage();
+      document.body.querySelector('#account')?.dispatchEvent(new Event('click'));
+
+      const { isLoggedIn, name } = this.localStorageAPI.accountStorage;
+      updateHeader(isLoggedIn, name);
     });
   }
 
-  setListeners() {
-    this.logIn.setListeners();
-    this.signUp.setListeners();
+  setListeners(updateHeader: (isLoggedIn: boolean, name: string) => void) {
+    this.logIn.setListeners(updateHeader);
+    this.signUp.setListeners(updateHeader);
 
-    this.setThisListeners();
+    this.setThisListeners(updateHeader);
   }
 
-  showComponent = () => {
+  showComponent = (updateHeader: (isLoggedIn: boolean, name: string) => void) => {
     // 2 versions of the component depending on the user 'loggedIn' or 'loggedOut' status
     this.createComponent();
-    this.setListeners();
+    this.setListeners(updateHeader);
 
     const contentElem = document.querySelector('.content') as HTMLElement;
     contentElem.append(this.componentElem);
@@ -132,4 +140,11 @@ export default class Account {
   hideComponent = () => {
     document.querySelector('.book')?.remove();
   };
+
+  toggleTabs(btn: HTMLButtonElement) {
+    this.componentElem
+      .querySelector('.account__btn_active')
+      ?.classList.remove('account__btn_active');
+    btn.classList.add('account__btn_active');
+  }
 }
