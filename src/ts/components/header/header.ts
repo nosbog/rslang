@@ -126,7 +126,7 @@ export default class Header {
 
   showComponent() {
     document.body.prepend(this.componentElem);
-    
+
     const { accountStorage } = this.localStorageAPI;
     this.updateHdrAccountItem(accountStorage.isLoggedIn, accountStorage.name);
   }
@@ -153,7 +153,7 @@ export default class Header {
   }
 
   updateHdrAccountItem(isLoggedIn: boolean, name: string) {
-    const accountItem = document.querySelector('#account'); 
+    const accountItem = document.querySelector('#account');
     accountItem?.querySelector('.show')?.classList.remove('show');
 
     if (isLoggedIn === true) {
@@ -161,7 +161,7 @@ export default class Header {
       (loggedInItem.querySelector('span') as HTMLElement).textContent = name;
       loggedInItem?.classList.add('show');
     } else {
-      accountItem?.querySelector('.notLoggedIn-account')?.classList.add('show')
+      accountItem?.querySelector('.notLoggedIn-account')?.classList.add('show');
     }
   }
 }

@@ -1,4 +1,4 @@
-import { main as layout } from './layout';
+import layout from './layout';
 
 export default class Main {
   innerHtmlTemplate = `

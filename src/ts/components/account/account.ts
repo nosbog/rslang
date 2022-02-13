@@ -116,8 +116,7 @@ export default class Account {
       this.localStorageAPI.fillDefaultAccountStorage();
       document.body.querySelector('#account')?.dispatchEvent(new Event('click'));
 
-      const isLoggedIn = this.localStorageAPI.accountStorage.isLoggedIn;
-      const name = this.localStorageAPI.accountStorage.name;
+      const { isLoggedIn, name } = this.localStorageAPI.accountStorage;
       updateHeader(isLoggedIn, name);
     });
   }
@@ -143,7 +142,9 @@ export default class Account {
   };
 
   toggleTabs(btn: HTMLButtonElement) {
-    this.componentElem.querySelector('.account__btn_active')?.classList.remove('account__btn_active');
+    this.componentElem
+      .querySelector('.account__btn_active')
+      ?.classList.remove('account__btn_active');
     btn.classList.add('account__btn_active');
   }
 }

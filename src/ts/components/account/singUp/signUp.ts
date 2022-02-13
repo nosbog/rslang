@@ -6,7 +6,7 @@ export default class SignUp {
     <div class="account__error-box"></div>
     <form>
       <input class="account__input account__input_name" type="text" placeholder="name" required>
-      <input class="account__input account__input_email" type="email" placeholder="email" autocomplete="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{1,}$" required>
+      <input class="account__input account__input_email" type="email" placeholder="email" autocomplete="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{1,}$" required>
       <input class="account__input account__input_password" type="password" placeholder="password" minlength="8" autocomplete="new-password" required>
       <button type="button" class="signUp__btn_signUp">Зарегистрироваться</button>
     </form>
@@ -49,7 +49,7 @@ export default class SignUp {
         password
       });
 
-      //TODO: login after signup
+      // TODO: implement login after signup
       // updateHeader(true, name);
     });
 
