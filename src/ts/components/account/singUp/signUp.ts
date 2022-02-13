@@ -3,10 +3,13 @@ import ServerAPI from '../../../serverAPI';
 export default class SignUp {
   innerHtmlTemplate = `
     <h2>Еще нет аккаунта</h2>
-    <input class="account__input account__input_name" type="text" placeholder="name">
-    <input class="account__input account__input_email" type="email" placeholder="email">
-    <input class="account__input account__input_password" type="password" placeholder="password">
-    <button class="signUp__btn_signUp">Зарегистрироваться</button>
+    <div class="account__error-box"></div>
+    <form>
+      <input class="account__input account__input_name" type="text" placeholder="name" required>
+      <input class="account__input account__input_email" type="email" placeholder="email" autocomplete="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{1,}$" required>
+      <input class="account__input account__input_password" type="password" placeholder="password" minlength="8" autocomplete="new-password" required>
+      <button type="button" class="signUp__btn_signUp">Зарегистрироваться</button>
+    </form>
   `;
 
   serverAPI: ServerAPI;
@@ -44,6 +47,17 @@ export default class SignUp {
         name,
         email,
         password
+      });
+    });
+
+    const formInputs = this.componentElem.querySelectorAll<HTMLInputElement>('.account__input');
+    formInputs.forEach((input) => {
+      input.addEventListener('input', () => {
+        if (!input.validity.valid) {
+          input.classList.add('invalid');
+        } else {
+          input.classList.remove('invalid');
+        }
       });
     });
   }
@@ -123,12 +137,22 @@ export default class SignUp {
       }
     }
 
-    if (!nameValidation) alert('"Name" must contain at least one character');
-    if (!emailValidation) alert('"Email" must match: example@example.example');
-    if (!passwordValidation) alert('"Password" must contain at least 8 character');
+    if (!nameValidation) {
+      this.showValidationError('Name must contain at least one character');
+    } else if (!emailValidation) {
+      this.showValidationError('Email must match: example@mail.com');
+    } else if (!passwordValidation) {
+      this.showValidationError('Password must contain at least 8 character');
+    }
 
     return [nameValidation, emailValidation, passwordValidation].every(
       (isValid) => isValid === true
     );
+  }
+
+  showValidationError(errorText: string) {
+    const errorBox = this.componentElem.querySelector('.account__error-box') as HTMLElement;
+    errorBox.textContent = errorText;
+    errorBox.classList.add('active');
   }
 }

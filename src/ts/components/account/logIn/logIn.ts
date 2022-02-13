@@ -4,9 +4,12 @@ import LocalStorageAPI from '../../../localStorageAPI';
 export default class LogIn {
   innerHtmlTemplate = `
     <h2>Уже есть аккаунт</h2>
-    <input class="account__input account__input_email" type="email" placeholder="email">
-    <input class="account__input account__input_password" type="password" placeholder="password">
-    <button class="logIn__btn_logIn">Войти</button>
+    <div class="account__error-box"></div>
+    <form>
+      <input class="account__input account__input_email" type="email" placeholder="email" autocomplete="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{1,}$" required>
+      <input class="account__input account__input_password" type="password" placeholder="password" minlength="8" autocomplete="current-password" required>
+      <button type="button" class="logIn__btn_logIn">Войти</button>
+    </form>
   `;
 
   serverAPI: ServerAPI;
@@ -53,11 +56,22 @@ export default class LogIn {
 
       if (authorizationContent === null) {
         // обработка неверных данных
-        alert('There is no account with such data');
+        this.showValidationError('Your email or password is invalid. Please try again');
       } else {
         await this.localStorageAPI.fillAccountStorage(authorizationContent, password);
         document.querySelector('#account')?.dispatchEvent(new Event('click'));
       }
+    });
+
+    const formInputs = this.componentElem.querySelectorAll<HTMLInputElement>('.account__input');
+    formInputs.forEach((input) => {
+      input.addEventListener('input', () => {
+        if (!input.validity.valid) {
+          input.classList.add('invalid');
+        } else {
+          input.classList.remove('invalid');
+        }
+      });
     });
   }
 
@@ -120,9 +134,18 @@ export default class LogIn {
       }
     }
 
-    if (!emailValidation) alert('"Email" must match: example@example.example');
-    if (!passwordValidation) alert('"Password" must contain at least 8 character');
+    if (!emailValidation) {
+      this.showValidationError('Please enter a valid email');
+    } else if (!passwordValidation) {
+      this.showValidationError('Please enter a valid password');
+    }
 
     return [emailValidation, passwordValidation].every((isValid) => isValid === true);
+  }
+
+  showValidationError(errorText: string) {
+    const errorBox = this.componentElem.querySelector('.account__error-box') as HTMLElement;
+    errorBox.textContent = errorText;
+    errorBox.classList.add('active');
   }
 }
