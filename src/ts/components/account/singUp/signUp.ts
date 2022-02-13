@@ -34,7 +34,7 @@ export default class SignUp {
     this.createThisComponent();
   }
 
-  setThisListeners() {
+  setThisListeners(updateHeader: (isLoggedIn: boolean, name: string) => void) {
     const signUpBtn = this.componentElem.querySelector('.signUp__btn_signUp') as HTMLButtonElement;
     signUpBtn.addEventListener('click', () => {
       const inputValues = this.getInputValues();
@@ -48,6 +48,9 @@ export default class SignUp {
         email,
         password
       });
+
+      //TODO: login after signup
+      // updateHeader(true, name);
     });
 
     const formInputs = this.componentElem.querySelectorAll<HTMLInputElement>('.account__input');
@@ -62,8 +65,8 @@ export default class SignUp {
     });
   }
 
-  setListeners() {
-    this.setThisListeners();
+  setListeners(updateHeader: (isLoggedIn: boolean, name: string) => void) {
+    this.setThisListeners(updateHeader);
   }
 
   showComponent = () => {
@@ -153,6 +156,5 @@ export default class SignUp {
   showValidationError(errorText: string) {
     const errorBox = this.componentElem.querySelector('.account__error-box') as HTMLElement;
     errorBox.textContent = errorText;
-    errorBox.classList.add('active');
   }
 }

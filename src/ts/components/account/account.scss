@@ -114,14 +114,9 @@
   }
 
   .account__error-box {
-    display: none;
     margin-bottom: 15px;
     font-size: 1.2rem;
     color: $color-brand-4;
-
-    &.active {
-      display: block;
-    }
   }
 }
 
@@ -136,7 +131,6 @@
     }
 
     .account__content {
-
       button {
         font-size: 1.4rem;
       }

@@ -41,7 +41,7 @@ export default class LogIn {
     this.createThisComponent();
   }
 
-  setThisListeners() {
+  setThisListeners(updateHeader: (isLoggedIn: boolean, name: string) => void) {
     const logInBtn = this.componentElem.querySelector('.logIn__btn_logIn') as HTMLButtonElement;
     logInBtn.addEventListener('click', async () => {
       const inputValues = this.getInputValues();
@@ -60,6 +60,10 @@ export default class LogIn {
       } else {
         await this.localStorageAPI.fillAccountStorage(authorizationContent, password);
         document.querySelector('#account')?.dispatchEvent(new Event('click'));
+
+        const isLoggedIn = this.localStorageAPI.accountStorage.isLoggedIn;
+        const name = this.localStorageAPI.accountStorage.name;
+        updateHeader(isLoggedIn, name);
       }
     });
 
@@ -75,8 +79,8 @@ export default class LogIn {
     });
   }
 
-  setListeners() {
-    this.setThisListeners();
+  setListeners(updateHeader: (isLoggedIn: boolean, name: string) => void) {
+    this.setThisListeners(updateHeader);
   }
 
   showComponent = () => {
@@ -146,6 +150,5 @@ export default class LogIn {
   showValidationError(errorText: string) {
     const errorBox = this.componentElem.querySelector('.account__error-box') as HTMLElement;
     errorBox.textContent = errorText;
-    errorBox.classList.add('active');
   }
 }

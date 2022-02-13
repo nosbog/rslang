@@ -48,6 +48,14 @@
 
   .nav__item-account {
     margin-left: 10px;
+
+    & > span {
+      display: none;
+    }
+
+    .show {
+      display: inline-block;
+    }
   }
 
   .hamburger {

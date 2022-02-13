@@ -70,12 +70,6 @@ export default class Account {
 
     dataNameElem.textContent = this.localStorageAPI.accountStorage.name;
     dataEmailElem.textContent = this.localStorageAPI.accountStorage.email;
-
-    const logOutBtn = this.componentElem.querySelector('.account__btn_logOut') as HTMLButtonElement;
-    logOutBtn.addEventListener('click', () => {
-      this.localStorageAPI.fillDefaultAccountStorage();
-      document.body.querySelector('#account')?.dispatchEvent(new Event('click'));
-    });
   }
 
   createThisComponentNotLoggedIn() {
@@ -94,7 +88,7 @@ export default class Account {
     this.createThisComponent();
   }
 
-  setThisListeners() {
+  setThisListeners(updateHeader: (isLoggedIn: boolean, name: string) => void) {
     const singUpBtn = this.componentElem.querySelector('.account__btn_signUp') as HTMLButtonElement;
     const logInBtn = this.componentElem.querySelector('.account__btn_logIn') as HTMLButtonElement;
 
@@ -116,19 +110,29 @@ export default class Account {
       this.toggleTabs(logInBtn);
       this.logIn.showComponent();
     });
+
+    const logOutBtn = this.componentElem.querySelector('.account__btn_logOut') as HTMLButtonElement;
+    logOutBtn.addEventListener('click', () => {
+      this.localStorageAPI.fillDefaultAccountStorage();
+      document.body.querySelector('#account')?.dispatchEvent(new Event('click'));
+
+      const isLoggedIn = this.localStorageAPI.accountStorage.isLoggedIn;
+      const name = this.localStorageAPI.accountStorage.name;
+      updateHeader(isLoggedIn, name);
+    });
   }
 
-  setListeners() {
-    this.logIn.setListeners();
-    this.signUp.setListeners();
+  setListeners(updateHeader: (isLoggedIn: boolean, name: string) => void) {
+    this.logIn.setListeners(updateHeader);
+    this.signUp.setListeners(updateHeader);
 
-    this.setThisListeners();
+    this.setThisListeners(updateHeader);
   }
 
-  showComponent = () => {
+  showComponent = (updateHeader: (isLoggedIn: boolean, name: string) => void) => {
     // 2 versions of the component depending on the user 'loggedIn' or 'loggedOut' status
     this.createComponent();
-    this.setListeners();
+    this.setListeners(updateHeader);
 
     const contentElem = document.querySelector('.content') as HTMLElement;
     contentElem.append(this.componentElem);
