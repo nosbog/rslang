@@ -7,7 +7,7 @@ export default class LogIn {
     <div class="account__error-box"></div>
     <form>
       <input class="account__input account__input_email" type="email" placeholder="email" autocomplete="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{1,}$" required>
-      <input class="account__input account__input_password" type="password" placeholder="password" minlength="8" autocomplete="current-password" required>
+      <input class="account__input account__input_password" type="password" placeholder="пароль" minlength="8" autocomplete="current-password" required>
       <button type="button" class="logIn__btn_logIn">Войти</button>
     </form>
   `;
@@ -56,7 +56,7 @@ export default class LogIn {
 
       if (authorizationContent === null) {
         // обработка неверных данных
-        this.showValidationError('Your email or password is invalid. Please try again');
+        this.showValidationError('Неверный логин и/или пароль. Пожалуйста, попробуйте еще раз');
       } else {
         await this.localStorageAPI.fillAccountStorage(authorizationContent, password);
         document.querySelector('#account')?.dispatchEvent(new Event('click'));
@@ -138,9 +138,9 @@ export default class LogIn {
     }
 
     if (!emailValidation) {
-      this.showValidationError('Please enter a valid email');
+      this.showValidationError('Пожалуйста, введите правильный email');
     } else if (!passwordValidation) {
-      this.showValidationError('Please enter a valid password');
+      this.showValidationError('Пожалуйста, введите правильный пароль');
     }
 
     return [emailValidation, passwordValidation].every((isValid) => isValid === true);

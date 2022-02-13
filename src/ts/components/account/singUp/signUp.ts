@@ -5,9 +5,9 @@ export default class SignUp {
     <h2>Еще нет аккаунта</h2>
     <div class="account__error-box"></div>
     <form>
-      <input class="account__input account__input_name" type="text" placeholder="name" required>
+      <input class="account__input account__input_name" type="text" placeholder="имя" required>
       <input class="account__input account__input_email" type="email" placeholder="email" autocomplete="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{1,}$" required>
-      <input class="account__input account__input_password" type="password" placeholder="password" minlength="8" autocomplete="new-password" required>
+      <input class="account__input account__input_password" type="password" placeholder="пароль" minlength="8" autocomplete="new-password" required>
       <button type="button" class="signUp__btn_signUp">Зарегистрироваться</button>
     </form>
   `;
@@ -141,11 +141,11 @@ export default class SignUp {
     }
 
     if (!nameValidation) {
-      this.showValidationError('Name must contain at least one character');
+      this.showValidationError('Имя должно содежать не менее 1 символа');
     } else if (!emailValidation) {
-      this.showValidationError('Email must match: example@mail.com');
+      this.showValidationError('Email должен иметь вид: example@mail.com');
     } else if (!passwordValidation) {
-      this.showValidationError('Password must contain at least 8 character');
+      this.showValidationError('Пароль должен содежать не менее 8 символов');
     }
 
     return [nameValidation, emailValidation, passwordValidation].every(
