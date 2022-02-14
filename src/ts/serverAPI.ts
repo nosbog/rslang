@@ -190,15 +190,21 @@ export default class ServerAPI {
     token,
     id,
     wordId,
-    difficulty
+    difficulty,
+    optional
   }: {
     token: string;
     id: string;
     wordId: string;
     difficulty: string;
+    optional: interfaceServer.OptionalUserWord;
   }) => {
     const url = new URL(`users/${id}/words/${wordId}`, this.baseUrl);
-    const body = { difficulty, optional: { test: 'test' } };
+
+    const body = {
+      difficulty,
+      optional
+    };
 
     const response = await fetch(url.href, {
       method: 'POST',
@@ -241,15 +247,28 @@ export default class ServerAPI {
     token,
     id,
     wordId,
-    difficulty
+    difficulty,
+    optional
   }: {
     token: string;
     id: string;
     wordId: string;
-    difficulty: string;
+    difficulty?: string;
+    optional?: interfaceServer.OptionalUserWord;
   }) => {
     const url = new URL(`users/${id}/words/${wordId}`, this.baseUrl);
-    const body = { difficulty, optional: {} };
+
+    const body: {
+      difficulty?: string;
+      optional?: interfaceServer.OptionalUserWord;
+    } = {};
+
+    if (difficulty) {
+      body.difficulty = difficulty;
+    }
+    if (optional) {
+      body.optional = optional;
+    }
 
     const response = await fetch(url.href, {
       method: 'PUT',
@@ -298,17 +317,17 @@ export default class ServerAPI {
   createStatistics = async ({
     token,
     id,
-    learnedWords
+    optional
   }: {
     token: string;
     id: string;
-    learnedWords: number;
+    optional: interfaceServer.OptionalUserStatistics;
   }) => {
     const url = new URL(`users/${id}/statistics`, this.baseUrl);
-    const body = { learnedWords, optional: {} };
+    const body = { optional };
 
     const response = await fetch(url.href, {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: 'application/json',
