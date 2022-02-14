@@ -5,9 +5,11 @@ import { WordContent } from '../../../interfaces/interfaceServerAPI';
 
 export default class Sprint {
   innerHtmlTemplate = `
-    <h2>Sprint</h2>
-    <div class="sprint__timer"></div>
-    <div class="sprint__round"></div>
+    <div class="wrapper wrapper_padding">
+      <h2>Sprint</h2>
+      <div class="sprint__timer"></div>
+      <div class="sprint__round"></div>
+    </div>
   `;
 
   innerHtmlTemplateRound = `

@@ -1,0 +1,47 @@
+.games {
+
+  &__input-container {
+    display: flex;
+
+  }
+
+  &__image_color {
+    opacity: 0;
+  }
+
+  input {
+    display: none;
+
+    &#sprintRadio:checked ~ label[for="sprintRadio"],
+    &#audioCallRadio:checked ~ label[for="audioCallRadio"] {
+      & .games__image_color {
+        opacity: 1;
+      }
+
+      & .games__image_simple {
+        opacity: 0;
+      }
+    }
+  }
+
+  label {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    background-color: $color-card;
+    cursor: pointer;
+
+    .games__image {
+      position: absolute;
+      transition: $transition-hover;
+    }
+
+    &:hover > .games__image_color {
+      opacity: 1;
+    }
+
+    &:hover > .games__image_simple {
+      opacity: 0;
+    }
+  }
+}

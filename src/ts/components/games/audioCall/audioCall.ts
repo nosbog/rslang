@@ -5,8 +5,10 @@ import { WordContent } from '../../../interfaces/interfaceServerAPI';
 
 export default class AudioCall {
   innerHtmlTemplate = `
-    <h2>AudioCall</h2>
-    <div class="audioCall__round"></div>
+    <div class="wrapper wrapper_padding">
+      <h2>AudioCall</h2>
+      <div class="audioCall__round"></div>
+    </div>
   `;
 
   innerHtmlTemplateRound = `
