@@ -95,7 +95,7 @@ export default class Sprint {
 
     // you can go to the next page if you run out of elements on the current one
     if (this.gameData.currentWordIndex >= 20) {
-      this.updateWordsContent();
+      await this.updateWordsContent();
     }
 
     const { currentWordIndex } = this.gameData;
@@ -179,7 +179,7 @@ export default class Sprint {
       timerElem.textContent = `${secondsGameDuration}`;
       if (secondsGameDuration <= 0) {
         clearInterval(intervalId);
-        this.gameResult.showComponent(this.gameData.answers);
+        this.gameResult.showComponent('sprint', this.gameData.answers);
       }
       secondsGameDuration -= 1;
     }, 1000);

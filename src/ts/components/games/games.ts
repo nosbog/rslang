@@ -1,4 +1,5 @@
 import ServerAPI from '../../serverAPI';
+import LocalStorageAPI from '../../localStorageAPI';
 import Sprint from './sprint/sprint';
 import AudioCall from './audioCall/audioCall';
 import GameResult from './gameResult/gameResult';
@@ -27,6 +28,8 @@ export default class Games {
 
   serverAPI: ServerAPI;
 
+  localStorageAPI: LocalStorageAPI;
+
   componentElem: HTMLElement;
 
   gameResult: GameResult;
@@ -37,12 +40,13 @@ export default class Games {
 
   contentURL: string;
 
-  constructor(serverAPI: ServerAPI, contentURL: string) {
+  constructor(serverAPI: ServerAPI, localStorageAPI: LocalStorageAPI, contentURL: string) {
     this.componentElem = document.createElement('div');
     this.serverAPI = serverAPI;
+    this.localStorageAPI = localStorageAPI;
     this.contentURL = contentURL;
 
-    this.gameResult = new GameResult(this.contentURL);
+    this.gameResult = new GameResult(this.serverAPI, this.localStorageAPI, this.contentURL);
     this.sprint = new Sprint(this.serverAPI, this.contentURL, this.gameResult);
     this.audioCall = new AudioCall(this.serverAPI, this.contentURL, this.gameResult);
   }
