@@ -41,6 +41,8 @@ export default class LocalStorageAPI {
         this.updateToken();
       }
     }
+
+    console.log(this.accountStorage);
   }
 
   fillDefaultAccountStorage() {

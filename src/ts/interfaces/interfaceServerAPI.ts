@@ -35,10 +35,30 @@ export interface WordContent {
   textExampleTranslate: string;
 }
 
+export interface OptionalUserWord {
+  timestampWhenItWasLearned: number | false;
+  sprint: {
+    totalCount: number;
+    trueCount: number;
+    bestStreak: number;
+  };
+  audioCall: {
+    totalCount: number;
+    trueCount: number;
+    bestStreak: number;
+  };
+}
+
+// NOT IMPLEMENTED
+export interface OptionalUserStatistics {
+  [timestamp: string | number]: OptionalUserWord;
+}
+
 export interface UserWordContent {
   id: string;
   difficulty: string;
   wordId: string;
+  optional: OptionalUserWord;
 }
 
 export interface StatisticsContent {

@@ -39,8 +39,8 @@ export default class Controller {
     this.footer = new Footer();
     this.main = new Main();
     this.statistic = new Statistic();
-    this.book = new Book();
-    this.games = new Games(this.serverAPI, this.contentURL);
+    this.book = new Book(this.serverAPI, this.localStorageAPI, this.contentURL);
+    this.games = new Games(this.serverAPI, this.localStorageAPI, this.contentURL);
 
     this.createComponents();
     this.setListeners();
@@ -71,6 +71,8 @@ export default class Controller {
     this.account.setListeners(this.header.updateHdrAccountItem);
 
     this.games.setListeners();
+
+    this.book.setListeners();
   }
 
   showInitial() {

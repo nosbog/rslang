@@ -236,6 +236,6 @@ export default class AudioCall {
   }
 
   showGameResult() {
-    this.gameResult.showComponent(this.gameData.answers);
+    this.gameResult.showComponent('audioCall', this.gameData.answers);
   }
 }

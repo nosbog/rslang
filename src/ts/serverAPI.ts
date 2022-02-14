@@ -68,7 +68,7 @@ export default class ServerAPI {
     return content;
   };
 
-  getWordByWordId = async ({ wordId }: { wordId: number }) => {
+  getWordByWordId = async ({ wordId }: { wordId: string }) => {
     const url = new URL(`words/${wordId}`, this.baseUrl);
 
     const response = await fetch(url.href, {
@@ -171,7 +171,7 @@ export default class ServerAPI {
     return content;
   };
 
-  getUserWords = async ({ token, id }: { token: string; id: number }) => {
+  getUserWords = async ({ token, id }: { token: string; id: string }) => {
     const url = new URL(`users/${id}/words`, this.baseUrl);
 
     const response = await fetch(url.href, {
@@ -190,24 +190,30 @@ export default class ServerAPI {
     token,
     id,
     wordId,
-    difficulty
+    difficulty,
+    optional
   }: {
     token: string;
-    id: number;
+    id: string;
     wordId: string;
     difficulty: string;
+    optional: interfaceServer.OptionalUserWord;
   }) => {
     const url = new URL(`users/${id}/words/${wordId}`, this.baseUrl);
-    const body = { difficulty, optional: {} };
+
+    const body = {
+      difficulty,
+      optional
+    };
 
     const response = await fetch(url.href, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: 'application/json',
-        'Content-Type': 'application/json',
-        body: JSON.stringify(body)
-      }
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
     });
 
     const content: interfaceServer.UserWordContent = await response.json();
@@ -220,7 +226,7 @@ export default class ServerAPI {
     wordId
   }: {
     token: string;
-    id: number;
+    id: string;
     wordId: string;
   }) => {
     const url = new URL(`users/${id}/words/${wordId}`, this.baseUrl);
@@ -241,31 +247,44 @@ export default class ServerAPI {
     token,
     id,
     wordId,
-    difficulty
+    difficulty,
+    optional
   }: {
     token: string;
-    id: number;
+    id: string;
     wordId: string;
-    difficulty: string;
+    difficulty?: string;
+    optional?: interfaceServer.OptionalUserWord;
   }) => {
     const url = new URL(`users/${id}/words/${wordId}`, this.baseUrl);
-    const body = { difficulty, optional: {} };
+
+    const body: {
+      difficulty?: string;
+      optional?: interfaceServer.OptionalUserWord;
+    } = {};
+
+    if (difficulty) {
+      body.difficulty = difficulty;
+    }
+    if (optional) {
+      body.optional = optional;
+    }
 
     const response = await fetch(url.href, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: 'application/json',
-        'Content-Type': 'application/json',
-        body: JSON.stringify(body)
-      }
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
     });
 
     const content: interfaceServer.UserWordContent = await response.json();
     return content;
   };
 
-  deleteUserWord = async ({ token, id, wordId }: { token: string; id: number; wordId: string }) => {
+  deleteUserWord = async ({ token, id, wordId }: { token: string; id: string; wordId: string }) => {
     const url = new URL(`users/${id}/words/${wordId}`, this.baseUrl);
 
     const response = await fetch(url.href, {
@@ -280,7 +299,7 @@ export default class ServerAPI {
     return content;
   };
 
-  getStatistics = async ({ token, id }: { token: string; id: number }) => {
+  getStatistics = async ({ token, id }: { token: string; id: string }) => {
     const url = new URL(`users/${id}/statistics`, this.baseUrl);
 
     const response = await fetch(url.href, {
@@ -298,23 +317,23 @@ export default class ServerAPI {
   createStatistics = async ({
     token,
     id,
-    learnedWords
+    optional
   }: {
     token: string;
-    id: number;
-    learnedWords: number;
+    id: string;
+    optional: interfaceServer.OptionalUserStatistics;
   }) => {
     const url = new URL(`users/${id}/statistics`, this.baseUrl);
-    const body = { learnedWords, optional: {} };
+    const body = { optional };
 
     const response = await fetch(url.href, {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: 'application/json',
-        'Content-Type': 'application/json',
-        body: JSON.stringify(body)
-      }
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
     });
 
     const content: interfaceServer.StatisticsContent = await response.json();
