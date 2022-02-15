@@ -21,8 +21,8 @@ export default class Book {
         <input type="number" class="book__controls-page__inputNumber" name="page" min="1" max="20" value="1" readonly>
         <button class="book__controls-page__increasePage">+</button>
       </div>
-      <button>Спринт</button>
-      <button>Аудиовызов</button>
+      <button class="book__start-sprint-btn">Спринт</button>
+      <button class="book__start-audioCall-btn">Аудиовызов</button>
     </div>
   `;
 
@@ -124,20 +124,58 @@ export default class Book {
       '.book__controls-page__decreasePage'
     ) as HTMLButtonElement;
 
+    const startSprintBtn = this.componentElem.querySelector(
+      '.book__start-sprint-btn'
+    ) as HTMLButtonElement;
+    const startAudioCallBtn = this.componentElem.querySelector(
+      '.book__start-audioCall-btn'
+    ) as HTMLButtonElement;
+
+    function disableStartGameBtns() {
+      startSprintBtn.style.cursor = `not-allowed`;
+      startAudioCallBtn.style.cursor = `not-allowed`;
+      startSprintBtn.disabled = true;
+      startAudioCallBtn.disabled = true;
+    }
+
+    function enableStartGameBtns() {
+      startSprintBtn.style.cursor = ``;
+      startAudioCallBtn.style.cursor = ``;
+      startSprintBtn.disabled = false;
+      startAudioCallBtn.disabled = false;
+    }
+
+    function disablePageBtns() {
+      increasePageBtn.style.cursor = `not-allowed`;
+      decreasePageBtn.style.cursor = `not-allowed`;
+      increasePageBtn.disabled = true;
+      decreasePageBtn.disabled = true;
+    }
+
+    function enablePageBtns() {
+      increasePageBtn.style.cursor = ``;
+      decreasePageBtn.style.cursor = ``;
+      increasePageBtn.disabled = false;
+      decreasePageBtn.disabled = false;
+    }
+
     groupInput.addEventListener('input', () => {
       pageInput.value = pageInput.min;
 
       if (groupInput.value === 'hard') {
-        increasePageBtn.style.cursor = `not-allowed`;
-        decreasePageBtn.style.cursor = `not-allowed`;
+        disablePageBtns();
+        enableStartGameBtns();
+
         this.page.fillPage_HardWords_or_LearnedWords('hard');
       } else if (groupInput.value === 'learned') {
-        increasePageBtn.style.cursor = `not-allowed`;
-        decreasePageBtn.style.cursor = `not-allowed`;
+        disablePageBtns();
+        disableStartGameBtns();
+
         this.page.fillPage_HardWords_or_LearnedWords('learned');
       } else {
-        increasePageBtn.style.cursor = ``;
-        decreasePageBtn.style.cursor = ``;
+        enablePageBtns();
+        enableStartGameBtns();
+
         this.page.fillPage_GroupWords(this.getInputValues());
       }
     });
