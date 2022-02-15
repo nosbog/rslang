@@ -39,6 +39,7 @@
     &#sprintRadio:checked ~ label[for="sprintRadio"],
     &#audioCallRadio:checked ~ label[for="audioCallRadio"] {
       @include box-shadow-hover(.3);
+      background-color: #ffffff9e;
 
       & .games__image_color {
         opacity: 1;

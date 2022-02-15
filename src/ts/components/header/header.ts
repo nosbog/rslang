@@ -51,7 +51,9 @@ export default class Header {
     showMain,
     showBook,
     showGames,
-    showStatistic
+    showStatistic,
+    enableAnimBg,
+    disableAnimBg
   }: {
     showAccount: () => void;
     showFooter: () => void;
@@ -59,33 +61,40 @@ export default class Header {
     showBook: () => void;
     showGames: () => void;
     showStatistic: () => void;
+    enableAnimBg: () => void;
+    disableAnimBg: () => void;
   }) {
     this.componentElem.querySelector('#mainBtn')?.addEventListener('click', () => {
       this.resetContentComponents();
+      disableAnimBg();
       showFooter();
       showMain();
     });
 
     this.componentElem.querySelector('#bookBtn')?.addEventListener('click', () => {
       this.resetContentComponents();
+      disableAnimBg();
       showFooter();
       showBook();
     });
 
     this.componentElem.querySelector('#gamesBtn')?.addEventListener('click', () => {
       this.resetContentComponents();
+      enableAnimBg();
       showFooter();
       showGames();
     });
 
     this.componentElem.querySelector('#statisticBtn')?.addEventListener('click', () => {
       this.resetContentComponents();
+      disableAnimBg();
       showFooter();
       showStatistic();
     });
 
     this.componentElem.querySelector('#account')?.addEventListener('click', () => {
       this.resetContentComponents();
+      disableAnimBg();
       showFooter();
       showAccount();
     });
@@ -105,7 +114,9 @@ export default class Header {
     showMain,
     showBook,
     showGames,
-    showStatistic
+    showStatistic,
+    enableAnimBg,
+    disableAnimBg
   }: {
     showAccount: () => void;
     showFooter: () => void;
@@ -113,6 +124,8 @@ export default class Header {
     showBook: () => void;
     showGames: () => void;
     showStatistic: () => void;
+    enableAnimBg: () => void;
+    disableAnimBg: () => void;
   }) {
     this.setThisListeners({
       showAccount,
@@ -120,7 +133,9 @@ export default class Header {
       showMain,
       showBook,
       showGames,
-      showStatistic
+      showStatistic,
+      enableAnimBg,
+      disableAnimBg
     });
   }
 

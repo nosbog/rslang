@@ -59,6 +59,7 @@ export default class Games {
   createThisComponent() {
     this.componentElem.innerHTML = this.innerHtmlTemplate;
     this.componentElem.classList.add('games');
+    this.componentElem.after
   }
 
   createComponent() {
@@ -68,13 +69,13 @@ export default class Games {
     this.audioCall.createComponent();
   }
 
-  setThisListeners() {
-    this.listenerForGameRadioBtns();
+  setThisListeners(setAnimatedBgTheme: (theme: string) => void) {
+    this.listenerForGameRadioBtns(setAnimatedBgTheme);
     this.listenerForStartBtn();
   }
 
-  setListeners() {
-    this.setThisListeners();
+  setListeners(setAnimatedBgTheme: (theme: string) => void) {
+    this.setThisListeners(setAnimatedBgTheme);
     this.gameResult.setListeners();
   }
 
@@ -100,7 +101,7 @@ export default class Games {
     return [gameName, gameLevel];
   }
 
-  listenerForGameRadioBtns() {
+  listenerForGameRadioBtns(setAnimatedBgTheme: (theme: string) => void) {
     const gameRadioInputContainer = this.componentElem.querySelector('.games__input-container') as HTMLButtonElement;
     gameRadioInputContainer.addEventListener('click', () => {
       const radioBtns = gameRadioInputContainer.querySelectorAll<HTMLInputElement>('input');
@@ -109,6 +110,9 @@ export default class Games {
       if (radioBtnsArr.some((el) => el.checked)) {
         const startBtn = this.componentElem.querySelector('.games__start') as HTMLButtonElement;
         startBtn.removeAttribute('disabled');
+        
+        const gameName = this.getGameInfo()[0];
+        setAnimatedBgTheme(gameName as string);
       }
     });
   }
