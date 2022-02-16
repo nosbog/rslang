@@ -73,7 +73,7 @@
   &__option,
   &__btn {
     padding: 10px 25px;
-    border-radius: 20px;
+    border-radius: 4px;
     font-size: 1.6rem;
     text-transform: uppercase;
     cursor: pointer;
@@ -110,7 +110,7 @@
   }
 
   &__btn {
-    @include box-shadow;
+    @include box-shadow(.5);
   }
 
   &__wordImg {
