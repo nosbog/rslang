@@ -79,7 +79,9 @@ export default class GameResult {
     this.setListeners();
     console.log('show RESULT');
 
-    this.updateUserWords_OptionalProperty(gameName, answers);
+    if (this.localStorageAPI.accountStorage.isLoggedIn === true) {
+      this.updateUserWords_OptionalProperty(gameName, answers);
+    }
 
     const contentElem = document.querySelector('.content') as HTMLElement;
     contentElem.append(this.componentElem);
