@@ -103,7 +103,7 @@ export default class Sprint {
 
     // you can go to the next page if you run out of elements on the current one
     if (this.gameData.currentWordIndex >= 20) {
-      this.updateWordsContent();
+      await this.updateWordsContent();
     }
 
     const { currentWordIndex } = this.gameData;
@@ -186,8 +186,12 @@ export default class Sprint {
     const intervalId = setInterval(() => {
       timerElem.textContent = `${secondsGameDuration}`;
       if (secondsGameDuration <= 0) {
+        const sprintElem = document.querySelector('.sprint') as HTMLDivElement;
+        // check if the user has left the sprint game: if elem with 'sprint' class exists
+        if (sprintElem) {
+          this.gameResult.showComponent('sprint', this.gameData.answers);
+        }
         clearInterval(intervalId);
-        this.gameResult.showComponent(this.gameData.answers);
       }
       secondsGameDuration -= 1;
     }, 1000);
