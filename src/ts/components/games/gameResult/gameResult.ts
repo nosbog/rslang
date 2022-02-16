@@ -4,20 +4,20 @@ import LocalStorageAPI from '../../../localStorageAPI';
 
 export default class GameResult {
   innerHtmlTemplate = `
-  <div class="gameResult__container">
-    <div class="gameResult__truthy">
-      <p>Правильные ответы:</p>
-      
-    </div>
-    <div class="gameResult__falsy">
-      <p>Неправильные ответы:</p>
+    <div class="gameResult__container">
+      <div class="gameResult__truthy">
+        <p class="gameResult__title">Правильные ответы:</p>
+        
+      </div>
+      <div class="gameResult__falsy">
+        <p class="gameResult__title">Неправильные ответы:</p>
 
+      </div>
+      <div class="gameResult__btns">
+        <button class="gameResult__btn gameResult__btn_main">Главаная страница</button>
+        <button class="gameResult__btn gameResult__btn_games">Сыграть еще раз</button>
+      </div>
     </div>
-    <div class="gameResult__btns">
-      <button class="gameResult__btn gameResult__btn_main">Главаная страница</button>
-      <button class="gameResult__btn gameResult__btn_games">Сыграть еще раз</button>
-    </div>
-  </div>
   `;
 
   innerHtmlTemplateGameResultItem = `

@@ -247,6 +247,7 @@
   .advantages__item {
     width: calc(100% / 1 - 30px);
     height: 200px;
+    margin: 15px auto;
     flex-direction: row-reverse;
     align-items: baseline;
 

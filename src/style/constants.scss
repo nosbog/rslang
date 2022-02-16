@@ -14,7 +14,10 @@ $color-font-dark: #192332;
 $color-font-light: #fff;
 $color-card: #457b9d27;
 $color-dark: #000;
+$color-right-answer: #1c7448;
+$color-wrong-answer: #9e2121;
 
+$height-header: 65px;
 $height-footer: 75px;
 
 $font-family: 'Montserrat', "Helvetica", "Arial", sans-serif;
@@ -22,6 +25,8 @@ $font-family: 'Montserrat', "Helvetica", "Arial", sans-serif;
 $font-size-html-1280: 10px;
 
 $transition-hover: all 0.3s ease-in-out;
+
+$transition-click: all 0.1s ease-in-out;
 
 @mixin box-shadow($opacity: .1) {
   box-shadow: 1px 3px 4px rgba(0, 0, 0, $opacity);

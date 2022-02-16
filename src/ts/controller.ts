@@ -7,6 +7,7 @@ import Statistic from './components/statistic/statistic';
 import Book from './components/book/book';
 import Games from './components/games/games';
 import Account from './components/account/account';
+import Background from './components/background/background';
 
 export default class Controller {
   serverAPI: ServerAPI;
@@ -27,6 +28,8 @@ export default class Controller {
 
   account: Account;
 
+  animatedBg: Background;
+
   contentURL = 'https://raw.githubusercontent.com/rolling-scopes-school/react-rslang-be/main/';
 
   constructor() {
@@ -41,6 +44,7 @@ export default class Controller {
     this.statistic = new Statistic();
     this.book = new Book(this.serverAPI, this.localStorageAPI, this.contentURL);
     this.games = new Games(this.serverAPI, this.localStorageAPI, this.contentURL);
+    this.animatedBg = new Background();
 
     this.createComponents();
     this.setListeners();
@@ -56,6 +60,7 @@ export default class Controller {
     this.statistic.createComponent();
     this.book.createComponent();
     this.games.createComponent();
+    this.animatedBg.createComponent();
   }
 
   setListeners() {
@@ -65,13 +70,13 @@ export default class Controller {
       showMain: this.main.showComponent,
       showBook: this.book.showComponent,
       showGames: this.games.showComponent,
-      showStatistic: this.statistic.showComponent
+      showStatistic: this.statistic.showComponent,
+      disableAnimBg: this.animatedBg.disableBg,
+      enableAnimBg: this.animatedBg.enableBg
     });
 
     this.account.setListeners(this.header.updateHdrAccountItem);
-
-    this.games.setListeners();
-
+    this.games.setListeners(this.animatedBg.setTheme);z
     this.book.setListeners();
   }
 
@@ -83,5 +88,6 @@ export default class Controller {
     this.header.showComponent();
     this.main.showComponent();
     this.footer.showComponent();
+    this.animatedBg.showComponent();
   }
 }

@@ -6,24 +6,33 @@ import GameResult from './gameResult/gameResult';
 
 export default class Games {
   innerHtmlTemplate = `
-  <h1>Games</h1>
-  <label>
-    <input type="radio" name="gameName" value="sprint" checked>
-    Спринт
-  </label>
-  <label>
-    <input type="radio" name="gameName" value="audioCall">
-    Аудиовызов
-  </label>
-  <select class="games__select" name="gameLevel">
-    <option value="0">Level 1</option>
-    <option value="1">Level 2</option>
-    <option value="2">Level 3</option>
-    <option value="3">Level 4</option>
-    <option value="4">Level 5</option>
-    <option value="5">Level 6</option>
-  </select>
-  <button class="games__start">Начать</button>
+    <div class="wrapper wrapper_padding">
+      <div class="games__input-container">
+        <input type="radio" name="gameName" value="sprint" id="sprintRadio">
+        <input type="radio" name="gameName" value="audioCall" id="audioCallRadio">
+        <label for="sprintRadio">
+          <img class="games__image games__image_simple" src="./assets/svg/sprint-game.svg" alt="Спринт">
+          <img class="games__image games__image_color" src="./assets/svg/sprint-game-color.svg" alt="Спринт">
+          <h3 class="games__name">Спринт</h3>
+        </label>
+        <div class="games__controls-container">
+        <button class="games__start" disabled>Начать</button>
+        <select class="games__select" name="gameLevel">
+          <option value="0">Уровень 1</option>
+          <option value="1">Уровень 2</option>
+          <option value="2">Уровень 3</option>
+          <option value="3">Уровень 4</option>
+          <option value="4">Уровень 5</option>
+          <option value="5">Уровень 6</option>
+        </select>
+      </div>
+        <label for="audioCallRadio">
+          <img class="games__image games__image_simple" src="./assets/svg/audioCall-game.svg" alt="Аудиовызов">
+          <img class="games__image games__image_color" src="./assets/svg/audioCall-game-color.svg" alt="Аудиовызов">
+          <h3 class="games__name">Аудиовызов</h3>
+        </label>
+      </div>
+    </div>
   `;
 
   serverAPI: ServerAPI;
@@ -63,12 +72,13 @@ export default class Games {
     this.audioCall.createComponent();
   }
 
-  setThisListeners() {
+  setThisListeners(setAnimatedBgTheme: (theme: string) => void) {
+    this.listenerForGameRadioBtns(setAnimatedBgTheme);
     this.listenerForStartBtn();
   }
 
-  setListeners() {
-    this.setThisListeners();
+  setListeners(setAnimatedBgTheme: (theme: string) => void) {
+    this.setThisListeners(setAnimatedBgTheme);
     this.gameResult.setListeners();
   }
 
@@ -92,6 +102,24 @@ export default class Games {
     const gameName = gameNameInput.value;
     const gameLevel = +gameLevelSelect.value;
     return [gameName, gameLevel];
+  }
+
+  listenerForGameRadioBtns(setAnimatedBgTheme: (theme: string) => void) {
+    const gameRadioInputContainer = this.componentElem.querySelector(
+      '.games__input-container'
+    ) as HTMLButtonElement;
+    gameRadioInputContainer.addEventListener('click', () => {
+      const radioBtns = gameRadioInputContainer.querySelectorAll<HTMLInputElement>('input');
+      const radioBtnsArr = Array.from(radioBtns);
+
+      if (radioBtnsArr.some((el) => el.checked)) {
+        const startBtn = this.componentElem.querySelector('.games__start') as HTMLButtonElement;
+        startBtn.removeAttribute('disabled');
+
+        const gameName = this.getGameInfo()[0];
+        setAnimatedBgTheme(gameName as string);
+      }
+    });
   }
 
   listenerForStartBtn() {

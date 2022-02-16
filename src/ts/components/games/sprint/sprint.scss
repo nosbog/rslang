@@ -1,3 +1,128 @@
 .sprint {
+  height: max(calc(100vh - $height-header), 500px);
+  margin-top: 65px;
+  font-size: 3rem;
+  color: $color-font-light;
 
+  .wrapper {
+    gap: 40px;
+  }
+
+  &__timer-container {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    svg {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: inherit;
+      height: inherit;
+      transform: rotateY(-180deg) rotateZ(-90deg);
+    }
+    
+    svg circle {
+      stroke-dasharray: 113px;
+      stroke-dashoffset: 0px;
+      stroke-linecap: round;
+      stroke-width: 2px;
+      stroke: $color-font-light;
+      fill: none;
+      transform: scale(2);
+      animation: countdown 10s linear 1 forwards;
+    }
+  }
+  
+  &__timer {
+    font-size: 4rem;
+  }
+
+  &__round {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  &__word,
+  &__option {
+    font-size: 8vh;
+    font-weight: 500;
+    letter-spacing: 3px;
+  }
+
+  &__word {
+    font-size: 13vh;
+  }
+
+  &__btns {
+    margin-top: 80px;
+    width: 400px;
+    display: flex;
+    justify-content: space-around;
+
+    button {
+      width: 40%;
+      height: 45px;
+      padding: 5px 10px;
+      font-size: 1.4rem;
+      color: $color-font-light;
+      text-transform: uppercase;
+      border: 1px solid;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: $transition-click;
+      opacity: .8;
+      @include box-shadow(.5);
+
+      &:hover {
+        transform: scale(1.05);
+        opacity: 1;
+      }
+
+      &:active {
+        transform: scale(1);
+      }
+
+      &.sprint__no {
+        background-color: $color-wrong-answer;
+        border-color: $color-wrong-answer;
+      }
+
+      &.sprint__yes {
+        background-color: $color-right-answer;
+        border-color: $color-right-answer;
+      }
+    }
+  }
+}
+
+@keyframes countdown {
+  from {
+    stroke-dashoffset: 0px;
+  }
+  to {
+    stroke-dashoffset: 113px;
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .sprint {
+
+    &__word,
+    &__option {
+      font-size: 11vw;
+    }
+
+    &__btns {
+      width: 300px;
+    }
+  }
 }

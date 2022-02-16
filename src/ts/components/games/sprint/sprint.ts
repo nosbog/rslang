@@ -5,17 +5,25 @@ import { WordContent } from '../../../interfaces/interfaceServerAPI';
 
 export default class Sprint {
   innerHtmlTemplate = `
-    <h2>Sprint</h2>
-    <div class="sprint__timer"></div>
-    <div class="sprint__round"></div>
+    <div class="wrapper">
+      <div class="sprint__timer-container">
+        <div class="sprint__timer"></div>
+        <svg>
+          <circle r="18" cx="20" cy="20"></circle>
+        </svg>
+      </div>
+      <div class="sprint__round"></div>
+    </div>
   `;
 
   innerHtmlTemplateRound = `
     <div class="sprint__word"></div>
-    <p>- это</p>
+    <p>это</p>
     <div class="sprint__option"></div>
-    <button class="sprint__no">Неверно</button>
-    <button class="sprint__yes">Верно</button>
+    <div class="sprint__btns">
+      <button class="sprint__no">Неверно</button>
+      <button class="sprint__yes">Верно</button>
+    </div>
   `;
 
   innerHtmlTemplateResultItem = `
