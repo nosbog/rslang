@@ -23,6 +23,7 @@ export default class GameResult {
   innerHtmlTemplateGameResultItem = `
     <img class="gameResult__audio" src="./assets/svg/volumeUp.svg" alt="volumeUp">
     <div class="gameResult__word"></div>
+    <p>-</p>
     <div class="gameResult__translate"></div>
   `;
 
