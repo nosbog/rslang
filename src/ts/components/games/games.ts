@@ -59,7 +59,6 @@ export default class Games {
   createThisComponent() {
     this.componentElem.innerHTML = this.innerHtmlTemplate;
     this.componentElem.classList.add('games');
-    this.componentElem.after
   }
 
   createComponent() {
@@ -102,7 +101,9 @@ export default class Games {
   }
 
   listenerForGameRadioBtns(setAnimatedBgTheme: (theme: string) => void) {
-    const gameRadioInputContainer = this.componentElem.querySelector('.games__input-container') as HTMLButtonElement;
+    const gameRadioInputContainer = this.componentElem.querySelector(
+      '.games__input-container'
+    ) as HTMLButtonElement;
     gameRadioInputContainer.addEventListener('click', () => {
       const radioBtns = gameRadioInputContainer.querySelectorAll<HTMLInputElement>('input');
       const radioBtnsArr = Array.from(radioBtns);
@@ -110,7 +111,7 @@ export default class Games {
       if (radioBtnsArr.some((el) => el.checked)) {
         const startBtn = this.componentElem.querySelector('.games__start') as HTMLButtonElement;
         startBtn.removeAttribute('disabled');
-        
+
         const gameName = this.getGameInfo()[0];
         setAnimatedBgTheme(gameName as string);
       }

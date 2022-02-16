@@ -1,5 +1,4 @@
 export default class Background {
-
   innerHtmlTemplate = `
     <div></div>
     <div></div>
@@ -26,7 +25,7 @@ export default class Background {
   showComponent = () => {
     document.body.prepend(this.componentElem);
     this.disableBg();
-  }
+  };
 
   enableBg() {
     document.querySelector('.bg-anim')?.classList.remove('bg_hide');
