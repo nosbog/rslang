@@ -1,6 +1,8 @@
 import ServerAPI from '../../serverAPI';
 import LocalStorageAPI from '../../localStorageAPI';
+import Games from '../games/games';
 import Page from './page/page';
+import Background from '../background/background';
 
 export default class Book {
   innerHtmlTemplate = `
@@ -18,7 +20,7 @@ export default class Book {
       </select>
       <div class="book__controls-page">
         <button class="book__controls-page__decreasePage">-</button>
-        <input type="number" class="book__controls-page__inputNumber" name="page" min="1" max="20" value="1" readonly>
+        <input type="number" class="book__controls-page__inputNumber" name="page" min="1" max="30" value="1" readonly>
         <button class="book__controls-page__increasePage">+</button>
       </div>
       <button class="book__start-sprint-btn">Спринт</button>
@@ -30,17 +32,29 @@ export default class Book {
 
   localStorageAPI: LocalStorageAPI;
 
+  games: Games;
+
+  background: Background;
+
   contentURL: string;
 
   page: Page;
 
   componentElem: HTMLElement;
 
-  constructor(serverAPI: ServerAPI, localStorageAPI: LocalStorageAPI, contentURL: string) {
+  constructor(
+    serverAPI: ServerAPI,
+    localStorageAPI: LocalStorageAPI,
+    contentURL: string,
+    games: Games,
+    background: Background
+  ) {
     this.componentElem = document.createElement('div');
     this.serverAPI = serverAPI;
     this.localStorageAPI = localStorageAPI;
     this.contentURL = contentURL;
+    this.games = games;
+    this.background = background;
     this.page = new Page(this.serverAPI, this.localStorageAPI, this.contentURL, this.componentElem);
   }
 
@@ -61,6 +75,58 @@ export default class Book {
   setThisListeners() {
     this.pageChangeBtnsListeners();
     this.groupChangeListener();
+
+    const startSprintBtn = this.componentElem.querySelector(
+      '.book__start-sprint-btn'
+    ) as HTMLButtonElement;
+    const startAudioCallBtn = this.componentElem.querySelector(
+      '.book__start-audioCall-btn'
+    ) as HTMLButtonElement;
+
+    startSprintBtn.addEventListener('click', () => {
+      const { groupValue, pageValue } = this.getInputValues();
+
+      if (groupValue === 'hard') {
+        const hardWordsElements = document.querySelectorAll(
+          '.pageItem_hard-word'
+        ) as NodeListOf<HTMLDivElement>;
+
+        if (hardWordsElements.length < 5) {
+          alert('Для игры "Спринт" необходимо минимум 5 "сложных" слов');
+          return;
+        }
+
+        this.games.sprint.startGameWithHardWords();
+      } else if (typeof +groupValue === 'number') {
+        this.games.sprint.startGameFromPage({ group: +groupValue, page: +pageValue });
+      }
+
+      this.background.enableBg();
+      this.background.setTheme('sprint');
+    });
+
+    startAudioCallBtn.addEventListener('click', () => {
+      const { groupValue, pageValue } = this.getInputValues();
+
+      if (groupValue === 'hard') {
+        const hardWordsElements = document.querySelectorAll(
+          '.pageItem_hard-word'
+        ) as NodeListOf<HTMLDivElement>;
+
+        if (hardWordsElements.length < 10) {
+          alert('Для игры "Аудиовызов" необходимо минимум 10 "сложных" слов');
+          return;
+        }
+
+        this.games.audioCall.startGameWithHardWords();
+      } else if (typeof +groupValue === 'number') {
+        console.log('from page');
+        this.games.audioCall.startGameFromPage({ group: +groupValue, page: +pageValue });
+      }
+
+      this.background.enableBg();
+      this.background.setTheme('audioCall');
+    });
   }
 
   setListeners() {

@@ -56,8 +56,18 @@ export default class Games {
     this.contentURL = contentURL;
 
     this.gameResult = new GameResult(this.serverAPI, this.localStorageAPI, this.contentURL);
-    this.sprint = new Sprint(this.serverAPI, this.contentURL, this.gameResult);
-    this.audioCall = new AudioCall(this.serverAPI, this.contentURL, this.gameResult);
+    this.sprint = new Sprint(
+      this.serverAPI,
+      this.localStorageAPI,
+      this.contentURL,
+      this.gameResult
+    );
+    this.audioCall = new AudioCall(
+      this.serverAPI,
+      this.localStorageAPI,
+      this.contentURL,
+      this.gameResult
+    );
   }
 
   createThisComponent() {
