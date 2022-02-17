@@ -42,9 +42,21 @@ export default class Controller {
     this.footer = new Footer();
     this.main = new Main();
     this.statistic = new Statistic();
-    this.book = new Book(this.serverAPI, this.localStorageAPI, this.contentURL);
     this.games = new Games(this.serverAPI, this.localStorageAPI, this.contentURL);
     this.animatedBg = new Background();
+    this.book = new Book(
+      this.serverAPI,
+      this.localStorageAPI,
+      this.contentURL,
+      this.games,
+      this.animatedBg
+    );
+
+    this.asyncConstructor();
+  }
+
+  async asyncConstructor() {
+    await this.localStorageAPI.checkForCurrentUser();
 
     this.createComponents();
     this.setListeners();

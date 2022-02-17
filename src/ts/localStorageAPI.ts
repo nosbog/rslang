@@ -4,6 +4,7 @@ import ServerAPI from './serverAPI';
 export default class LocalStorageAPI {
   serverAPI: ServerAPI;
 
+  // default value:
   accountStorage: {
     isLoggedIn: boolean;
     name: string;
@@ -12,11 +13,21 @@ export default class LocalStorageAPI {
     id: string;
     token: string;
     refreshToken: string;
+  } = {
+    isLoggedIn: false,
+    name: '',
+    email: '',
+    password: '',
+    id: '',
+    token: '',
+    refreshToken: ''
   };
 
   constructor(serverAPI: ServerAPI) {
     this.serverAPI = serverAPI;
+  }
 
+  async checkForCurrentUser() {
     const accountStorageString = localStorage.getItem('accountStorage');
 
     if (accountStorageString === null) {
@@ -38,7 +49,7 @@ export default class LocalStorageAPI {
         // each new session => update token
         // not updating token during the session (unlikely session will last over than 4 hours)
         // updating the token by calling 'signIn' method (it also returns new token)
-        this.updateToken();
+        await this.updateToken();
       }
     }
 
