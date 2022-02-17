@@ -23,10 +23,6 @@
   @include card($color-add-bg-transparent);
   transition: $transition-hover;
 
-  &:hover {
-    @include box-shadow-hover; 
-  }
-
   &__status {
     width: 25px;
     height: 25px;
@@ -111,9 +107,18 @@
     }
   }
 
-  &__statistic {
+  &__statistic-overlay {
     display: none;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: $color-overlay-bg;
+    z-index: 10;
+  }
 
+  &__statistic {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -121,15 +126,55 @@
 
     overflow-y: auto;
     max-height: 500px;
-    padding: 20px 40px;
-    border: 1px solid black;
-    background-color: white;
+    padding: 25px 40px;
+    background-color: $color-main-bg;
+    border-radius: 10px;
+    @include box-shadow;
 
     &__close-btn {
       cursor: pointer;
       position: absolute;
       top: 5px;
       right: 5px;
+      transition: $transition-click;
+
+      &:hover {
+        filter: opacity(0.2);
+      }
+
+      &_used {
+        filter: opacity(0.4);
+      }
+    }
+
+    p {
+      margin-bottom: 20px;
+    }
+
+    &__word {
+      font-size: 1.8rem;
+      font-weight: 500;
+    }
+
+    &__table {
+      width: 100%;
+      border-collapse: collapse;
+      border-spacing: 0;
+
+      tr {
+        line-height: 35px;
+      }
+
+      th,
+      td {
+        padding: 10px;
+        border-bottom: 1px solid #e0e0e0;
+      }
+
+      thead th:not(:first-child),
+      tbody td:not(:first-child) {
+        text-align: center;
+      }
     }
   }
 }

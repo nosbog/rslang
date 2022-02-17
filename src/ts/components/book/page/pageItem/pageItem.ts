@@ -22,30 +22,32 @@ export default class PageItem {
     <div class="pageItem__example"></div>
     <div class="pageItem__example-translate"></div>
     <div class="pageItem__controls"></div>
-    <div class="pageItem__statistic">
-      <img class="pageItem__statistic__close-btn" src="./assets/svg/close.svg" alt="close">
-      <p>Статистика по слову <span class="pageItem__statistic__word"></span></p>
-      <table class="pageItem__statistic__table">
-        <thead>
-          <tr>
-            <th>Мини-игра</th>
-            <th>Правильно</th>
-            <th>Неправильно</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="pageItem__statistic__table__tr-sprint">
-            <td>Спринт</td>
-            <td class="pageItem__statistic__table__trueCount"></td>
-            <td class="pageItem__statistic__table__falseCount"></td>
-          </tr>
-          <tr class="pageItem__statistic__table__tr-audioCall">
-            <td>Аудиовызов</td>
-            <td class="pageItem__statistic__table__trueCount"></td>
-            <td class="pageItem__statistic__table__falseCount"></td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="pageItem__statistic-overlay">
+      <div class="pageItem__statistic">
+        <img class="pageItem__statistic__close-btn" src="./assets/svg/close.svg" alt="close">
+        <p>Статистика по слову <span class="pageItem__statistic__word"></span></p>
+        <table class="pageItem__statistic__table">
+          <thead>
+            <tr>
+              <th>Мини-игра</th>
+              <th>Правильно</th>
+              <th>Неправильно</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="pageItem__statistic__table__tr-sprint">
+              <td>Спринт</td>
+              <td class="pageItem__statistic__table__trueCount"></td>
+              <td class="pageItem__statistic__table__falseCount"></td>
+            </tr>
+            <tr class="pageItem__statistic__table__tr-audioCall">
+              <td>Аудиовызов</td>
+              <td class="pageItem__statistic__table__trueCount"></td>
+              <td class="pageItem__statistic__table__falseCount"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   `;
 
@@ -199,7 +201,7 @@ export default class PageItem {
 
   listenerForUserWordStatistic(pageItemElem: HTMLElement, wordContent: WordContent) {
     const closeBtn = pageItemElem.querySelector('.pageItem__statistic__close-btn') as HTMLElement;
-    const statisticElem = pageItemElem.querySelector('.pageItem__statistic') as HTMLDivElement;
+    const statisticElem = pageItemElem.querySelector('.pageItem__statistic-overlay') as HTMLDivElement;
     const statisticIcon = pageItemElem.querySelector('.pageItem__icon_statistic') as HTMLElement;
 
     closeBtn.addEventListener('click', () => {
