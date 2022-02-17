@@ -310,7 +310,7 @@ export default class ServerAPI {
       }
     });
 
-    const content: Array<interfaceServer.StatisticsContent> = await response.json();
+    const content: interfaceServer.StatisticsContent = await response.json();
     return content;
   };
 
