@@ -1,4 +1,8 @@
-import { WordContent, OptionalUserWord } from '../../../interfaces/interfaceServerAPI';
+import {
+  WordContent,
+  OptionalUserWord,
+  OptionalUserStatistics
+} from '../../../interfaces/interfaceServerAPI';
 import ServerAPI from '../../../serverAPI';
 import LocalStorageAPI from '../../../localStorageAPI';
 
@@ -81,6 +85,7 @@ export default class GameResult {
     console.log('show RESULT');
 
     if (this.localStorageAPI.accountStorage.isLoggedIn === true) {
+      this.updateUserStatistics(gameName, answers);
       this.updateUserWords_OptionalProperty(gameName, answers);
     }
 
@@ -95,6 +100,98 @@ export default class GameResult {
 
     this.createGameResultItems(truthyAnswerObjs, truthyContainer);
     this.createGameResultItems(falsyAnswerObjs, falsyContainer);
+  }
+
+  getBestTrueStreak(answers: { result: boolean; wordContent: WordContent }[]) {
+    if (answers.length === 0) {
+      return 0;
+    }
+
+    const streaks: Array<number> = [];
+    let streak = 0;
+    answers.forEach((answer, index) => {
+      if (answer.result === true) {
+        streak += 1;
+      }
+
+      if (index === answers.length - 1) {
+        streaks.push(streak);
+      }
+
+      if (answer.result === false) {
+        streaks.push(streak);
+        streak = 0;
+      }
+    });
+
+    streaks.sort((a, b) => b - a);
+    return streaks[0];
+  }
+
+  async updateUserStatistics(
+    gameName: 'sprint' | 'audioCall',
+    answers: { result: boolean; wordContent: WordContent }[]
+  ) {
+    const currentDate = new Date().toLocaleDateString();
+    const currentBestStreak = this.getBestTrueStreak(answers);
+
+    // check if statistics exists
+    try {
+      const userStatistics = await this.serverAPI.getStatistics({
+        token: this.localStorageAPI.accountStorage.token,
+        id: this.localStorageAPI.accountStorage.id
+      });
+
+      // if no error: it does:
+
+      // check if CURRENT statistics exists
+      // if true => check which if better
+      // if false => create 'current day' statistics
+      if (currentDate in userStatistics.optional) {
+        const currentStatistics = userStatistics.optional[currentDate];
+
+        // check if 'currentBestStreak' is better than one which is already in statistics
+        // if true => update
+        // if false => skip
+        if (currentStatistics[gameName].bestStreak < currentBestStreak) {
+          const updatedOptionalStatistics = userStatistics.optional;
+          updatedOptionalStatistics[currentDate][gameName].bestStreak = currentBestStreak;
+
+          this.serverAPI.createStatistics({
+            token: this.localStorageAPI.accountStorage.token,
+            id: this.localStorageAPI.accountStorage.id,
+            optional: updatedOptionalStatistics
+          });
+        }
+      } else {
+        const updatedOptionalStatistics = userStatistics.optional;
+        updatedOptionalStatistics[currentDate] = {
+          sprint: { bestStreak: gameName === 'sprint' ? currentBestStreak : 0 },
+          audioCall: { bestStreak: gameName === 'audioCall' ? currentBestStreak : 0 }
+        };
+
+        this.serverAPI.createStatistics({
+          token: this.localStorageAPI.accountStorage.token,
+          id: this.localStorageAPI.accountStorage.id,
+          optional: updatedOptionalStatistics
+        });
+      }
+    } catch {
+      // statistics doesn't exist => create new one
+
+      const optionalStatistics: OptionalUserStatistics = {
+        [currentDate]: {
+          sprint: { bestStreak: gameName === 'sprint' ? currentBestStreak : 0 },
+          audioCall: { bestStreak: gameName === 'audioCall' ? currentBestStreak : 0 }
+        }
+      };
+
+      this.serverAPI.createStatistics({
+        token: this.localStorageAPI.accountStorage.token,
+        id: this.localStorageAPI.accountStorage.id,
+        optional: optionalStatistics
+      });
+    }
   }
 
   async updateUserWords_OptionalProperty(
@@ -155,13 +252,11 @@ export default class GameResult {
           timestampWhenItWasLearned: new Date().getTime(),
           sprint: {
             totalCount: 0,
-            trueCount: 0,
-            bestStreak: 0
+            trueCount: 0
           },
           audioCall: {
             totalCount: 0,
-            trueCount: 0,
-            bestStreak: 0
+            trueCount: 0
           }
         };
 
