@@ -6,12 +6,16 @@ export default class PageItem {
   innerHtmlTemplatePageItem = `
     <div class="pageItem__image"></div>
     <div class="pageItem__header">
+      <span class="pageItem__status">
+        <i class="far fa-check-circle learned"></i>
+        <i class="fas fa-asterisk hard"></i>
+      </span>
       <span class="pageItem__word"></span>
       -
       <span class="pageItem__word-transcription"></span>
-      <img class="pageItem__sound-image" src="./assets/svg/volumeUp.svg" alt="volumeUp">
-      :
+      -
       <span class="pageItem__word-translate"></span>
+      <img class="pageItem__sound-image" src="./assets/svg/volumeUp.svg" alt="volumeUp">
     </div>
     <div class="pageItem__explanation"></div>
     <div class="pageItem__explanation-translate"></div>
@@ -46,9 +50,9 @@ export default class PageItem {
   `;
 
   innerHtmlTemplateControls_GroupWords_LoggedInUser = `
-    <img class="pageItem__icon pageItem__icon_learned-word" src="./assets/svg/verified.svg" alt="learned word">
-    <img class="pageItem__icon pageItem__icon_hard-word" src="./assets/svg/help.svg" alt="hard word">
-    <img class="pageItem__icon pageItem__icon_statistic" src="./assets/svg/fact_check.svg" alt="word statistic">
+    <img class="pageItem__icon pageItem__icon_learned-word" src="./assets/svg/verified.svg" alt="learned word" title="+ в изученные слова">
+    <img class="pageItem__icon pageItem__icon_hard-word" src="./assets/svg/help.svg" alt="hard word" title="+ в изученные слова">
+    <img class="pageItem__icon pageItem__icon_statistic" src="./assets/svg/fact_check.svg" alt="word statistic" title="статистика по слову">
   `;
 
   innerHtmlTemplateControls_HardWords_or_LearnedWords = `

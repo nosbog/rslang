@@ -1,17 +1,62 @@
 .pageItem {
   display: inline-grid;
   grid-template-columns: 260px 500px 50px;
-  grid-template-rows: 40px 40px 40px 40px 40px;
+  grid-template-rows: 20px auto 15px auto 3px auto 10px auto 3px auto 20px;
   grid-template-areas: 
+    "image . controls"
     "image header controls"
+    "image . controls"
     "image explanation controls"
+    "image . controls"
     "image explanationTranslate controls"
+    "image . controls"
     "image example controls"
-    "image exampleTranslate controls";
-  ;
+    "image . controls"
+    "image exampleTranslate controls"
+    "image . controls";
+  
   align-items: center;
   justify-content: center;
   column-gap: 20px;
+  min-height: 200px;
+  border: 2px solid transparent;
+  @include card($color-add-bg-transparent);
+  transition: $transition-hover;
+
+  &:hover {
+    @include box-shadow-hover; 
+  }
+
+  &__status {
+    width: 25px;
+    height: 25px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .learned,
+    .hard {
+      position: absolute;
+      font-size: 2.4rem;
+      font-weight: 600;
+      opacity: 0;
+    }
+  }
+
+  &_hard-word &__status {
+    .hard {
+      color: $color-wrong-answer;
+      opacity: 1;
+    }
+  }
+
+  &_learned-word &__status {
+    .learned {
+      color: $color-right-answer;
+      opacity: 1;
+    }
+  }
 
   &__image {
     grid-area: image;
@@ -20,41 +65,49 @@
 
     background-position: center;
     background-size: cover;
+
+    border-radius: $border-radius-card 0 0 $border-radius-card;
   }
   &__header {
     grid-area: header;
     
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 5px;
+    font-size: 2rem;
   }
   &__explanation {
     grid-area: explanation;
   }
   &__explanation-translate {
     grid-area: explanationTranslate;
+    font-size: 1.5rem;
+    color: #4c525c;
   }
   &__example {
     grid-area: example;
   }
   &__example-translate {
     grid-area: exampleTranslate;
+    font-size: 1.5rem;
+    color: #4c525c;
   }
   &__controls {
     grid-area: controls;
   }
 
-  &_hard-word {
-    border: 2px solid red;
-  }
-
-  &_learned-word {
-    border: 2px solid green;
-  }
-
+  &__sound-image,
   &__icon {
+    cursor: pointer;
+    transition: $transition-click;
+
+    &:hover {
+      filter: opacity(0.2);
+    }
+
     &_used {
-      filter: opacity(0.3);
+      filter: opacity(0.4);
     }
   }
 

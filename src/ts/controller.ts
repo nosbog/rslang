@@ -76,7 +76,7 @@ export default class Controller {
     });
 
     this.account.setListeners(this.header.updateHdrAccountItem);
-    this.games.setListeners(this.animatedBg.setTheme);z
+    this.games.setListeners(this.animatedBg.setTheme);
     this.book.setListeners();
   }
 

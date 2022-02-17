@@ -1,9 +1,66 @@
 .book {
+  min-height: MAX(calc(100vh - $height-footer), 500px);
+  padding-top: calc($height-header + 20px);
+  font-size: 1.6rem;
+  background-color: #f08c8c63;
+  border-bottom: 3px solid #e0e4df;
+
+  .wrapper {
+    position: relative;
+  }
+
+  .wrapper-book {
+    padding-top: 40px;
+  }
+
+  .svg-container {
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+  }
+
+  .svg-separator {
+    transform: scaleY(-1);
+    top: 0;
+
+    path {
+      fill: $color-main-bg;
+    }
+  }
+
   &__controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
+    position: sticky;
+    top: -4px;
+    width: 100%;
+    height: 90px;
+    border-top: 3px solid #e0e4df;
+    border-bottom: 3px solid #e0e4df;
+    background-color: $color-main-bg;
+    z-index: 10;
+
+    .wrapper {
+      flex-direction: row;
+      justify-content: space-around;
+    }
+
+    &-column {
+      display: flex;
+      gap: 20px;
+    }
+
+    button,
+    select {
+      height: 100%;
+      padding: 5px 10px;
+      @include button-styles(1.4rem);
+    }
+
+    .book__start-audioCall-btn,
+    .book__start-sprint-btn {
+      width: 150px;
+    }
   }
 
   &__controls-page {
@@ -11,5 +68,69 @@
     justify-content: center;
     align-items: center;
     gap: 5px;
+
+    .book__controls-page__decreasePage,
+    .book__controls-page__increasePage {
+      padding: 0;
+      width: 30px;
+    }
+
+    &__decreasePage {
+      margin-right: 6px;
+    }
+
+    &__inputNumber {
+      width: 40px;
+      height: 100%;
+      font-size: 2rem;
+      border: none;
+      background-color: inherit;
+      text-align: right;
+    }
+  }
+
+  // &__inputSelect {
+  //   option[value="0"] {
+  //     background-color: red;
+  //   }
+  // }
+  &__inputSelect option[value="0"],
+  &[data-page-group="0"] {
+    background-color: #f09a8c63;
+  }
+
+  &__inputSelect option[value="1"],
+  &[data-page-group="1"] {
+    background-color: #f0ba8c63;
+  }
+
+  &__inputSelect option[value="2"],
+  &[data-page-group="2"] {
+    background-color: #f0e48c63;
+  }
+
+  &__inputSelect option[value="3"],
+  &[data-page-group="3"] {
+    background-color: #8cf08f63;
+  }
+
+  &__inputSelect option[value="4"],
+  &[data-page-group="4"] {
+    background-color: #8cc2f063;
+  }
+
+  &__inputSelect option[value="5"],
+  &[data-page-group="5"] {
+    background-color: #8c98f063;
+  }
+
+  &__inputSelect option[value="hard"],
+  &[data-page-group="hard"] {
+    background-color: #f5565663;
+  }
+
+  &__inputSelect option[value="learned"],
+  &[data-page-group="learned"] {
+    background-color: #b5f28863;
   }
 }

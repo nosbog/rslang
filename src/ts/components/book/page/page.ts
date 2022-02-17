@@ -40,14 +40,15 @@ export default class Page {
   }
 
   showComponent() {
-    this.parentComponentElem.append(this.componentElem);
+    const parentWrapper = this.parentComponentElem.querySelector('.wrapper-book') as HTMLElement;
+    parentWrapper.append(this.componentElem);
   }
 
   async fillPage_HardWords_or_LearnedWords(difficulty: 'hard' | 'learned') {
     this.componentElem.innerHTML = '';
 
     if (this.localStorageAPI.accountStorage.isLoggedIn === false) {
-      this.componentElem.textContent = `This functionality is only available to authorized users`;
+      this.componentElem.textContent = `Раздел доступен только авторизованным пользователям.`;
       return;
     }
 
@@ -116,5 +117,9 @@ export default class Page {
 
       this.componentElem.append(pageItemElem);
     });
+  }
+
+  updateTheme(gruop: string) {
+    document.querySelector('.book')?.setAttribute('data-page-group', gruop);
   }
 }

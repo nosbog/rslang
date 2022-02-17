@@ -10,7 +10,7 @@
   &__container {
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 20px;
     overflow-y: auto;
     max-height: 500px;
     padding: 25px 40px;
@@ -52,19 +52,7 @@
       width: 50%;
       height: 50px;
       padding: 5px 10px;
-      background-color: $color-brand-1;
-      font-size: 1.4rem;
-      color: $color-font-light;
-      text-transform: uppercase;
-      border: 1px solid $color-brand-1;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: $transition-hover;
-
-      &:hover {
-        background-color: $color-brand-4;
-        border-color: $color-brand-4;
-      }  
+      @include button-styles(1.4rem) 
     }
   }
 }

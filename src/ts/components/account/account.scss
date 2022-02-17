@@ -24,13 +24,12 @@
   .account__data,
   .account__content {
     padding: 20px;
-    background-color: $color-add-bg-transparent;
-    @include box-shadow;
-    border-radius: 0 10px 10px 10px;
+    @include card($color-add-bg-transparent);
   }
 
   .account__content {
     min-height: 400px;
+    border-top-left-radius: 0;
 
     div {
       display: flex;
@@ -84,19 +83,7 @@
   .account__loggedIn-container {
     button {
       margin-top: 20px;
-      background-color: $color-brand-1;
-      font-size: 1.6rem;
-      color: $color-font-light;
-      text-transform: uppercase;
-      border: 1px solid $color-brand-1;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: $transition-hover;
-
-      &:hover {
-        background-color: $color-brand-4;
-        border-color: $color-brand-4;
-      }  
+      @include button-styles;
     } 
   }
   

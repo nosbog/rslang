@@ -28,6 +28,8 @@ $transition-hover: all 0.3s ease-in-out;
 
 $transition-click: all 0.1s ease-in-out;
 
+$border-radius-card: 5px;
+
 @mixin box-shadow($opacity: .1) {
   box-shadow: 1px 3px 4px rgba(0, 0, 0, $opacity);
 }
@@ -35,4 +37,46 @@ $transition-click: all 0.1s ease-in-out;
 @mixin box-shadow-hover($opacity: .2) {
   @include box-shadow($opacity);
   transform: scale(1.008);
+}
+
+@mixin card($background-color: $color-card, $border-radius: $border-radius-card) {
+  background-color: $background-color;
+  @include box-shadow;
+  border-radius: $border-radius;
+}
+
+@mixin button-styles($font-size: 1.6rem) {
+  background-color: $color-brand-1;
+
+  font-family: $font-family;
+  font-size: $font-size;
+  color: $color-font-light;
+  text-transform: uppercase;
+
+  border: 1px solid $color-brand-1;
+  border-radius: 4px;
+
+  cursor: pointer;
+  transition: $transition-hover;
+  
+  &:hover {
+    background-color: $color-brand-3;
+    border-color: $color-brand-3;
+    color: $color-font-dark;
+  }
+
+  &:active {
+    background-color: #b3d6d7cf;
+  }
+
+  &:disabled {
+    opacity: .8;
+    cursor: default;
+
+    &:hover {
+      background-color: $color-brand-1;
+      border-color: $color-brand-1;
+      color: $color-font-light;
+    }
+  }
 }
