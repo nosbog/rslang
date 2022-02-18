@@ -16,6 +16,8 @@ export default class Page {
 
   componentElem: HTMLElement;
 
+  private status: Set<string>;
+
   constructor(
     serverAPI: ServerAPI,
     localStorageAPI: LocalStorageAPI,
@@ -29,6 +31,8 @@ export default class Page {
     this.contentURL = contentURL;
     this.parentComponentElem = parentComponentElem;
     this.pageItem = new PageItem(this.serverAPI, this.localStorageAPI, this.contentURL);
+  
+    this.status = new Set<string>();
   }
 
   createThisComponent() {
@@ -79,6 +83,7 @@ export default class Page {
 
   async fillPage_GroupWords({ groupValue, pageValue }: { groupValue: string; pageValue: string }) {
     this.componentElem.innerHTML = '';
+    this.status.clear();
 
     let wordsContent: WordContent[];
     let userWordsContent: UserWordContent[];
@@ -104,11 +109,12 @@ export default class Page {
       this.pageItem.fillPageItem(pageItemElem, wordContent, groupValue);
 
       if (this.localStorageAPI.accountStorage.isLoggedIn === true) {
-        this.pageItem.styles_ForPageItem_ForLoggedInUser_ForGroupWord(
-          pageItemElem,
-          wordContent,
-          userWordsContent
-        );
+        this.status.add(
+          this.pageItem.styles_ForPageItem_ForLoggedInUser_ForGroupWord(
+            pageItemElem,
+            wordContent,
+            userWordsContent
+          ) as string);
         this.pageItem.listeners_ForPageItem_ForLoggedInUser_ForGroupWords(
           pageItemElem,
           wordContent
@@ -117,9 +123,18 @@ export default class Page {
 
       this.componentElem.append(pageItemElem);
     });
+
+    this.applyStylesToLearnedPage(this.status);
   }
 
   updateTheme(gruop: string) {
     document.querySelector('.book')?.setAttribute('data-page-group', gruop);
+  }
+
+  applyStylesToLearnedPage(status: Set<string>) {
+    document.querySelector('.book')?.setAttribute('data-isLearnedPage', 'false');
+    if (!status.has('basic') && status.has('learned')) {
+      document.querySelector('.book')?.setAttribute('data-isLearnedPage', 'true');
+    }
   }
 }

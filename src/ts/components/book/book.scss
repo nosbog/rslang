@@ -75,8 +75,10 @@
       width: 30px;
     }
 
-    &__decreasePage {
-      margin-right: 6px;
+    span {
+      height: 100%;
+      padding-left: 15px;
+      border-radius: 4px;
     }
 
     &__inputNumber {
@@ -84,16 +86,12 @@
       height: 100%;
       font-size: 2rem;
       border: none;
+      border-radius: 4px;
       background-color: inherit;
       text-align: right;
     }
   }
 
-  // &__inputSelect {
-  //   option[value="0"] {
-  //     background-color: red;
-  //   }
-  // }
   &__inputSelect option[value="0"],
   &[data-page-group="0"] {
     background-color: #f09a8c63;
@@ -131,6 +129,14 @@
 
   &__inputSelect option[value="learned"],
   &[data-page-group="learned"] {
-    background-color: #b5f28863;
+    background-color: #4c8b5363;
+  }
+
+  &[data-isLearnedPage="true"] {
+    background-color: $color-add-bg;
+
+    .book__controls-page span {
+      background-color: $color-right-answer;
+    }
   }
 }

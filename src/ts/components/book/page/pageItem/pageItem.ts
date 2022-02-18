@@ -170,6 +170,8 @@ export default class PageItem {
       pageItemElem.classList.add('pageItem_learned-word');
       learnedWordIcon.classList.add('pageItem__icon_used');
     }
+
+    return relatedUserWordContent.difficulty;
   }
 
   listeners_ForPageItem_ForLoggedInUser_ForGroupWords(
