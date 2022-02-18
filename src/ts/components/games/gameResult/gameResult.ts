@@ -76,7 +76,7 @@ export default class GameResult {
     this.setThisListeners();
   }
 
-  showComponent(
+  async showComponent(
     gameName: 'sprint' | 'audioCall',
     answers: Array<{ result: boolean; wordContent: WordContent }>
   ) {
@@ -85,8 +85,8 @@ export default class GameResult {
     console.log('show RESULT');
 
     if (this.localStorageAPI.accountStorage.isLoggedIn === true) {
-      this.updateUserStatistics(gameName, answers);
-      this.updateUserWords_OptionalProperty(gameName, answers);
+      await this.updateUserWords_OptionalProperty(gameName, answers);
+      await this.updateUserStatistics(gameName, answers);
     }
 
     const contentElem = document.querySelector('.content') as HTMLElement;
@@ -221,12 +221,9 @@ export default class GameResult {
         isWordNew = true;
       }
 
-      // check if the userWord (related to the word witch was used in the game) exists
       if (relatedUserWordContent) {
-        // => this userWord already exists => only update 'optional'
         const updatedOptional: OptionalUserWord = relatedUserWordContent.optional;
 
-        // change game statistics in userWord (after game)
         if (gameName === 'sprint') {
           updatedOptional.sprint.totalCount += 1;
           if (answer.result === true) updatedOptional.sprint.trueCount += 1;
@@ -236,17 +233,37 @@ export default class GameResult {
         }
 
         // the userWord exists but has not been learned => set new 'dateWhenItBecameNew'
-        // (how it can be real?!: at first it was created in book component, when changing userWord status)
         if (isWordNew === true) {
           updatedOptional.dateWhenItBecameNew = new Date().toLocaleDateString();
         }
 
-        this.serverAPI.updateUserWord({
-          token: this.localStorageAPI.accountStorage.token,
-          id: this.localStorageAPI.accountStorage.id,
-          wordId: answer.wordContent.id,
-          optional: updatedOptional
-        });
+        const currentDifficulty = relatedUserWordContent.difficulty;
+
+        if (currentDifficulty === 'basic') {
+          this.serverAPI.updateUserWord({
+            token: this.localStorageAPI.accountStorage.token,
+            id: this.localStorageAPI.accountStorage.id,
+            wordId: answer.wordContent.id,
+            difficulty: answer.result === true ? 'learned' : 'hard',
+            optional: updatedOptional
+          });
+        } else if (currentDifficulty === 'hard') {
+          this.serverAPI.updateUserWord({
+            token: this.localStorageAPI.accountStorage.token,
+            id: this.localStorageAPI.accountStorage.id,
+            wordId: answer.wordContent.id,
+            difficulty: answer.result === true ? 'basic' : 'hard',
+            optional: updatedOptional
+          });
+        } else if (currentDifficulty === 'learned') {
+          this.serverAPI.updateUserWord({
+            token: this.localStorageAPI.accountStorage.token,
+            id: this.localStorageAPI.accountStorage.id,
+            wordId: answer.wordContent.id,
+            difficulty: answer.result === true ? 'learned' : 'basic',
+            optional: updatedOptional
+          });
+        }
       } else {
         // this userWord doesn't exist => create new one
         const optional: OptionalUserWord = {
@@ -269,13 +286,11 @@ export default class GameResult {
           optional.audioCall.trueCount = answer.result === true ? 1 : 0;
         }
 
-        // 'difficulty' = 'basic', because its default value for the first encountered word
-        // (Only 3 'difficulty' values at all: 'basic', 'hard', 'learned')
         this.serverAPI.createUserWord({
           token: this.localStorageAPI.accountStorage.token,
           id: this.localStorageAPI.accountStorage.id,
           wordId: answer.wordContent.id,
-          difficulty: 'basic',
+          difficulty: answer.result === true ? 'learned' : 'hard',
           optional
         });
       }
