@@ -116,6 +116,7 @@ export default class GameResult {
 
       if (index === answers.length - 1) {
         streaks.push(streak);
+        return;
       }
 
       if (answer.result === false) {
