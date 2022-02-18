@@ -57,6 +57,7 @@ export default class Controller {
 
   async asyncConstructor() {
     await this.localStorageAPI.checkForCurrentUser();
+    this.localStorageAPI.setIntervalForUpdatingToken();
 
     this.createComponents();
     this.setListeners();

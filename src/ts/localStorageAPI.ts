@@ -56,6 +56,20 @@ export default class LocalStorageAPI {
     console.log(this.accountStorage);
   }
 
+  setIntervalForUpdatingToken() {
+    // 3 hours:
+    const periodWhenTokenIsAlive = 10800000;
+
+    setTimeout(() => {
+      if (this.accountStorage.isLoggedIn === true) {
+        this.updateToken();
+        this.setIntervalForUpdatingToken();
+      } else {
+        this.setIntervalForUpdatingToken();
+      }
+    }, periodWhenTokenIsAlive);
+  }
+
   fillDefaultAccountStorage() {
     this.accountStorage = {
       isLoggedIn: false,
