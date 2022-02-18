@@ -287,6 +287,7 @@ export default class PageItem {
         });
       } else if (isUsed === false) {
         // isUsed === false => this userWord doesn't exist !!!OR!!! it exists with 'difficulty' = 'basic'
+        // (!!!OR!!! it exists with 'difficulty' opposite to the argument 'status' (example: if status: 'learned' => 'hard')
         // PS It can be 'basic', because of the double click on controls icons
         // Example: (click hardWordIcon => make it hardWord => click hardWordIcon again => make it 'basic')
         // Explanation: The need to change it to the 'basic' (and not to delete it), because of the saving the 'optional' field of the userWord
@@ -315,23 +316,21 @@ export default class PageItem {
           });
         } catch {
           // if error => this userWord doesn't exist => create new one width corresponding 'difficulty' and default 'optional'
-          // 'timestampWhenItWasLearned' = null , because this word did not occur in mini-games
+          // 'dateWhenItBecameNew' = false , because this word did not occur in mini-games
           this.serverAPI.createUserWord({
             token: this.localStorageAPI.accountStorage.token,
             id: this.localStorageAPI.accountStorage.id,
             wordId: wordContent.id,
             difficulty: `${status}`,
             optional: {
-              timestampWhenItWasLearned: false,
+              dateWhenItBecameNew: false,
               sprint: {
                 totalCount: 0,
-                trueCount: 0,
-                bestStreak: 0
+                trueCount: 0
               },
               audioCall: {
                 totalCount: 0,
-                trueCount: 0,
-                bestStreak: 0
+                trueCount: 0
               }
             }
           });

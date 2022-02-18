@@ -211,7 +211,7 @@ export default class GameResult {
       // checking if a word met for the first time in mini-games
       let isWordNew: boolean;
       if (relatedUserWordContent) {
-        if (relatedUserWordContent.optional.timestampWhenItWasLearned === false) {
+        if (relatedUserWordContent.optional.dateWhenItBecameNew === false) {
           isWordNew = true;
         } else {
           isWordNew = false;
@@ -234,10 +234,10 @@ export default class GameResult {
           if (answer.result === true) updatedOptional.audioCall.trueCount += 1;
         }
 
-        // the userWord exists but has not been learned => set new 'timestampWhenItWasLearned'
+        // the userWord exists but has not been learned => set new 'dateWhenItBecameNew'
         // (how it can be real?!: at first it was created in book component, when changing userWord status)
         if (isWordNew === true) {
-          updatedOptional.timestampWhenItWasLearned = new Date().getTime();
+          updatedOptional.dateWhenItBecameNew = new Date().toLocaleDateString();
         }
 
         this.serverAPI.updateUserWord({
@@ -249,7 +249,7 @@ export default class GameResult {
       } else {
         // this userWord doesn't exist => create new one
         const optional: OptionalUserWord = {
-          timestampWhenItWasLearned: new Date().getTime(),
+          dateWhenItBecameNew: new Date().toLocaleDateString(),
           sprint: {
             totalCount: 0,
             trueCount: 0
