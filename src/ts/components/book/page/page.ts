@@ -75,11 +75,12 @@ export default class Page {
 
       this.componentElem.append(pageItemElem);
     });
-
-    this.applyStylesToLearnedPage();
   }
 
-  async fillPage_GroupWords({ groupValue, pageValue }: { groupValue: string; pageValue: string }) {
+  async fillPage_GroupWords(
+    { groupValue, pageValue }: { groupValue: string; pageValue: string },
+    applyStylesIfLearnedPage: () => void
+  ) {
     this.componentElem.innerHTML = '';
 
     let wordsContent: WordContent[];
@@ -114,33 +115,13 @@ export default class Page {
         this.pageItem.listeners_ForPageItem_ForLoggedInUser_ForGroupWords(
           pageItemElem,
           wordContent,
-          this.applyStylesToLearnedPage
+          applyStylesIfLearnedPage
         );
       }
 
       this.componentElem.append(pageItemElem);
     });
 
-    this.applyStylesToLearnedPage();
-  }
-
-  updateTheme(gruop: string) {
-    document.querySelector('.book')?.setAttribute('data-page-group', gruop);
-  }
-
-  applyStylesToLearnedPage() {
-    document.querySelector('.book')?.setAttribute('data-learned-page', '');
-
-    const pageItemsArr = [...document.querySelectorAll('.book .pageItem')];
-    const learnedItems = pageItemsArr.filter((el) =>
-      el.classList.contains('pageItem_learned-word')
-    );
-    const hardItems = pageItemsArr.filter((el) => 
-      el.classList.contains('pageItem_hard-word')
-    );
-
-    if (learnedItems.length && hardItems.length + learnedItems.length === pageItemsArr.length) {
-      document.querySelector('.book')?.setAttribute('data-learned-page', 'true');
-    }
+    applyStylesIfLearnedPage();
   }
 }

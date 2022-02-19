@@ -175,7 +175,7 @@ export default class PageItem {
   listeners_ForPageItem_ForLoggedInUser_ForGroupWords(
     pageItemElem: HTMLDivElement,
     wordContent: WordContent,
-    applyStylesToLearnedPage: () => void
+    applyStylesIfLearnedPage: () => void
   ) {
     this.listenerForUserWordStatistic(pageItemElem, wordContent);
 
@@ -190,7 +190,7 @@ export default class PageItem {
       hardWordIcon,
       'hard',
       'pageItem_hard-word',
-      applyStylesToLearnedPage
+      applyStylesIfLearnedPage
     );
     this.listenerForChangeUserWordDifficulty(
       pageItemElem,
@@ -198,7 +198,7 @@ export default class PageItem {
       learnedWordIcon,
       'learned',
       'pageItem_learned-word',
-      applyStylesToLearnedPage
+      applyStylesIfLearnedPage
     );
   }
 
@@ -274,7 +274,7 @@ export default class PageItem {
     iconElem: HTMLElement,
     status: string,
     styleClass: string,
-    applyStylesToLearnedPage: () => void
+    applyStylesIfLearnedPage: () => void
   ) {
     const learnedWordIcon = pageItemElem.querySelector(
       '.pageItem__icon_learned-word'
@@ -387,7 +387,7 @@ export default class PageItem {
         }
       }
 
-      applyStylesToLearnedPage();
+      applyStylesIfLearnedPage();
     });
   }
 

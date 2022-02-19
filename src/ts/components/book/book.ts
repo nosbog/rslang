@@ -84,7 +84,10 @@ export default class Book {
     this.componentElem.setAttribute('data-page-group', '0');
 
     this.page.showComponent();
-    this.page.fillPage_GroupWords({ groupValue: '0', pageValue: '0' });
+    this.page.fillPage_GroupWords(
+      { groupValue: '0', pageValue: '0' },
+      this.applyStylesIfLearnedPage
+    );
   }
 
   createComponent() {
@@ -183,7 +186,7 @@ export default class Book {
         return;
       }
       pageInput.value = `${newValue}`;
-      this.page.fillPage_GroupWords(this.getInputValues());
+      this.page.fillPage_GroupWords(this.getInputValues(), this.applyStylesIfLearnedPage);
     });
 
     decreasePageBtn.addEventListener('click', () => {
@@ -192,7 +195,7 @@ export default class Book {
         return;
       }
       pageInput.value = `${newValue}`;
-      this.page.fillPage_GroupWords(this.getInputValues());
+      this.page.fillPage_GroupWords(this.getInputValues(), this.applyStylesIfLearnedPage);
     });
   }
 
@@ -210,27 +213,6 @@ export default class Book {
     const decreasePageBtn = this.componentElem.querySelector(
       '.book__controls-page__decreasePage'
     ) as HTMLButtonElement;
-
-    const startSprintBtn = this.componentElem.querySelector(
-      '.book__start-sprint-btn'
-    ) as HTMLButtonElement;
-    const startAudioCallBtn = this.componentElem.querySelector(
-      '.book__start-audioCall-btn'
-    ) as HTMLButtonElement;
-
-    function disableStartGameBtns() {
-      startSprintBtn.style.cursor = `not-allowed`;
-      startAudioCallBtn.style.cursor = `not-allowed`;
-      startSprintBtn.disabled = true;
-      startAudioCallBtn.disabled = true;
-    }
-
-    function enableStartGameBtns() {
-      startSprintBtn.style.cursor = ``;
-      startAudioCallBtn.style.cursor = ``;
-      startSprintBtn.disabled = false;
-      startAudioCallBtn.disabled = false;
-    }
 
     function disablePageBtns() {
       increasePageBtn.style.cursor = `not-allowed`;
@@ -251,23 +233,33 @@ export default class Book {
 
       if (groupInput.value === 'hard') {
         disablePageBtns();
-        enableStartGameBtns();
 
         this.page.fillPage_HardWords_or_LearnedWords('hard');
       } else if (groupInput.value === 'learned') {
         disablePageBtns();
-        disableStartGameBtns();
 
         this.page.fillPage_HardWords_or_LearnedWords('learned');
       } else {
         enablePageBtns();
-        enableStartGameBtns();
 
-        this.page.fillPage_GroupWords(this.getInputValues());
+        this.page.fillPage_GroupWords(this.getInputValues(), this.applyStylesIfLearnedPage);
       }
 
-      this.page.updateTheme(groupInput.value);
+      this.updateTheme(groupInput.value);
+      this.applyStylesIfLearnedPage();
     });
+  }
+
+  static toggleStartGameBtns(isDisabled: boolean) {
+    const startSprintBtn = document.querySelector('.book__start-sprint-btn') as HTMLButtonElement;
+    const startAudioCallBtn = document.querySelector(
+      '.book__start-audioCall-btn'
+    ) as HTMLButtonElement;
+
+    if (startSprintBtn && startAudioCallBtn) {
+      startSprintBtn.disabled = isDisabled;
+      startAudioCallBtn.disabled = isDisabled;
+    }
   }
 
   getInputValues() {
@@ -282,5 +274,36 @@ export default class Book {
     const pageValue = `${+pageInput.value - 1}`;
 
     return { groupValue, pageValue };
+  }
+
+  updateTheme(gruop: string) {
+    document.querySelector('.book')?.setAttribute('data-page-group', gruop);
+  }
+
+  applyStylesIfLearnedPage() {
+    const bookElement = document.querySelector('.book') as HTMLElement;
+
+    if (!bookElement) return;
+
+    const pageItemsArr = [...bookElement.querySelectorAll('.pageItem')];
+    const learnedItems = pageItemsArr.filter((el) =>
+      el.classList.contains('pageItem_learned-word')
+    );
+    const hardItems = pageItemsArr.filter((el) => el.classList.contains('pageItem_hard-word'));
+    const bookGroup = bookElement.getAttribute('data-page-group');
+
+    if (bookGroup === 'learned') {
+      bookElement.setAttribute('data-learned-page', '');
+      Book.toggleStartGameBtns(true);
+    } else if (
+      learnedItems.length &&
+      hardItems.length + learnedItems.length === pageItemsArr.length
+    ) {
+      bookElement.setAttribute('data-learned-page', 'true');
+      Book.toggleStartGameBtns(true);
+    } else {
+      bookElement.setAttribute('data-learned-page', '');
+      Book.toggleStartGameBtns(false);
+    }
   }
 }
