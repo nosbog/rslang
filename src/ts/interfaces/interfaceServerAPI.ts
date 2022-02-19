@@ -37,6 +37,7 @@ export interface WordContent {
 
 export interface OptionalUserWord {
   dateWhenItBecameNew: string | false;
+  gameInWhichItBecameNew: string | false;
   sprint: {
     totalCount: number;
     trueCount: number;

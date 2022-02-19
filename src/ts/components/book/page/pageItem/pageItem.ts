@@ -336,6 +336,7 @@ export default class PageItem {
             difficulty: `${status}`,
             optional: {
               dateWhenItBecameNew: false,
+              gameInWhichItBecameNew: false,
               sprint: {
                 totalCount: 0,
                 trueCount: 0

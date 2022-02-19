@@ -232,9 +232,10 @@ export default class GameResult {
           if (answer.result === true) updatedOptional.audioCall.trueCount += 1;
         }
 
-        // the userWord exists but has not been learned => set new 'dateWhenItBecameNew'
+        // the userWord exists but has not been learned => set new 'dateWhenItBecameNew' and 'gameInWhichItBecameNew'
         if (isWordNew === true) {
           updatedOptional.dateWhenItBecameNew = new Date().toLocaleDateString();
+          updatedOptional.gameInWhichItBecameNew = `${gameName}`;
         }
 
         const currentDifficulty = relatedUserWordContent.difficulty;
@@ -268,6 +269,7 @@ export default class GameResult {
         // this userWord doesn't exist => create new one
         const optional: OptionalUserWord = {
           dateWhenItBecameNew: new Date().toLocaleDateString(),
+          gameInWhichItBecameNew: gameName,
           sprint: {
             totalCount: 0,
             trueCount: 0
