@@ -215,15 +215,11 @@ export default class Book {
     ) as HTMLButtonElement;
 
     function disablePageBtns() {
-      increasePageBtn.style.cursor = `not-allowed`;
-      decreasePageBtn.style.cursor = `not-allowed`;
       increasePageBtn.disabled = true;
       decreasePageBtn.disabled = true;
     }
 
     function enablePageBtns() {
-      increasePageBtn.style.cursor = ``;
-      decreasePageBtn.style.cursor = ``;
       increasePageBtn.disabled = false;
       decreasePageBtn.disabled = false;
     }
