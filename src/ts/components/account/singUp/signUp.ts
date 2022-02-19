@@ -1,4 +1,5 @@
 import ServerAPI from '../../../serverAPI';
+import LocalStorageAPI from '../../../localStorageAPI';
 
 export default class SignUp {
   innerHtmlTemplate = `
@@ -14,14 +15,21 @@ export default class SignUp {
 
   serverAPI: ServerAPI;
 
+  localStorageAPI: LocalStorageAPI;
+
   componentElem: HTMLElement;
 
   parentComponentElem: HTMLElement;
 
-  constructor(serverAPI: ServerAPI, parentComponentElem: HTMLElement) {
+  constructor(
+    serverAPI: ServerAPI,
+    localStorageAPI: LocalStorageAPI,
+    parentComponentElem: HTMLElement
+  ) {
     this.componentElem = document.createElement('div');
 
     this.serverAPI = serverAPI;
+    this.localStorageAPI = localStorageAPI;
     this.parentComponentElem = parentComponentElem;
   }
 
@@ -43,14 +51,25 @@ export default class SignUp {
       }
 
       const { name, email, password } = inputValues;
-      this.serverAPI.createUser({
-        name,
-        email,
-        password
-      });
+      this.serverAPI
+        .createUser({
+          name,
+          email,
+          password
+        })
+        .then(async () => {
+          const authorizationContent = await this.serverAPI.signIn({ email, password });
 
-      // TODO: implement login after signup
-      // updateHeader(true, name);
+          await this.localStorageAPI.fillAccountStorage(authorizationContent, password);
+          document.querySelector('#account')?.dispatchEvent(new Event('click'));
+
+          // eslint-disable-next-line
+          const { isLoggedIn, name } = this.localStorageAPI.accountStorage;
+          updateHeader(isLoggedIn, name);
+        })
+        .catch(() => {
+          this.showValidationError('Аккаунт с указанным "email" уже существует');
+        });
     });
 
     const formInputs = this.componentElem.querySelectorAll<HTMLInputElement>('.account__input');
