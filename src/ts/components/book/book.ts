@@ -21,7 +21,8 @@ export default class Book {
             <button class="book__controls-page__decreasePage">
               <i class="fas fa-chevron-left"></i>
             </button>
-            <span>Страница 
+            <span>
+              <span>Страница </span> 
               <input type="number" class="book__controls-page__inputNumber" name="page" min="1" max="20" value="1" readonly>
             </span>
             <button class="book__controls-page__increasePage">

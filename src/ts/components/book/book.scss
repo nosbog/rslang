@@ -39,7 +39,7 @@
     border-top: 3px solid #e0e4df;
     border-bottom: 3px solid #e0e4df;
     background-color: $color-main-bg;
-    z-index: 10;
+    z-index: 8;
 
     .wrapper {
       flex-direction: row;
@@ -76,7 +76,7 @@
       width: 30px;
     }
 
-    span {
+    & > span {
       height: 100%;
       padding-left: 15px;
       border-radius: 4px;
@@ -89,7 +89,7 @@
       border: none;
       border-radius: 4px;
       background-color: inherit;
-      text-align: right;
+      text-align: center;
     }
   }
 
@@ -145,5 +145,68 @@
     .book__controls {
       height: 92px;
     }
+  }
+}
+
+@media (max-width: $breakpoint-laptop-s) {
+  .book {
+    &__controls-page {
+      &__inputNumber {
+        width: 25px;
+      }
+
+      & > span {
+        padding: 0;
+
+        & > span {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-tablet) {
+  .book {
+    &__controls {
+      height: 120px;
+
+      .wrapper {
+        flex-direction: column;
+      }
+
+      &-column:nth-child(1) {
+        order: 2;
+      }
+
+      .book__start-audioCall-btn,
+      .book__start-sprint-btn {
+        width: 35vw;
+      }
+
+      button,
+      select {
+        padding-top: 8px;
+        padding-bottom: 8px;
+      }
+    }
+
+    &[data-learned-page=true] .book__controls {
+      height: 122px;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .book {
+    &__controls-column {
+      button {
+        font-size: 75%; 
+      }
+    }
+
+    &__inputSelect {
+      width: 40vw;
+    } 
   }
 }
