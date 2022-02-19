@@ -21,7 +21,7 @@
   
   .nav__item {
     position: relative;
-    padding: 23px 10px;
+    padding: 22px 10px;
     cursor: pointer;
 
     &::after {
@@ -55,7 +55,8 @@
     }
 
     .show {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
     }
   }
 
@@ -87,11 +88,13 @@
     .nav {
       position: absolute;
       top: 0;
-      left: 0;
+      left: -100%;
       margin-top: 60px;
       width: 100%;
       height: calc(100vh - $height-header + 5px);
       visibility: hidden;
+      transition: $transition-hover;
+
 
       ul {
         flex-direction: column;
@@ -113,6 +116,7 @@
 
       .nav {
         background-color: $color-main-bg;
+        left: 0;
         z-index: 15;
         visibility: visible;
         
