@@ -241,6 +241,9 @@ export default class GameResult {
         const currentDifficulty = relatedUserWordContent.difficulty;
 
         if (currentDifficulty === 'basic') {
+          updatedOptional.dateWhenItBecameLearned =
+            answer.result === true ? new Date().toLocaleDateString() : false;
+
           this.serverAPI.updateUserWord({
             token: this.localStorageAPI.accountStorage.token,
             id: this.localStorageAPI.accountStorage.id,
@@ -268,6 +271,7 @@ export default class GameResult {
       } else {
         // this userWord doesn't exist => create new one
         const optional: OptionalUserWord = {
+          dateWhenItBecameLearned: answer.result === true ? new Date().toLocaleDateString() : false,
           dateWhenItBecameNew: new Date().toLocaleDateString(),
           gameInWhichItBecameNew: gameName,
           sprint: {
