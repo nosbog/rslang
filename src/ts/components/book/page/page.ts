@@ -16,8 +16,6 @@ export default class Page {
 
   componentElem: HTMLElement;
 
-  private status: Set<string>;
-
   constructor(
     serverAPI: ServerAPI,
     localStorageAPI: LocalStorageAPI,
@@ -31,8 +29,6 @@ export default class Page {
     this.contentURL = contentURL;
     this.parentComponentElem = parentComponentElem;
     this.pageItem = new PageItem(this.serverAPI, this.localStorageAPI, this.contentURL);
-  
-    this.status = new Set<string>();
   }
 
   createThisComponent() {
@@ -79,11 +75,12 @@ export default class Page {
 
       this.componentElem.append(pageItemElem);
     });
+
+    this.applyStylesToLearnedPage();
   }
 
   async fillPage_GroupWords({ groupValue, pageValue }: { groupValue: string; pageValue: string }) {
     this.componentElem.innerHTML = '';
-    this.status.clear();
 
     let wordsContent: WordContent[];
     let userWordsContent: UserWordContent[];
@@ -109,32 +106,41 @@ export default class Page {
       this.pageItem.fillPageItem(pageItemElem, wordContent, groupValue);
 
       if (this.localStorageAPI.accountStorage.isLoggedIn === true) {
-        this.status.add(
-          this.pageItem.styles_ForPageItem_ForLoggedInUser_ForGroupWord(
-            pageItemElem,
-            wordContent,
-            userWordsContent
-          ) as string);
+        this.pageItem.styles_ForPageItem_ForLoggedInUser_ForGroupWord(
+          pageItemElem,
+          wordContent,
+          userWordsContent
+        );
         this.pageItem.listeners_ForPageItem_ForLoggedInUser_ForGroupWords(
           pageItemElem,
-          wordContent
+          wordContent,
+          this.applyStylesToLearnedPage
         );
       }
 
       this.componentElem.append(pageItemElem);
     });
 
-    this.applyStylesToLearnedPage(this.status);
+    this.applyStylesToLearnedPage();
   }
 
   updateTheme(gruop: string) {
     document.querySelector('.book')?.setAttribute('data-page-group', gruop);
   }
 
-  applyStylesToLearnedPage(status: Set<string>) {
-    document.querySelector('.book')?.setAttribute('data-isLearnedPage', 'false');
-    if (!status.has('basic') && status.has('learned')) {
-      document.querySelector('.book')?.setAttribute('data-isLearnedPage', 'true');
+  applyStylesToLearnedPage() {
+    document.querySelector('.book')?.setAttribute('data-learned-page', '');
+
+    const pageItemsArr = [...document.querySelectorAll('.book .pageItem')];
+    const learnedItems = pageItemsArr.filter((el) =>
+      el.classList.contains('pageItem_learned-word')
+    );
+    const hardItems = pageItemsArr.filter((el) => 
+      el.classList.contains('pageItem_hard-word')
+    );
+
+    if (learnedItems.length && hardItems.length + learnedItems.length === pageItemsArr.length) {
+      document.querySelector('.book')?.setAttribute('data-learned-page', 'true');
     }
   }
 }

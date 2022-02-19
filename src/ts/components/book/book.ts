@@ -21,7 +21,9 @@ export default class Book {
             <button class="book__controls-page__decreasePage">
               <i class="fas fa-chevron-left"></i>
             </button>
-            <span>Страница <input type="number" class="book__controls-page__inputNumber" name="page" min="1" max="20" value="1" readonly></span>
+            <span>Страница 
+              <input type="number" class="book__controls-page__inputNumber" name="page" min="1" max="20" value="1" readonly>
+            </span>
             <button class="book__controls-page__increasePage">
               <i class="fas fa-chevron-right"></i>
             </button>
@@ -63,6 +65,8 @@ export default class Book {
   createThisComponent() {
     this.componentElem.innerHTML = this.innerHtmlTemplate;
     this.componentElem.classList.add('book');
+    this.componentElem.setAttribute('data-learned-page', '');
+    this.componentElem.setAttribute('data-page-group', '0');
 
     this.page.showComponent();
     this.page.fillPage_GroupWords({ groupValue: '0', pageValue: '0' });

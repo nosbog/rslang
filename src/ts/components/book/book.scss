@@ -4,6 +4,7 @@
   font-size: 1.6rem;
   background-color: #f08c8c63;
   border-bottom: 3px solid #e0e4df;
+  transition: all 0.3s ease-in-out;
 
   .wrapper {
     position: relative;
@@ -132,11 +133,17 @@
     background-color: #4c8b5363;
   }
 
-  &[data-isLearnedPage="true"] {
+  &[data-learned-page="true"] {
     background-color: $color-add-bg;
 
-    .book__controls-page span {
-      background-color: $color-right-answer;
+    &,
+    .book__controls {
+      border-bottom-width: 5px;
+      border-bottom-color: #4c8b5363;
+    }
+
+    .book__controls {
+      height: 92px;
     }
   }
 }

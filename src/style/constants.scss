@@ -61,13 +61,12 @@ $border-radius-card: 5px;
   transition: $transition-hover;
   
   &:hover {
-    background-color: $color-brand-3;
-    border-color: $color-brand-3;
-    color: $color-font-dark;
+    background-color: $color-brand-4;
+    border-color: $color-brand-4;
   }
 
   &:active {
-    background-color: #b3d6d7cf;
+    background-color: #e63946d9;
   }
 
   &:disabled {

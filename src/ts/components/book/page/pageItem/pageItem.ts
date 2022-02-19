@@ -53,7 +53,7 @@ export default class PageItem {
 
   innerHtmlTemplateControls_GroupWords_LoggedInUser = `
     <img class="pageItem__icon pageItem__icon_learned-word" src="./assets/svg/verified.svg" alt="learned word" title="+ в изученные слова">
-    <img class="pageItem__icon pageItem__icon_hard-word" src="./assets/svg/help.svg" alt="hard word" title="+ в изученные слова">
+    <img class="pageItem__icon pageItem__icon_hard-word" src="./assets/svg/help.svg" alt="hard word" title="+ в сложные слова">
     <img class="pageItem__icon pageItem__icon_statistic" src="./assets/svg/fact_check.svg" alt="word statistic" title="статистика по слову">
   `;
 
@@ -170,13 +170,12 @@ export default class PageItem {
       pageItemElem.classList.add('pageItem_learned-word');
       learnedWordIcon.classList.add('pageItem__icon_used');
     }
-
-    return relatedUserWordContent.difficulty;
   }
 
   listeners_ForPageItem_ForLoggedInUser_ForGroupWords(
     pageItemElem: HTMLDivElement,
-    wordContent: WordContent
+    wordContent: WordContent,
+    applyStylesToLearnedPage: () => void
   ) {
     this.listenerForUserWordStatistic(pageItemElem, wordContent);
 
@@ -190,20 +189,24 @@ export default class PageItem {
       wordContent,
       hardWordIcon,
       'hard',
-      'pageItem_hard-word'
+      'pageItem_hard-word',
+      applyStylesToLearnedPage
     );
     this.listenerForChangeUserWordDifficulty(
       pageItemElem,
       wordContent,
       learnedWordIcon,
       'learned',
-      'pageItem_learned-word'
+      'pageItem_learned-word',
+      applyStylesToLearnedPage
     );
   }
 
   listenerForUserWordStatistic(pageItemElem: HTMLElement, wordContent: WordContent) {
     const closeBtn = pageItemElem.querySelector('.pageItem__statistic__close-btn') as HTMLElement;
-    const statisticElem = pageItemElem.querySelector('.pageItem__statistic-overlay') as HTMLDivElement;
+    const statisticElem = pageItemElem.querySelector(
+      '.pageItem__statistic-overlay'
+    ) as HTMLDivElement;
     const statisticIcon = pageItemElem.querySelector('.pageItem__icon_statistic') as HTMLElement;
 
     closeBtn.addEventListener('click', () => {
@@ -270,7 +273,8 @@ export default class PageItem {
     wordContent: WordContent,
     iconElem: HTMLElement,
     status: string,
-    styleClass: string
+    styleClass: string,
+    applyStylesToLearnedPage: () => void
   ) {
     const learnedWordIcon = pageItemElem.querySelector(
       '.pageItem__icon_learned-word'
@@ -345,6 +349,8 @@ export default class PageItem {
           });
         }
       }
+
+      applyStylesToLearnedPage();
     });
   }
 
