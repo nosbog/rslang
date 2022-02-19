@@ -336,12 +336,17 @@ export default class Sprint {
     const yesBtn = document.querySelector('.sprint__yes') as HTMLButtonElement;
     const noBtn = document.querySelector('.sprint__no') as HTMLButtonElement;
 
+    const truthyAnswerSound = new Audio('./assets/sounds/truthy-answer.mp3');
+    const falsyAnswerSound = new Audio('./assets/sounds/falsy-answer.mp3');
+
     yesBtn.addEventListener('click', () => {
       let result: boolean;
       if (isOptionTruthy === true) {
         result = true;
+        truthyAnswerSound.play();
       } else {
         result = false;
+        falsyAnswerSound.play();
       }
 
       this.gameData.answers.push({ result, wordContent: wordContentAnswer });
@@ -357,8 +362,10 @@ export default class Sprint {
       let result: boolean;
       if (isOptionTruthy === true) {
         result = false;
+        falsyAnswerSound.play();
       } else {
         result = true;
+        truthyAnswerSound.play();
       }
 
       this.gameData.answers.push({ result, wordContent: wordContentAnswer });
