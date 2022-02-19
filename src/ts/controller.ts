@@ -1,3 +1,4 @@
+import KeyboardHotKeys from './keyboardHotKeys';
 import ServerAPI from './serverAPI';
 import LocalStorageAPI from './localStorageAPI';
 import Header from './components/header/header';
@@ -10,6 +11,8 @@ import Account from './components/account/account';
 import Background from './components/background/background';
 
 export default class Controller {
+  keyboardHotKeys: KeyboardHotKeys;
+
   serverAPI: ServerAPI;
 
   localStorageAPI: LocalStorageAPI;
@@ -36,6 +39,8 @@ export default class Controller {
     this.serverAPI = new ServerAPI();
 
     this.localStorageAPI = new LocalStorageAPI(this.serverAPI);
+
+    this.keyboardHotKeys = new KeyboardHotKeys();
 
     this.header = new Header(this.localStorageAPI);
     this.account = new Account(this.serverAPI, this.localStorageAPI);
