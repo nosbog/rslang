@@ -40,7 +40,7 @@ export default class Account {
     this.localStorageAPI = localStorageAPI;
 
     this.logIn = new LogIn(this.serverAPI, this.localStorageAPI, this.componentElem);
-    this.signUp = new SignUp(this.serverAPI, this.componentElem);
+    this.signUp = new SignUp(this.serverAPI, this.localStorageAPI, this.componentElem);
   }
 
   createThisComponent() {

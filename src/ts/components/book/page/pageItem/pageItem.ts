@@ -290,13 +290,32 @@ export default class PageItem {
         pageItemElem.className = '';
         pageItemElem.classList.add('pageItem');
 
-        // click on used btn => update only userWord 'difficulty' = 'basic'
-        this.serverAPI.updateUserWord({
-          token: this.localStorageAPI.accountStorage.token,
-          id: this.localStorageAPI.accountStorage.id,
-          wordId: wordContent.id,
-          difficulty: 'basic'
-        });
+        if (status === 'learned') {
+          const userWordContent = await this.serverAPI.getUserWordByWordId({
+            token: this.localStorageAPI.accountStorage.token,
+            id: this.localStorageAPI.accountStorage.id,
+            wordId: wordContent.id
+          });
+
+          const updatedOptional = userWordContent.optional;
+          updatedOptional.dateWhenItBecameLearned = false;
+
+          this.serverAPI.updateUserWord({
+            token: this.localStorageAPI.accountStorage.token,
+            id: this.localStorageAPI.accountStorage.id,
+            wordId: wordContent.id,
+            difficulty: 'basic',
+            optional: updatedOptional
+          });
+        } else {
+          // click on used btn => update only userWord 'difficulty' = 'basic'
+          this.serverAPI.updateUserWord({
+            token: this.localStorageAPI.accountStorage.token,
+            id: this.localStorageAPI.accountStorage.id,
+            wordId: wordContent.id,
+            difficulty: 'basic'
+          });
+        }
       } else if (isUsed === false) {
         // isUsed === false => this userWord doesn't exist !!!OR!!! it exists with 'difficulty' = 'basic'
         // (!!!OR!!! it exists with 'difficulty' opposite to the argument 'status' (example: if status: 'learned' => 'hard')
@@ -313,19 +332,35 @@ export default class PageItem {
 
         // check if it exists =>
         try {
-          await this.serverAPI.getUserWordByWordId({
+          const userWordContent = await this.serverAPI.getUserWordByWordId({
             token: this.localStorageAPI.accountStorage.token,
             id: this.localStorageAPI.accountStorage.id,
             wordId: wordContent.id
           });
+          const updatedOptional = userWordContent.optional;
 
-          // if NO error => this userWord already exists (its 'basic') => only update 'difficulty'
-          this.serverAPI.updateUserWord({
-            token: this.localStorageAPI.accountStorage.token,
-            id: this.localStorageAPI.accountStorage.id,
-            wordId: wordContent.id,
-            difficulty: `${status}`
-          });
+          // if no error => continue
+          if (status === 'learned') {
+            updatedOptional.dateWhenItBecameLearned = new Date().toLocaleDateString();
+
+            this.serverAPI.updateUserWord({
+              token: this.localStorageAPI.accountStorage.token,
+              id: this.localStorageAPI.accountStorage.id,
+              wordId: wordContent.id,
+              difficulty: `${status}`,
+              optional: updatedOptional
+            });
+          } else {
+            updatedOptional.dateWhenItBecameLearned = false;
+
+            this.serverAPI.updateUserWord({
+              token: this.localStorageAPI.accountStorage.token,
+              id: this.localStorageAPI.accountStorage.id,
+              wordId: wordContent.id,
+              difficulty: `${status}`,
+              optional: updatedOptional
+            });
+          }
         } catch {
           // if error => this userWord doesn't exist => create new one width corresponding 'difficulty' and default 'optional'
           // 'dateWhenItBecameNew' = false , because this word did not occur in mini-games
@@ -335,7 +370,10 @@ export default class PageItem {
             wordId: wordContent.id,
             difficulty: `${status}`,
             optional: {
+              dateWhenItBecameLearned:
+                status === 'learned' ? new Date().toLocaleDateString() : false,
               dateWhenItBecameNew: false,
+              gameInWhichItBecameNew: false,
               sprint: {
                 totalCount: 0,
                 trueCount: 0

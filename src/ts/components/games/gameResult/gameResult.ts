@@ -232,14 +232,18 @@ export default class GameResult {
           if (answer.result === true) updatedOptional.audioCall.trueCount += 1;
         }
 
-        // the userWord exists but has not been learned => set new 'dateWhenItBecameNew'
+        // the userWord exists but has not been learned => set new 'dateWhenItBecameNew' and 'gameInWhichItBecameNew'
         if (isWordNew === true) {
           updatedOptional.dateWhenItBecameNew = new Date().toLocaleDateString();
+          updatedOptional.gameInWhichItBecameNew = `${gameName}`;
         }
 
         const currentDifficulty = relatedUserWordContent.difficulty;
 
         if (currentDifficulty === 'basic') {
+          updatedOptional.dateWhenItBecameLearned =
+            answer.result === true ? new Date().toLocaleDateString() : false;
+
           this.serverAPI.updateUserWord({
             token: this.localStorageAPI.accountStorage.token,
             id: this.localStorageAPI.accountStorage.id,
@@ -267,7 +271,9 @@ export default class GameResult {
       } else {
         // this userWord doesn't exist => create new one
         const optional: OptionalUserWord = {
+          dateWhenItBecameLearned: answer.result === true ? new Date().toLocaleDateString() : false,
           dateWhenItBecameNew: new Date().toLocaleDateString(),
+          gameInWhichItBecameNew: gameName,
           sprint: {
             totalCount: 0,
             trueCount: 0
