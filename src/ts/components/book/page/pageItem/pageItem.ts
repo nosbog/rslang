@@ -6,49 +6,55 @@ export default class PageItem {
   innerHtmlTemplatePageItem = `
     <div class="pageItem__image"></div>
     <div class="pageItem__header">
+      <span class="pageItem__status">
+        <i class="far fa-check-circle learned"></i>
+        <i class="fas fa-asterisk hard"></i>
+      </span>
       <span class="pageItem__word"></span>
       -
       <span class="pageItem__word-transcription"></span>
-      <img class="pageItem__sound-image" src="./assets/svg/volumeUp.svg" alt="volumeUp">
-      :
+      -
       <span class="pageItem__word-translate"></span>
+      <img class="pageItem__sound-image" src="./assets/svg/volumeUp.svg" alt="volumeUp">
     </div>
     <div class="pageItem__explanation"></div>
     <div class="pageItem__explanation-translate"></div>
     <div class="pageItem__example"></div>
     <div class="pageItem__example-translate"></div>
     <div class="pageItem__controls"></div>
-    <div class="pageItem__statistic">
-      <img class="pageItem__statistic__close-btn" src="./assets/svg/close.svg" alt="close">
-      <p>Статистика по слову <span class="pageItem__statistic__word"></span></p>
-      <table class="pageItem__statistic__table">
-        <thead>
-          <tr>
-            <th>Мини-игра</th>
-            <th>Правильно</th>
-            <th>Неправильно</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="pageItem__statistic__table__tr-sprint">
-            <td>Спринт</td>
-            <td class="pageItem__statistic__table__trueCount"></td>
-            <td class="pageItem__statistic__table__falseCount"></td>
-          </tr>
-          <tr class="pageItem__statistic__table__tr-audioCall">
-            <td>Аудиовызов</td>
-            <td class="pageItem__statistic__table__trueCount"></td>
-            <td class="pageItem__statistic__table__falseCount"></td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="pageItem__statistic-overlay">
+      <div class="pageItem__statistic">
+        <img class="pageItem__statistic__close-btn" src="./assets/svg/close.svg" alt="close">
+        <p>Статистика по слову <span class="pageItem__statistic__word"></span></p>
+        <table class="pageItem__statistic__table">
+          <thead>
+            <tr>
+              <th>Мини-игра</th>
+              <th>Правильно</th>
+              <th>Неправильно</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="pageItem__statistic__table__tr-sprint">
+              <td>Спринт</td>
+              <td class="pageItem__statistic__table__trueCount"></td>
+              <td class="pageItem__statistic__table__falseCount"></td>
+            </tr>
+            <tr class="pageItem__statistic__table__tr-audioCall">
+              <td>Аудиовызов</td>
+              <td class="pageItem__statistic__table__trueCount"></td>
+              <td class="pageItem__statistic__table__falseCount"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   `;
 
   innerHtmlTemplateControls_GroupWords_LoggedInUser = `
-    <img class="pageItem__icon pageItem__icon_learned-word" src="./assets/svg/verified.svg" alt="learned word">
-    <img class="pageItem__icon pageItem__icon_hard-word" src="./assets/svg/help.svg" alt="hard word">
-    <img class="pageItem__icon pageItem__icon_statistic" src="./assets/svg/fact_check.svg" alt="word statistic">
+    <img class="pageItem__icon pageItem__icon_learned-word" src="./assets/svg/verified.svg" alt="learned word" title="+ в изученные слова">
+    <img class="pageItem__icon pageItem__icon_hard-word" src="./assets/svg/help.svg" alt="hard word" title="+ в сложные слова">
+    <img class="pageItem__icon pageItem__icon_statistic" src="./assets/svg/fact_check.svg" alt="word statistic" title="статистика по слову">
   `;
 
   innerHtmlTemplateControls_HardWords_or_LearnedWords = `
@@ -168,7 +174,8 @@ export default class PageItem {
 
   listeners_ForPageItem_ForLoggedInUser_ForGroupWords(
     pageItemElem: HTMLDivElement,
-    wordContent: WordContent
+    wordContent: WordContent,
+    applyStylesToLearnedPage: () => void
   ) {
     this.listenerForUserWordStatistic(pageItemElem, wordContent);
 
@@ -182,20 +189,24 @@ export default class PageItem {
       wordContent,
       hardWordIcon,
       'hard',
-      'pageItem_hard-word'
+      'pageItem_hard-word',
+      applyStylesToLearnedPage
     );
     this.listenerForChangeUserWordDifficulty(
       pageItemElem,
       wordContent,
       learnedWordIcon,
       'learned',
-      'pageItem_learned-word'
+      'pageItem_learned-word',
+      applyStylesToLearnedPage
     );
   }
 
   listenerForUserWordStatistic(pageItemElem: HTMLElement, wordContent: WordContent) {
     const closeBtn = pageItemElem.querySelector('.pageItem__statistic__close-btn') as HTMLElement;
-    const statisticElem = pageItemElem.querySelector('.pageItem__statistic') as HTMLDivElement;
+    const statisticElem = pageItemElem.querySelector(
+      '.pageItem__statistic-overlay'
+    ) as HTMLDivElement;
     const statisticIcon = pageItemElem.querySelector('.pageItem__icon_statistic') as HTMLElement;
 
     closeBtn.addEventListener('click', () => {
@@ -262,7 +273,8 @@ export default class PageItem {
     wordContent: WordContent,
     iconElem: HTMLElement,
     status: string,
-    styleClass: string
+    styleClass: string,
+    applyStylesToLearnedPage: () => void
   ) {
     const learnedWordIcon = pageItemElem.querySelector(
       '.pageItem__icon_learned-word'
@@ -336,6 +348,8 @@ export default class PageItem {
           });
         }
       }
+
+      applyStylesToLearnedPage();
     });
   }
 

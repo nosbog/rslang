@@ -24,9 +24,7 @@
 .card {
   line-height: 2.4rem;
   text-align: justify;
-  background-color: $color-card;
-  border-radius: 5px;
-  @include box-shadow;
+  @include card;
   transition: $transition-hover;
   z-index: 5;
 
