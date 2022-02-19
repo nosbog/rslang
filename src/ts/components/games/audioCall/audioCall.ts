@@ -1,4 +1,5 @@
 import ServerAPI from '../../../serverAPI';
+import LocalStorageAPI from '../../../localStorageAPI';
 import GameResult from '../gameResult/gameResult';
 import { getRandomInt } from '../../../utils';
 import { WordContent } from '../../../interfaces/interfaceServerAPI';
@@ -34,7 +35,7 @@ export default class AudioCall {
     answers: Array<{ result: boolean; wordContent: WordContent }>;
     initialPage: number;
     currentPage: number;
-    currentWordContentIndex: number;
+    currentWordAnswerIndex: number;
     currentGroup: number;
     wordsContent: Array<WordContent>;
     wordsContentAnswers: Array<WordContent>;
@@ -43,7 +44,7 @@ export default class AudioCall {
     initialPage: 0,
     currentPage: 0,
     currentGroup: 0,
-    currentWordContentIndex: 0,
+    currentWordAnswerIndex: 0,
     wordsContent: [],
     wordsContentAnswers: []
   };
@@ -52,13 +53,21 @@ export default class AudioCall {
 
   serverAPI: ServerAPI;
 
+  localStorageAPI: LocalStorageAPI;
+
   contentURL: string;
 
   gameResult: GameResult;
 
-  constructor(serverAPI: ServerAPI, contentURL: string, gameResult: GameResult) {
+  constructor(
+    serverAPI: ServerAPI,
+    localStorageAPI: LocalStorageAPI,
+    contentURL: string,
+    gameResult: GameResult
+  ) {
     this.componentElem = document.createElement('div');
     this.serverAPI = serverAPI;
+    this.localStorageAPI = localStorageAPI;
     this.contentURL = contentURL;
     this.gameResult = gameResult;
   }
@@ -70,6 +79,166 @@ export default class AudioCall {
 
   createComponent() {
     this.createThisComponent();
+  }
+
+  async startGameWithHardWords() {
+    const footerElem = document.querySelector('.footer') as HTMLElement;
+    footerElem.remove();
+
+    const contentElem = document.querySelector('.content') as HTMLElement;
+    contentElem.innerHTML = ``;
+    contentElem.append(this.componentElem);
+
+    const userWordsContent = await this.serverAPI.getUserWords({
+      token: this.localStorageAPI.accountStorage.token,
+      id: this.localStorageAPI.accountStorage.id
+    });
+
+    const userHardWordsContent = userWordsContent.filter(
+      (userWord) => userWord.difficulty === 'hard'
+    );
+
+    const hardWordsContentPromises = userHardWordsContent.map(async (userHardWord) =>
+      this.serverAPI.getWordByWordId({ wordId: userHardWord.wordId })
+    );
+
+    const hardWordsContent = await Promise.all(hardWordsContentPromises);
+    console.log(hardWordsContent);
+
+    // preparing random answers for the future rounds
+    const wordsContentAnswers: WordContent[] = [];
+    const usedNums: number[] = [];
+    const answersAmount = 10;
+    for (let i = 0; i < answersAmount; i += 1) {
+      const itemsOnPage = hardWordsContent.length;
+      let randomInt = getRandomInt(0, itemsOnPage - 1);
+      while (usedNums.includes(randomInt)) {
+        randomInt = getRandomInt(0, itemsOnPage - 1);
+      }
+      usedNums.push(randomInt);
+      wordsContentAnswers.push(hardWordsContent[randomInt]);
+    }
+
+    this.gameData = {
+      answers: [],
+      initialPage: 0,
+      currentPage: 0,
+      currentGroup: 0,
+      currentWordAnswerIndex: 0,
+      wordsContent: hardWordsContent,
+      wordsContentAnswers
+    };
+
+    this.startRound();
+  }
+
+  async startGameFromPage({ group, page }: { group: number; page: number }) {
+    const footerElem = document.querySelector('.footer') as HTMLElement;
+    footerElem.remove();
+
+    const contentElem = document.querySelector('.content') as HTMLElement;
+    contentElem.innerHTML = ``;
+    contentElem.append(this.componentElem);
+
+    if (this.localStorageAPI.accountStorage.isLoggedIn === true) {
+      const [wordsContent, userWordsContent] = await Promise.all([
+        this.serverAPI.getWords({ group, page }),
+        this.serverAPI.getUserWords({
+          token: this.localStorageAPI.accountStorage.token,
+          id: this.localStorageAPI.accountStorage.id
+        })
+      ]);
+
+      const userLearnedWordsContent = userWordsContent.filter(
+        (userWord) => userWord.difficulty === 'learned'
+      );
+
+      this.gameData = {
+        answers: [],
+        initialPage: page,
+        currentPage: page,
+        currentGroup: group,
+        currentWordAnswerIndex: 0,
+        wordsContent,
+        wordsContentAnswers: []
+      };
+
+      const answersAmount = 10;
+      const wordsInPage = 20;
+      let currentIndex = 0;
+
+      // preparing random (and not 'learned') answers for the future rounds
+      do {
+        const wordContentAnswer = this.gameData.wordsContent[currentIndex];
+        currentIndex += 1;
+
+        if (currentIndex === wordsInPage - 1) {
+          // eslint-disable-next-line
+          await this.updateWordsContent();
+
+          // because of the new page
+          currentIndex = 0;
+
+          // if there was a full cycle of pages in the group => we took all notLearned words from the group => start game
+          // if not => look for not learned words on this page
+          if (this.gameData.initialPage === this.gameData.currentPage) {
+            this.startRound();
+            return;
+          }
+        }
+
+        if (
+          userLearnedWordsContent.some(
+            // eslint-disable-next-line
+            (userLearnedWord) => userLearnedWord.wordId === wordContentAnswer.id
+          ) === false
+        ) {
+          this.gameData.wordsContentAnswers.push(wordContentAnswer);
+        }
+      } while (this.gameData.wordsContentAnswers.length !== answersAmount);
+    } else {
+      const wordsContent = await this.serverAPI.getWords({ group, page });
+
+      // preparing random answers for the future rounds
+      const wordsContentAnswers: WordContent[] = [];
+      const usedNums: number[] = [];
+      const answersAmount = 10;
+      for (let i = 0; i < answersAmount; i += 1) {
+        const itemsOnPage = 20;
+        let randomInt = getRandomInt(0, itemsOnPage - 1);
+        while (usedNums.includes(randomInt)) {
+          randomInt = getRandomInt(0, itemsOnPage - 1);
+        }
+        usedNums.push(randomInt);
+        wordsContentAnswers.push(wordsContent[randomInt]);
+      }
+
+      this.gameData = {
+        answers: [],
+        initialPage: page,
+        currentPage: page,
+        currentGroup: group,
+        currentWordAnswerIndex: 0,
+        wordsContent,
+        wordsContentAnswers
+      };
+    }
+
+    this.startRound();
+  }
+
+  async updateWordsContent() {
+    let prevPage = this.gameData.currentPage - 1;
+    if (prevPage <= -1) {
+      const lastPageIndex = 29;
+      prevPage = lastPageIndex;
+    }
+    this.gameData.currentPage = prevPage;
+
+    this.gameData.wordsContent = await this.serverAPI.getWords({
+      group: this.gameData.currentGroup,
+      page: this.gameData.currentPage
+    });
   }
 
   async startGame(group: number) {
@@ -103,7 +272,7 @@ export default class AudioCall {
       initialPage: page,
       currentPage: page,
       currentGroup: group,
-      currentWordContentIndex: 0,
+      currentWordAnswerIndex: 0,
       wordsContent,
       wordsContentAnswers
     };
@@ -116,8 +285,8 @@ export default class AudioCall {
     audioCallRoundElem.innerHTML = this.innerHtmlTemplateRound;
 
     const wordContentAnswer =
-      this.gameData.wordsContentAnswers[this.gameData.currentWordContentIndex];
-    this.gameData.currentWordContentIndex += 1;
+      this.gameData.wordsContentAnswers[this.gameData.currentWordAnswerIndex];
+    this.gameData.currentWordAnswerIndex += 1;
 
     // 5 optionElements = 1 answer wordTranslate + 4 options wordTranslate
     const randomAnswerPosition = getRandomInt(0, 4);
@@ -144,7 +313,7 @@ export default class AudioCall {
     const falsyOptionValues: string[] = [];
     const falsyOptionsAmount = 4;
     for (let i = 0; i < falsyOptionsAmount; i += 1) {
-      const itemsOnPage = 20;
+      const itemsOnPage = this.gameData.wordsContent.length;
       let randomInt = getRandomInt(0, itemsOnPage - 1);
       let potentialWordTranslate = this.gameData.wordsContent[randomInt].wordTranslate;
       while (

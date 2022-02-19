@@ -8,6 +8,10 @@
   background-color: $color-overlay-bg;
   z-index: 8;
 
+  ::-webkit-scrollbar-thumb {
+    background-color: $color-brand-1;
+  }
+
   &__container {
     display: flex;
     flex-direction: column;
