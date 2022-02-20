@@ -4,32 +4,38 @@ import { UserWordContent, StatisticsContent } from '../../interfaces/interfaceSe
 
 export default class Statistic {
   innerHtmlTemplate = `
-    <div class="statistic__short-term-container">
-      <div class="statistic__short-term-container__by-all">
-        <p>Статистика по всем словам:</p>
-        <div class="statistic__newWords-amount"></div>
-        <div class="statistic__learnedWords-amount"></div>
-        <div class="statistic__percentage-of-correct-answers"></div>
-      </div>
-
-
-      <div class="statistic__short-term-container__by-games">
-        <div class="statistic__sprint">
-          <p>Статистика по игре Спринт:</p>
-          <div class="statistic__newWords-amount"></div>
-          <div class="statistic__percentage-of-correct-answers"></div>
-          <div class="statistic__bestStreak"></div>
+    <div class="wrapper wrapper_padding">
+      <div class="statistic__short-term-container">
+        <div class="statistic__short-term-container__by-all">
+          <p>Статистика за сегодня</p>
+          <div>
+            <div class="statistic__newWords-amount"></div>
+            <div class="statistic__learnedWords-amount"></div>
+            <div class="statistic__percentage-of-correct-answers"></div>
+          </div>
         </div>
-        <div class="statistic__audioCall">
-          <p>Статистика по игре Аудиовызов:</p>
-          <div class="statistic__newWords-amount"></div>
-          <div class="statistic__percentage-of-correct-answers"></div>
-          <div class="statistic__bestStreak"></div>
+
+        <div class="statistic__short-term-container__by-games">
+          <div class="statistic__sprint">
+            <p>Спринт</p>
+            <div class="statistic__newWords-amount"></div>
+            <div class="statistic__percentage-of-correct-answers"></div>
+            <div class="statistic__bestStreak"></div>
+          </div>
+          <div class="statistic__audioCall">
+            <p>Аудиовызов</p>
+            <div class="statistic__newWords-amount"></div>
+            <div class="statistic__percentage-of-correct-answers"></div>
+            <div class="statistic__bestStreak"></div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="statistic__long-term-container">
-      
+      <svg class="svg-separator separator_light" viewBox="0 0 1440 500">
+        <path fill="#f7faf6" opacity="undefined" d="m-0.00068,275.37639l179.65893,78.92337c91.71939,44.0971 212.22767,51.21559 333.811,43.00477c121.58333,-8.21082 218.87202,-50.67035 294.61379,-78.13824c75.74177,-27.46789 181.5308,-128.32411 309.11414,-117.90077c80.33705,1.15107 197.67409,52.30215 253.01114,97.45322l70.79167,53.23507l1,151.04619l-65.79167,-2c-59.79167,0 -179.375,0 -298.95833,0c-119.58333,0 -239.16666,0 -358.74999,0c-119.58333,0 -239.16666,0 -358.74999,0c-119.58333,0 -239.16666,0 -298.95833,0l-59.79167,0l-1.00069,-225.62361z" id="svg_1" stroke="null"/>
+      </svg>
+      <div class="statistic__long-term-container">
+        
+      </div>
     </div>
   `;
 
@@ -49,7 +55,7 @@ export default class Statistic {
   async createThisComponent() {
     if (this.localStorageAPI.accountStorage.isLoggedIn === false) {
       this.componentElem.textContent =
-        'Функционал "Статистика" доступен только для авторизированных пользователей';
+        'Статистика доступна только авторизированным пользователям';
 
       this.componentElem.classList.add('statistic');
       return;
@@ -144,17 +150,17 @@ export default class Statistic {
       2
     ).toFixed(0);
 
-    newWordsAmountElem.textContent = `Новых слов: ${newWordsAmount}`;
-    learnedWordsAmountElem.textContent = `Выученных слов: ${learnedWordsAmount}`;
-    percentageOfCorrectElem.textContent = `Процент правильных ответов: ${percentageOfCorrect}%`;
+    newWordsAmountElem.innerHTML = `Новых слов: <span>${newWordsAmount}</span>`;
+    learnedWordsAmountElem.innerHTML = `Выученных слов: <span>${learnedWordsAmount}</span>`;
+    percentageOfCorrectElem.innerHTML = `Правильных ответов: <span>${percentageOfCorrect}%</span>`;
 
-    sprintNewWordsAmountElem.textContent = `Новых слов: ${sprintNewWordsAmount}`;
-    sprintPercentageOfCorrectElem.textContent = `Процент правильных ответов: ${sprintPercentageOfCorrect}%`;
-    sprintBestStreakElem.textContent = `Самая длинная серия правильных ответов: ${sprintBestStreak}`;
+    sprintNewWordsAmountElem.innerHTML = `Новых слов: <span> ${sprintNewWordsAmount}</span>`;
+    sprintPercentageOfCorrectElem.innerHTML = `Правильных ответов: <span> ${sprintPercentageOfCorrect}%</span>`;
+    sprintBestStreakElem.innerHTML = `Самая длинная серия правильных ответов: <span> ${sprintBestStreak}</span>`;
 
-    audioCallNewWordsAmountElem.textContent = `Новых слов: ${audioCallNewWordsAmount}`;
-    audioCallPercentageOfCorrectElem.textContent = `Процент правильных ответов: ${audioCallPercentageOfCorrect}%`;
-    audioCallBestStreakElem.textContent = `Самая длинная серия правильных ответов: ${audioCallBestStreak}`;
+    audioCallNewWordsAmountElem.innerHTML = `Новых слов: <span> ${audioCallNewWordsAmount}</span>`;
+    audioCallPercentageOfCorrectElem.innerHTML = `Правильных ответов: <span> ${audioCallPercentageOfCorrect}%</span>`;
+    audioCallBestStreakElem.innerHTML = `Самая длинная серия правильных ответов: <span> ${audioCallBestStreak}</span>`;
   }
 
   getTodays_NewWordsAmount_ByGame(userWords: UserWordContent[], gameName: 'sprint' | 'audioCall') {
