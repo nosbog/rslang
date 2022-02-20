@@ -1,4 +1,5 @@
 .book {
+  position: relative;
   min-height: MAX(calc(100vh - $height-footer), 500px);
   padding-top: calc($height-header + 20px);
   font-size: 1.6rem;
@@ -146,6 +147,55 @@
       height: 92px;
     }
   }
+
+  &__popup-overlay {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: $color-overlay-bg;
+    z-index: 10;
+
+    &.show {
+      display: block;
+    }
+  }
+
+  &__popup {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    overflow-y: auto;
+    min-height: 300px;
+    padding: 25px 40px;
+
+    font-size: 2.6rem;
+    background-color: $color-main-bg;
+    border-radius: 10px;
+    @include box-shadow(.6);
+
+    p {
+      text-align: center;
+    }
+
+    &__close-btn {
+      cursor: pointer;
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      transition: $transition-click;
+
+      &:hover {
+        filter: opacity(0.2);
+      }
+    }
+  }
 }
 
 @media (max-width: $breakpoint-laptop-s) {
@@ -189,6 +239,13 @@
         padding-top: 8px;
         padding-bottom: 8px;
       }
+    }
+
+    &__popup {
+      width: 80%;
+      min-height: 230px;
+      padding: 10px;
+      font-size: 2rem;
     }
 
     &[data-learned-page=true] .book__controls {

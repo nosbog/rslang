@@ -45,6 +45,12 @@ export default class Book {
     </div>
     <div class="wrapper wrapper_padding wrapper-book">
     </div>
+    <div class="book__popup-overlay">
+      <div class="book__popup">
+        <img class="book__popup__close-btn" src="./assets/svg/close.svg" alt="close">
+        <p></p>
+      </div>
+    </div>
   `;
 
   serverAPI: ServerAPI;
@@ -116,7 +122,7 @@ export default class Book {
         ) as NodeListOf<HTMLDivElement>;
 
         if (hardWordsElements.length < 5) {
-          alert('Для игры "Спринт" необходимо минимум 5 "сложных" слов');
+          this.showInfoPopUp('Для игры Спринт необходимо минимум 5 "сложных" слов.');
           return;
         }
 
@@ -138,7 +144,7 @@ export default class Book {
         ) as NodeListOf<HTMLDivElement>;
 
         if (hardWordsElements.length < 10) {
-          alert('Для игры "Аудиовызов" необходимо минимум 10 "сложных" слов');
+          this.showInfoPopUp('Для игры Аудиовызов необходимо минимум 10 "сложных" слов.');
           return;
         }
 
@@ -150,6 +156,11 @@ export default class Book {
 
       this.background.enableBg();
       this.background.setTheme('audioCall');
+    });
+
+    const closePopUpBtn = this.componentElem.querySelector('.book__popup__close-btn') as HTMLElement;
+    closePopUpBtn.addEventListener('click', () => {
+      this.componentElem.querySelector('.book__popup-overlay')?.classList.remove('show');
     });
   }
 
@@ -301,5 +312,13 @@ export default class Book {
       bookElement.setAttribute('data-learned-page', '');
       Book.toggleStartGameBtns(false);
     }
+  }
+
+  showInfoPopUp(text: string) {
+    const popUpElem = this.componentElem.querySelector('.book__popup') as HTMLElement;
+    const popUpElemInner = popUpElem.querySelector('p') as HTMLElement;
+    
+    popUpElemInner.textContent = text;
+    popUpElem.parentElement?.classList.add('show');
   }
 }
