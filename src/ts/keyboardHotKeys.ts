@@ -53,6 +53,10 @@ export default class KeyboardHotKeys {
           yesBtn.dispatchEvent(new Event('click'));
         }
       } else if (audioCallElem && hotKeysAudioCall.includes(event.code)) {
+        const options = audioCallElem.querySelectorAll(
+          '.audioCall__option'
+        ) as NodeListOf<HTMLButtonElement>;
+
         if (event.code === 'Enter') {
           const dontKnowBtn = audioCallElem.querySelector(
             '.audioCall__btn_skip'
@@ -68,6 +72,7 @@ export default class KeyboardHotKeys {
 
           if (!dontKnowBtn.className.includes('audioCall__btn_hide')) {
             dontKnowBtn.dispatchEvent(new Event('click'));
+            this.makeBtnsUsed(options);
           } else if (
             !continueBtn.className.includes('audioCall__btn_hide') &&
             optionsContainer.dataset.continueIsUsed !== 'true'
@@ -75,16 +80,23 @@ export default class KeyboardHotKeys {
             optionsContainer.dataset.continueIsUsed = 'true';
             continueBtn.dispatchEvent(new Event('click'));
           }
-        } else if (event.code.includes('Digit')) {
-          const options = audioCallElem.querySelectorAll(
-            '.audioCall__option'
-          ) as NodeListOf<HTMLButtonElement>;
-
+        } else if (event.code.includes('Digit') && !this.areBtnsUsed(options)) {
           const indexOfOption = +event.code.split('Digit')[1] - 1;
 
           options[indexOfOption].dispatchEvent(new Event('click'));
+          this.makeBtnsUsed(options);
         }
       }
     });
+  }
+
+  makeBtnsUsed(btns: NodeListOf<HTMLButtonElement>) {
+    btns.forEach((btn) => {
+      btn.dataset.isUsed = 'true';
+    });
+  }
+
+  areBtnsUsed(btns: NodeListOf<HTMLButtonElement>) {
+    return Array.from(btns).some((btn) => btn.dataset.isUsed === 'true');
   }
 }
