@@ -35,13 +35,16 @@ export default class KeyboardHotKeys {
 
           startGame.dispatchEvent(new Event('click'));
         }
-      } else if (gameResultElem && hotKeysGameResult.includes(event.code)) {
-        if (event.code === 'Enter') {
-          const toGamesBtn = gameResultElem.querySelector(
-            '.gameResult__btn_games'
-          ) as HTMLButtonElement;
+      } else if (gameResultElem) {
+        // if gamesResultElem exists => skip others
+        if (hotKeysGameResult.includes(event.code)) {
+          if (event.code === 'Enter') {
+            const toGamesBtn = gameResultElem.querySelector(
+              '.gameResult__btn_games'
+            ) as HTMLButtonElement;
 
-          toGamesBtn.dispatchEvent(new Event('click'));
+            toGamesBtn.dispatchEvent(new Event('click'));
+          }
         }
       } else if (sprintElem && hotKeysSprint.includes(event.code)) {
         const noBtn = sprintElem.querySelector('.sprint__no') as HTMLButtonElement;
