@@ -341,7 +341,7 @@ export default class PageItem {
 
           // if no error => continue
           if (status === 'learned') {
-            updatedOptional.dateWhenItBecameLearned = new Date().toLocaleDateString();
+            updatedOptional.dateWhenItBecameLearned = new Date().toLocaleDateString('en-US');
 
             this.serverAPI.updateUserWord({
               token: this.localStorageAPI.accountStorage.token,
@@ -371,7 +371,7 @@ export default class PageItem {
             difficulty: `${status}`,
             optional: {
               dateWhenItBecameLearned:
-                status === 'learned' ? new Date().toLocaleDateString() : false,
+                status === 'learned' ? new Date().toLocaleDateString('en-US') : false,
               dateWhenItBecameNew: false,
               gameInWhichItBecameNew: false,
               sprint: {
