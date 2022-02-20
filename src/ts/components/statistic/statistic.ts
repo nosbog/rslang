@@ -196,10 +196,11 @@ export default class Statistic {
   }
 
   getTodays_LearnedWordsAmount(userWords: UserWordContent[]) {
-    const learnedWords = userWords.filter(
-      (userWord) => typeof userWord.optional.dateWhenItBecameLearned === 'string'
+    const todaysLearnedWords = userWords.filter(
+      (userWord) =>
+        userWord.optional.dateWhenItBecameLearned === new Date().toLocaleDateString('en-US')
     );
 
-    return learnedWords.length;
+    return todaysLearnedWords.length;
   }
 }
