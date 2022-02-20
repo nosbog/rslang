@@ -68,6 +68,6 @@ export interface UserWordContent {
 }
 
 export interface StatisticsContent {
-  id: string;
+  id?: string;
   optional: OptionalUserStatistics;
 }

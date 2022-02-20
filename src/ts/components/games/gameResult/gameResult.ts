@@ -133,7 +133,7 @@ export default class GameResult {
     gameName: 'sprint' | 'audioCall',
     answers: { result: boolean; wordContent: WordContent }[]
   ) {
-    const currentDate = new Date().toLocaleDateString();
+    const currentDate = new Date().toLocaleDateString('en-US');
     const currentBestStreak = this.getBestTrueStreak(answers);
 
     // check if statistics exists
@@ -234,7 +234,7 @@ export default class GameResult {
 
         // the userWord exists but has not been learned => set new 'dateWhenItBecameNew' and 'gameInWhichItBecameNew'
         if (isWordNew === true) {
-          updatedOptional.dateWhenItBecameNew = new Date().toLocaleDateString();
+          updatedOptional.dateWhenItBecameNew = new Date().toLocaleDateString('en-US');
           updatedOptional.gameInWhichItBecameNew = `${gameName}`;
         }
 
@@ -242,7 +242,7 @@ export default class GameResult {
 
         if (currentDifficulty === 'basic') {
           updatedOptional.dateWhenItBecameLearned =
-            answer.result === true ? new Date().toLocaleDateString() : false;
+            answer.result === true ? new Date().toLocaleDateString('en-US') : false;
 
           this.serverAPI.updateUserWord({
             token: this.localStorageAPI.accountStorage.token,
@@ -271,8 +271,9 @@ export default class GameResult {
       } else {
         // this userWord doesn't exist => create new one
         const optional: OptionalUserWord = {
-          dateWhenItBecameLearned: answer.result === true ? new Date().toLocaleDateString() : false,
-          dateWhenItBecameNew: new Date().toLocaleDateString(),
+          dateWhenItBecameLearned:
+            answer.result === true ? new Date().toLocaleDateString('en-US') : false,
+          dateWhenItBecameNew: new Date().toLocaleDateString('en-US'),
           gameInWhichItBecameNew: gameName,
           sprint: {
             totalCount: 0,

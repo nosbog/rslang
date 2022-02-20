@@ -46,7 +46,7 @@ export default class Controller {
     this.account = new Account(this.serverAPI, this.localStorageAPI);
     this.footer = new Footer();
     this.main = new Main();
-    this.statistic = new Statistic();
+    this.statistic = new Statistic(this.serverAPI, this.localStorageAPI);
     this.games = new Games(this.serverAPI, this.localStorageAPI, this.contentURL);
     this.animatedBg = new Background();
     this.book = new Book(
@@ -75,7 +75,6 @@ export default class Controller {
     this.account.createComponent();
     this.main.createComponent();
     this.footer.createComponent();
-    this.statistic.createComponent();
     this.book.createComponent();
     this.games.createComponent();
     this.animatedBg.createComponent();
