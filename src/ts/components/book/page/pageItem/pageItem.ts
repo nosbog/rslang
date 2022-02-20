@@ -115,9 +115,19 @@ export default class PageItem {
     imageElem.style.backgroundImage = `url("${this.contentURL}${wordContent.image}")`;
 
     soundElem.addEventListener('click', () => {
-      const audio1 = new Audio(`${this.contentURL}${wordContent.audio}`);
-      const audio2 = new Audio(`${this.contentURL}${wordContent.audioMeaning}`);
-      const audio3 = new Audio(`${this.contentURL}${wordContent.audioExample}`);
+      const audioContainer = document.querySelector('.book__audio-container') as HTMLDivElement;
+      audioContainer.innerHTML = ``;
+
+      const audio1 = document.createElement('audio');
+      audio1.src = `${this.contentURL}${wordContent.audio}`;
+
+      const audio2 = document.createElement('audio');
+      audio2.src = `${this.contentURL}${wordContent.audioMeaning}`;
+
+      const audio3 = document.createElement('audio');
+      audio3.src = `${this.contentURL}${wordContent.audioExample}`;
+
+      audioContainer.append(audio1, audio2, audio3);
 
       soundElem.style.cursor = 'not-allowed';
       audio1.play();

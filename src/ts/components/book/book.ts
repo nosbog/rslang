@@ -51,6 +51,7 @@ export default class Book {
         <p></p>
       </div>
     </div>
+    <div class="book__audio-container"></div>
   `;
 
   serverAPI: ServerAPI;
@@ -158,7 +159,9 @@ export default class Book {
       this.background.setTheme('audioCall');
     });
 
-    const closePopUpBtn = this.componentElem.querySelector('.book__popup__close-btn') as HTMLElement;
+    const closePopUpBtn = this.componentElem.querySelector(
+      '.book__popup__close-btn'
+    ) as HTMLElement;
     closePopUpBtn.addEventListener('click', () => {
       this.componentElem.querySelector('.book__popup-overlay')?.classList.remove('show');
     });
@@ -317,7 +320,7 @@ export default class Book {
   showInfoPopUp(text: string) {
     const popUpElem = this.componentElem.querySelector('.book__popup') as HTMLElement;
     const popUpElemInner = popUpElem.querySelector('p') as HTMLElement;
-    
+
     popUpElemInner.textContent = text;
     popUpElem.parentElement?.classList.add('show');
   }
