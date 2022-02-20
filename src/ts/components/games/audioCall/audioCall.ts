@@ -332,9 +332,9 @@ export default class AudioCall {
 
     optionElements.forEach((optionElem, index) => {
       if (index === randomAnswerPosition) {
-        optionElem.textContent = `${wordContentAnswer.wordTranslate}`;
+        optionElem.textContent = `${index + 1} ${wordContentAnswer.wordTranslate}`;
       } else {
-        optionElem.textContent = `${falsyOptionValues[0]}`;
+        optionElem.textContent = `${index + 1} ${falsyOptionValues[0]}`;
         falsyOptionValues.splice(0, 1);
       }
     });

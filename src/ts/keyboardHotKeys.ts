@@ -3,7 +3,7 @@ export default class KeyboardHotKeys {
     document.addEventListener('keydown', (event: KeyboardEvent) => {
       const hotKeysGames = ['Digit1', 'Digit2', 'Enter'];
       const hotKeysGameResult = ['Enter'];
-      const hotKeysSprint = ['Digit1', 'Digit2'];
+      const hotKeysSprint = ['ArrowLeft', 'ArrowRight'];
       const hotKeysAudioCall = ['Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5', 'Enter'];
 
       if (
@@ -47,9 +47,9 @@ export default class KeyboardHotKeys {
         const noBtn = sprintElem.querySelector('.sprint__no') as HTMLButtonElement;
         const yesBtn = sprintElem.querySelector('.sprint__yes') as HTMLButtonElement;
 
-        if (event.code === 'Digit1') {
+        if (event.code === 'ArrowLeft') {
           noBtn.dispatchEvent(new Event('click'));
-        } else if (event.code === 'Digit2') {
+        } else if (event.code === 'ArrowRight') {
           yesBtn.dispatchEvent(new Event('click'));
         }
       } else if (audioCallElem && hotKeysAudioCall.includes(event.code)) {

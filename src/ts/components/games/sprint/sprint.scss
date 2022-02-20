@@ -94,11 +94,29 @@
       &.sprint__no {
         background-color: $color-wrong-answer;
         border-color: $color-wrong-answer;
+
+        &::before {
+          font-family: "Font Awesome 5 Free"; 
+          font-weight: 900;
+          content: '\f060';
+          display: inline-block;
+          position: relative;
+          right: 10%;
+        }
       }
 
       &.sprint__yes {
         background-color: $color-right-answer;
         border-color: $color-right-answer;
+
+        &::after {
+          font-family: "Font Awesome 5 Free";
+          font-weight: 900; 
+          content: "\f061";
+          display: inline-block;
+          position: relative;
+          left: 10%;
+        }
       }
     }
   }
