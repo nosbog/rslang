@@ -272,39 +272,11 @@
   }
 }
 
-// ---------------------------- Video Section
+// ---------------------------- Team Section
 
-.video-section {
+.team-section {
   background-color: $color-add-bg;
 }
-
-.video-container {
-  position: relative;
-  min-height: 500px;
-  height: 100%;
-  width: 80%;
-  z-index: 10;
-
-  iframe {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-  }
-}
-
-@media (max-width: $breakpoint-tablet) {
-  .video-container {
-    min-height: 300px;
-  }
-}
-
-@media (max-width: $breakpoint-mobile) {
-  .video-container {
-    min-height: 200px;
-  }
-}
-
-// ---------------------------- Team Section
 
 .developer-container {
   width: 80%;
@@ -316,6 +288,7 @@
   align-items: center;
   padding: 20px;
   margin-bottom: 40px;
+  position: relative;
 
   .developer__column {
     padding: 10px;
