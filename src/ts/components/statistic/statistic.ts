@@ -338,7 +338,7 @@ export default class Statistic {
 
   showNewWordsStatisctics(userWordsContent: UserWordContent[], dateType: 'dateWhenItBecameLearned' | 'dateWhenItBecameNew') {
     const { convertedDatesArr, numberOfWordsArr } = this.getStatistics(userWordsContent, dateType);
-    const text = 'Колличество новых слов по дням';
+    const text = 'Количество новых слов по дням';
 
     const chartConfig = this.getChartCongig(convertedDatesArr, numberOfWordsArr, text);
 
@@ -347,7 +347,7 @@ export default class Statistic {
 
   showLearningWordsStatisctics(userWordsContent: UserWordContent[], dateType: 'dateWhenItBecameLearned' | 'dateWhenItBecameNew') {
     const { convertedDatesArr, numberOfWordsArr } = this.getStatistics(userWordsContent, dateType);
-    const text = 'Количества изученных слов за весь период по дням';
+    const text = 'Количество изученных слов за весь период по дням';
     const totalNumberOfLearnedWordsToDate = numberOfWordsArr.map((num, i, arr) => arr.slice(0, i + 1).reduce((sum, current) => sum + current, 0));
 
     const chartConfig = this.getChartCongig(convertedDatesArr, totalNumberOfLearnedWordsToDate, text);
