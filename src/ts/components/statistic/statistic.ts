@@ -163,7 +163,7 @@ export default class Statistic {
     ).toFixed(0);
 
     newWordsAmountElem.innerHTML = `Новых слов: <span>${newWordsAmount}</span>`;
-    learnedWordsAmountElem.innerHTML = `Выученных слов: <span>${learnedWordsAmount}</span>`;
+    learnedWordsAmountElem.innerHTML = `Изученные слов: <span>${learnedWordsAmount}</span>`;
     percentageOfCorrectElem.innerHTML = `Правильных ответов: <span>${percentageOfCorrect}%</span>`;
 
     sprintNewWordsAmountElem.innerHTML = `Новых слов: <span> ${sprintNewWordsAmount}</span>`;

@@ -125,11 +125,7 @@
         width: calc(100% / 2 - 30px);
       }
     }
-  }
-}
 
-@media (max-width: $breakpoint-tablet) {
-  .statistic {
     &__long-term-container {
       .statistic__long-term-container__chart-container {
         flex-direction: column;
@@ -141,7 +137,11 @@
         }
       }
     }
+  }
+}
 
+@media (max-width: $breakpoint-tablet) {
+  .statistic {
     &__short-term-container,
     &__long-term-container {
       p {
