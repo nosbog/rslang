@@ -18,7 +18,6 @@
     position: relative;
 
     .svg-separator {
-      bottom: -60px;
       z-index: -5;
     }
   }
@@ -35,6 +34,7 @@
       width: inherit;
       display: flex;
       justify-content: space-around;
+      align-items: end;
 
       & > div {
         width: calc(100% / 3 - 30px);
@@ -42,6 +42,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        text-align: center;
 
         & > span {
           font-size: 5rem;
@@ -106,6 +107,71 @@
 
     .svg-separator {
       bottom: -15px;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-laptop-s) {
+  .statistic {
+    &__short-term-container__by-games {
+      & > div {
+        width: calc(100% / 2 - 30px);
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-tablet) {
+  .statistic {
+    &__long-term-container {
+      .statistic__long-term-container__chart-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 80px;
+
+        & > div {
+          width: calc(90% / 1 - 30px);
+        }
+      }
+    }
+
+    &__short-term-container,
+    &__long-term-container {
+      p {
+        font-size: 2.4rem;
+      }
+    }
+
+    &__short-term-container__by-games > div {
+      p {
+        font-size: 2rem;
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .statistic {
+    &__short-term-container__by-all {
+      & > div {
+        flex-direction: column;
+        align-items: center;
+        gap: 60px;
+
+        & > div > span {
+          font-size: 6rem;
+        }
+      }
+    }
+
+    &__short-term-container__by-games  {
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+
+      & > div {
+        width: calc(90% / 1 - 30px);
+      }
     }
   }
 }

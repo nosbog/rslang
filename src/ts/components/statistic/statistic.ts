@@ -225,6 +225,7 @@ export default class Statistic {
     if (this.localStorageAPI.accountStorage.isLoggedIn === true) {
       Chart.register(...registerables);
       Chart.defaults.font.size = 14;
+      // if (screen.width < )
       Chart.defaults.font.family = '"Montserrat", "Helvetica", "Arial", sans-serif';
 
       const [userWordsContent] = await Promise.all([
