@@ -4,13 +4,23 @@
   font-size: 1.8rem;
   user-select: none;
 
-  .svg-separator {
-    z-index: -5;
-  }
-
   &__short-term-container,
   &__long-term-container {
     width: 100%;
+
+    p {
+      font-size: 3rem;
+      font-weight: 500;
+    }
+  }
+
+  &__short-term-container {
+    position: relative;
+
+    .svg-separator {
+      bottom: -60px;
+      z-index: -5;
+    }
   }
 
   &__short-term-container__by-all {
@@ -20,11 +30,6 @@
     align-items: center;
     gap: 80px;
     margin-bottom: 100px;
-
-    p {
-      font-size: 3rem;
-      font-weight: 500;
-    }
 
     & > div {
       width: inherit;
@@ -52,11 +57,6 @@
     display: flex;
     justify-content: space-around;
 
-    p {
-      font-size: 2.4rem;
-      font-weight: 500;
-    }
-
     & > div {
       width: calc(80% / 2 - 30px);
       min-height: 200px;
@@ -71,6 +71,8 @@
 
       p {
         margin-bottom: 15px;
+        font-size: 2.4rem;
+        font-weight: 500;
       }
 
       & > div {
@@ -84,6 +86,26 @@
   }
 
   &__long-term-container {
+    position: relative;
     background-color: $color-add-bg;
+
+    .wrapper {
+      position: relative;
+      z-index: 10;
+      gap: 80px;
+    }
+
+    .statistic__long-term-container__chart-container {
+      display: flex;
+      width: 100%;
+
+      & > div {
+        width: calc(100% / 2 - 30px);
+      }
+    } 
+
+    .svg-separator {
+      bottom: -15px;
+    }
   }
 }
