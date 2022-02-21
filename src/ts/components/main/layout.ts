@@ -138,7 +138,8 @@ const main = `
         </div>
         <div class="developer__column">
           <h3 class="developer___name">Настя <a href="https://github.com/aytsaN"><i class="fab fa-github"></i></a></h3>
-          <p class="developer___desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae aspernatur voluptatum molestias, harum fuga culpa saepe ipsum ullam? At est delectus totam praesentium, maiores tenetur quas. Doloribus fugit dolor nobis?</p>
+          <p class="developer___desc">Придумала и реализовала дизайн приложения: подобрала цвета и шрифты, стилизовала векторную графику, написала анимированный фон главной страницы и страницы мини-игр.
+          Подключила и настроила графики долгосрочной статистики. Создала главную страницу приложения. Добавила часть валидации форм страницы аккаунта. Сделала копию бэкэнда.</p>
         </div>
       </div> 
     </div>
