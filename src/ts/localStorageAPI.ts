@@ -52,8 +52,6 @@ export default class LocalStorageAPI {
         await this.updateToken();
       }
     }
-
-    console.log(this.accountStorage);
   }
 
   setIntervalForUpdatingToken() {

@@ -82,7 +82,6 @@ export default class GameResult {
   ) {
     this.createComponent();
     this.setListeners();
-    console.log('show RESULT');
 
     if (this.localStorageAPI.accountStorage.isLoggedIn === true) {
       await this.updateUserWords_OptionalProperty(gameName, answers);

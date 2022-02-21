@@ -151,7 +151,6 @@ export default class Book {
 
         this.games.audioCall.startGameWithHardWords();
       } else if (typeof +groupValue === 'number') {
-        console.log('from page');
         this.games.audioCall.startGameFromPage({ group: +groupValue, page: +pageValue });
       }
 

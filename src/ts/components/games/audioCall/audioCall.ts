@@ -103,7 +103,6 @@ export default class AudioCall {
     );
 
     const hardWordsContent = await Promise.all(hardWordsContentPromises);
-    console.log(hardWordsContent);
 
     // preparing random answers for the future rounds
     const wordsContentAnswers: WordContent[] = [];
