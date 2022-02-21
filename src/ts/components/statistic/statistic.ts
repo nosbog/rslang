@@ -193,6 +193,10 @@ export default class Statistic {
     const currentDate = new Date().toLocaleDateString('en-US');
 
     if (currentDate in userStatistics.optional) {
+      if (userStatistics.optional[currentDate][gameName].totalCount === 0) {
+        return 0;
+      }
+
       return +(
         (userStatistics.optional[currentDate][gameName].trueCount /
           userStatistics.optional[currentDate][gameName].totalCount) *
