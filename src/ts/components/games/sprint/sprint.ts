@@ -490,7 +490,6 @@ export default class Sprint {
       } else {
         this.gameData.seriesCount += 1;
       }
-
     } else {
       this.gameData.seriesCount = 0;
     }
