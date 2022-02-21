@@ -440,12 +440,15 @@ export default class Sprint {
 
     const intervalId = setInterval(() => {
       timerElem.textContent = `${secondsGameDuration}`;
+      const sprintElem = document.querySelector('.sprint') as HTMLDivElement;
+
       if (secondsGameDuration <= 0) {
-        const sprintElem = document.querySelector('.sprint') as HTMLDivElement;
         // check if the user has left the sprint game: if elem with 'sprint' class exists
         if (sprintElem) {
           this.gameResult.showComponent('sprint', this.gameData.answers);
         }
+        clearInterval(intervalId);
+      } else if (!sprintElem) {
         clearInterval(intervalId);
       }
       secondsGameDuration -= 1;
