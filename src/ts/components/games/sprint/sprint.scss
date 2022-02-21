@@ -1,11 +1,55 @@
 .sprint {
-  height: max(calc(100vh - $height-header), 500px);
-  margin-top: 65px;
+  height: max(calc(100vh - 160px), 600px);
+  margin-top: 100px;
+  margin-bottom: 60px;
   font-size: 3rem;
   color: $color-font-light;
 
   .wrapper {
     gap: 40px;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__stat {
+    display: flex;
+    justify-content: center;
+    min-width: 450px;
+    gap: 45px;
+    font-size: 80%;
+    padding: 12px;
+    margin: 30px;
+    border: 1px solid $color-add-bg-transparent;
+    border-radius: 5px;
+  }
+
+  &__series-count {
+    position: relative;
+
+    .dots-container {
+      display: flex;
+      display: flex;
+      gap: 20px;
+    }
+
+    .dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 3px solid #1d3557bd;
+
+      &.active {
+        background-color: $color-brand-1;
+      }
+    }
+  }
+
+  &__stat-current-score {
+    margin-left: 5px;
   }
 
   &__timer-container {
@@ -53,13 +97,13 @@
 
   &__word,
   &__option {
-    font-size: 8vh;
+    font-size: 6vh;
     font-weight: 500;
     letter-spacing: 3px;
   }
 
   &__word {
-    font-size: 13vh;
+    font-size: 11vh;
   }
 
   &__btns {
@@ -94,11 +138,29 @@
       &.sprint__no {
         background-color: $color-wrong-answer;
         border-color: $color-wrong-answer;
+
+        &::before {
+          font-family: "Font Awesome 5 Free"; 
+          font-weight: 900;
+          content: '\f060';
+          display: inline-block;
+          position: relative;
+          right: 10%;
+        }
       }
 
       &.sprint__yes {
         background-color: $color-right-answer;
         border-color: $color-right-answer;
+
+        &::after {
+          font-family: "Font Awesome 5 Free";
+          font-weight: 900; 
+          content: "\f061";
+          display: inline-block;
+          position: relative;
+          left: 10%;
+        }
       }
     }
   }
@@ -115,6 +177,21 @@
 
 @media (max-width: $breakpoint-mobile) {
   .sprint {
+    &__stat {
+      font-size: 2rem;
+      min-width: 315px;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .sprint {
+
+    &__stat {
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
 
     &__word,
     &__option {

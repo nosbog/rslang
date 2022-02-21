@@ -1,3 +1,4 @@
+import KeyboardHotKeys from './keyboardHotKeys';
 import ServerAPI from './serverAPI';
 import LocalStorageAPI from './localStorageAPI';
 import Header from './components/header/header';
@@ -10,6 +11,8 @@ import Account from './components/account/account';
 import Background from './components/background/background';
 
 export default class Controller {
+  keyboardHotKeys: KeyboardHotKeys;
+
   serverAPI: ServerAPI;
 
   localStorageAPI: LocalStorageAPI;
@@ -37,14 +40,29 @@ export default class Controller {
 
     this.localStorageAPI = new LocalStorageAPI(this.serverAPI);
 
+    this.keyboardHotKeys = new KeyboardHotKeys();
+
     this.header = new Header(this.localStorageAPI);
     this.account = new Account(this.serverAPI, this.localStorageAPI);
     this.footer = new Footer();
     this.main = new Main();
-    this.statistic = new Statistic();
-    this.book = new Book(this.serverAPI, this.localStorageAPI, this.contentURL);
+    this.statistic = new Statistic(this.serverAPI, this.localStorageAPI);
     this.games = new Games(this.serverAPI, this.localStorageAPI, this.contentURL);
     this.animatedBg = new Background();
+    this.book = new Book(
+      this.serverAPI,
+      this.localStorageAPI,
+      this.contentURL,
+      this.games,
+      this.animatedBg
+    );
+
+    this.asyncConstructor();
+  }
+
+  async asyncConstructor() {
+    await this.localStorageAPI.checkForCurrentUser();
+    this.localStorageAPI.setIntervalForUpdatingToken();
 
     this.createComponents();
     this.setListeners();
@@ -57,7 +75,6 @@ export default class Controller {
     this.account.createComponent();
     this.main.createComponent();
     this.footer.createComponent();
-    this.statistic.createComponent();
     this.book.createComponent();
     this.games.createComponent();
     this.animatedBg.createComponent();

@@ -36,22 +36,28 @@ export interface WordContent {
 }
 
 export interface OptionalUserWord {
-  timestampWhenItWasLearned: number | false;
+  dateWhenItBecameLearned: string | false;
+  dateWhenItBecameNew: string | false;
+  gameInWhichItBecameNew: string | false;
   sprint: {
     totalCount: number;
     trueCount: number;
-    bestStreak: number;
   };
   audioCall: {
     totalCount: number;
     trueCount: number;
-    bestStreak: number;
   };
 }
 
-// NOT IMPLEMENTED
 export interface OptionalUserStatistics {
-  [timestamp: string | number]: OptionalUserWord;
+  [date: string]: {
+    sprint: {
+      bestStreak: number;
+    };
+    audioCall: {
+      bestStreak: number;
+    };
+  };
 }
 
 export interface UserWordContent {
@@ -62,6 +68,6 @@ export interface UserWordContent {
 }
 
 export interface StatisticsContent {
-  id: string;
-  learnedWords: number;
+  id?: string;
+  optional: OptionalUserStatistics;
 }

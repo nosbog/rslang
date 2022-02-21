@@ -1,4 +1,8 @@
-import { WordContent, OptionalUserWord } from '../../../interfaces/interfaceServerAPI';
+import {
+  WordContent,
+  OptionalUserWord,
+  OptionalUserStatistics
+} from '../../../interfaces/interfaceServerAPI';
 import ServerAPI from '../../../serverAPI';
 import LocalStorageAPI from '../../../localStorageAPI';
 
@@ -23,6 +27,7 @@ export default class GameResult {
   innerHtmlTemplateGameResultItem = `
     <img class="gameResult__audio" src="./assets/svg/volumeUp.svg" alt="volumeUp">
     <div class="gameResult__word"></div>
+    <p>-</p>
     <div class="gameResult__translate"></div>
   `;
 
@@ -71,7 +76,7 @@ export default class GameResult {
     this.setThisListeners();
   }
 
-  showComponent(
+  async showComponent(
     gameName: 'sprint' | 'audioCall',
     answers: Array<{ result: boolean; wordContent: WordContent }>
   ) {
@@ -80,7 +85,8 @@ export default class GameResult {
     console.log('show RESULT');
 
     if (this.localStorageAPI.accountStorage.isLoggedIn === true) {
-      this.updateUserWords_OptionalProperty(gameName, answers);
+      await this.updateUserWords_OptionalProperty(gameName, answers);
+      await this.updateUserStatistics(gameName, answers);
     }
 
     const contentElem = document.querySelector('.content') as HTMLElement;
@@ -94,6 +100,99 @@ export default class GameResult {
 
     this.createGameResultItems(truthyAnswerObjs, truthyContainer);
     this.createGameResultItems(falsyAnswerObjs, falsyContainer);
+  }
+
+  getBestTrueStreak(answers: { result: boolean; wordContent: WordContent }[]) {
+    if (answers.length === 0) {
+      return 0;
+    }
+
+    const streaks: Array<number> = [];
+    let streak = 0;
+    answers.forEach((answer, index) => {
+      if (answer.result === true) {
+        streak += 1;
+      }
+
+      if (index === answers.length - 1) {
+        streaks.push(streak);
+        return;
+      }
+
+      if (answer.result === false) {
+        streaks.push(streak);
+        streak = 0;
+      }
+    });
+
+    streaks.sort((a, b) => b - a);
+    return streaks[0];
+  }
+
+  async updateUserStatistics(
+    gameName: 'sprint' | 'audioCall',
+    answers: { result: boolean; wordContent: WordContent }[]
+  ) {
+    const currentDate = new Date().toLocaleDateString('en-US');
+    const currentBestStreak = this.getBestTrueStreak(answers);
+
+    // check if statistics exists
+    try {
+      const userStatistics = await this.serverAPI.getStatistics({
+        token: this.localStorageAPI.accountStorage.token,
+        id: this.localStorageAPI.accountStorage.id
+      });
+
+      // if no error: it does:
+
+      // check if CURRENT statistics exists
+      // if true => check which if better
+      // if false => create 'current day' statistics
+      if (currentDate in userStatistics.optional) {
+        const currentStatistics = userStatistics.optional[currentDate];
+
+        // check if 'currentBestStreak' is better than one which is already in statistics
+        // if true => update
+        // if false => skip
+        if (currentStatistics[gameName].bestStreak < currentBestStreak) {
+          const updatedOptionalStatistics = userStatistics.optional;
+          updatedOptionalStatistics[currentDate][gameName].bestStreak = currentBestStreak;
+
+          this.serverAPI.createStatistics({
+            token: this.localStorageAPI.accountStorage.token,
+            id: this.localStorageAPI.accountStorage.id,
+            optional: updatedOptionalStatistics
+          });
+        }
+      } else {
+        const updatedOptionalStatistics = userStatistics.optional;
+        updatedOptionalStatistics[currentDate] = {
+          sprint: { bestStreak: gameName === 'sprint' ? currentBestStreak : 0 },
+          audioCall: { bestStreak: gameName === 'audioCall' ? currentBestStreak : 0 }
+        };
+
+        this.serverAPI.createStatistics({
+          token: this.localStorageAPI.accountStorage.token,
+          id: this.localStorageAPI.accountStorage.id,
+          optional: updatedOptionalStatistics
+        });
+      }
+    } catch {
+      // statistics doesn't exist => create new one
+
+      const optionalStatistics: OptionalUserStatistics = {
+        [currentDate]: {
+          sprint: { bestStreak: gameName === 'sprint' ? currentBestStreak : 0 },
+          audioCall: { bestStreak: gameName === 'audioCall' ? currentBestStreak : 0 }
+        }
+      };
+
+      this.serverAPI.createStatistics({
+        token: this.localStorageAPI.accountStorage.token,
+        id: this.localStorageAPI.accountStorage.id,
+        optional: optionalStatistics
+      });
+    }
   }
 
   async updateUserWords_OptionalProperty(
@@ -113,7 +212,7 @@ export default class GameResult {
       // checking if a word met for the first time in mini-games
       let isWordNew: boolean;
       if (relatedUserWordContent) {
-        if (relatedUserWordContent.optional.timestampWhenItWasLearned === false) {
+        if (relatedUserWordContent.optional.dateWhenItBecameNew === false) {
           isWordNew = true;
         } else {
           isWordNew = false;
@@ -122,12 +221,9 @@ export default class GameResult {
         isWordNew = true;
       }
 
-      // check if the userWord (related to the word witch was used in the game) exists
       if (relatedUserWordContent) {
-        // => this userWord already exists => only update 'optional'
         const updatedOptional: OptionalUserWord = relatedUserWordContent.optional;
 
-        // change game statistics in userWord (after game)
         if (gameName === 'sprint') {
           updatedOptional.sprint.totalCount += 1;
           if (answer.result === true) updatedOptional.sprint.trueCount += 1;
@@ -136,31 +232,56 @@ export default class GameResult {
           if (answer.result === true) updatedOptional.audioCall.trueCount += 1;
         }
 
-        // the userWord exists but has not been learned => set new 'timestampWhenItWasLearned'
-        // (how it can be real?!: at first it was created in book component, when changing userWord status)
+        // the userWord exists but has not been learned => set new 'dateWhenItBecameNew' and 'gameInWhichItBecameNew'
         if (isWordNew === true) {
-          updatedOptional.timestampWhenItWasLearned = new Date().getTime();
+          updatedOptional.dateWhenItBecameNew = new Date().toLocaleDateString('en-US');
+          updatedOptional.gameInWhichItBecameNew = `${gameName}`;
         }
 
-        this.serverAPI.updateUserWord({
-          token: this.localStorageAPI.accountStorage.token,
-          id: this.localStorageAPI.accountStorage.id,
-          wordId: answer.wordContent.id,
-          optional: updatedOptional
-        });
+        const currentDifficulty = relatedUserWordContent.difficulty;
+
+        if (currentDifficulty === 'basic') {
+          updatedOptional.dateWhenItBecameLearned =
+            answer.result === true ? new Date().toLocaleDateString('en-US') : false;
+
+          this.serverAPI.updateUserWord({
+            token: this.localStorageAPI.accountStorage.token,
+            id: this.localStorageAPI.accountStorage.id,
+            wordId: answer.wordContent.id,
+            difficulty: answer.result === true ? 'learned' : 'hard',
+            optional: updatedOptional
+          });
+        } else if (currentDifficulty === 'hard') {
+          this.serverAPI.updateUserWord({
+            token: this.localStorageAPI.accountStorage.token,
+            id: this.localStorageAPI.accountStorage.id,
+            wordId: answer.wordContent.id,
+            difficulty: answer.result === true ? 'basic' : 'hard',
+            optional: updatedOptional
+          });
+        } else if (currentDifficulty === 'learned') {
+          this.serverAPI.updateUserWord({
+            token: this.localStorageAPI.accountStorage.token,
+            id: this.localStorageAPI.accountStorage.id,
+            wordId: answer.wordContent.id,
+            difficulty: answer.result === true ? 'learned' : 'basic',
+            optional: updatedOptional
+          });
+        }
       } else {
         // this userWord doesn't exist => create new one
         const optional: OptionalUserWord = {
-          timestampWhenItWasLearned: new Date().getTime(),
+          dateWhenItBecameLearned:
+            answer.result === true ? new Date().toLocaleDateString('en-US') : false,
+          dateWhenItBecameNew: new Date().toLocaleDateString('en-US'),
+          gameInWhichItBecameNew: gameName,
           sprint: {
             totalCount: 0,
-            trueCount: 0,
-            bestStreak: 0
+            trueCount: 0
           },
           audioCall: {
             totalCount: 0,
-            trueCount: 0,
-            bestStreak: 0
+            trueCount: 0
           }
         };
 
@@ -172,13 +293,11 @@ export default class GameResult {
           optional.audioCall.trueCount = answer.result === true ? 1 : 0;
         }
 
-        // 'difficulty' = 'basic', because its default value for the first encountered word
-        // (Only 3 'difficulty' values at all: 'basic', 'hard', 'learned')
         this.serverAPI.createUserWord({
           token: this.localStorageAPI.accountStorage.token,
           id: this.localStorageAPI.accountStorage.id,
           wordId: answer.wordContent.id,
-          difficulty: 'basic',
+          difficulty: answer.result === true ? 'learned' : 'hard',
           optional
         });
       }

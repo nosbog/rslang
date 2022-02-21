@@ -6,49 +6,55 @@ export default class PageItem {
   innerHtmlTemplatePageItem = `
     <div class="pageItem__image"></div>
     <div class="pageItem__header">
+      <span class="pageItem__status">
+        <i class="far fa-check-circle learned"></i>
+        <i class="fas fa-asterisk hard"></i>
+      </span>
       <span class="pageItem__word"></span>
       -
       <span class="pageItem__word-transcription"></span>
-      <img class="pageItem__sound-image" src="./assets/svg/volumeUp.svg" alt="volumeUp">
-      :
+      -
       <span class="pageItem__word-translate"></span>
+      <img class="pageItem__sound-image" src="./assets/svg/volumeUp.svg" alt="volumeUp">
     </div>
     <div class="pageItem__explanation"></div>
     <div class="pageItem__explanation-translate"></div>
     <div class="pageItem__example"></div>
     <div class="pageItem__example-translate"></div>
     <div class="pageItem__controls"></div>
-    <div class="pageItem__statistic">
-      <img class="pageItem__statistic__close-btn" src="./assets/svg/close.svg" alt="close">
-      <p>Статистика по слову <span class="pageItem__statistic__word"></span></p>
-      <table class="pageItem__statistic__table">
-        <thead>
-          <tr>
-            <th>Мини-игра</th>
-            <th>Правильно</th>
-            <th>Неправильно</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="pageItem__statistic__table__tr-sprint">
-            <td>Спринт</td>
-            <td class="pageItem__statistic__table__trueCount"></td>
-            <td class="pageItem__statistic__table__falseCount"></td>
-          </tr>
-          <tr class="pageItem__statistic__table__tr-audioCall">
-            <td>Аудиовызов</td>
-            <td class="pageItem__statistic__table__trueCount"></td>
-            <td class="pageItem__statistic__table__falseCount"></td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="pageItem__statistic-overlay">
+      <div class="pageItem__statistic">
+        <img class="pageItem__statistic__close-btn" src="./assets/svg/close.svg" alt="close">
+        <p>Статистика по слову <span class="pageItem__statistic__word"></span></p>
+        <table class="pageItem__statistic__table">
+          <thead>
+            <tr>
+              <th>Мини-игра</th>
+              <th>Правильно</th>
+              <th>Неправильно</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="pageItem__statistic__table__tr-sprint">
+              <td>Спринт</td>
+              <td class="pageItem__statistic__table__trueCount"></td>
+              <td class="pageItem__statistic__table__falseCount"></td>
+            </tr>
+            <tr class="pageItem__statistic__table__tr-audioCall">
+              <td>Аудиовызов</td>
+              <td class="pageItem__statistic__table__trueCount"></td>
+              <td class="pageItem__statistic__table__falseCount"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   `;
 
   innerHtmlTemplateControls_GroupWords_LoggedInUser = `
-    <img class="pageItem__icon pageItem__icon_learned-word" src="./assets/svg/verified.svg" alt="learned word">
-    <img class="pageItem__icon pageItem__icon_hard-word" src="./assets/svg/help.svg" alt="hard word">
-    <img class="pageItem__icon pageItem__icon_statistic" src="./assets/svg/fact_check.svg" alt="word statistic">
+    <img class="pageItem__icon pageItem__icon_learned-word" src="./assets/svg/verified.svg" alt="learned word" title="+ в изученные слова">
+    <img class="pageItem__icon pageItem__icon_hard-word" src="./assets/svg/help.svg" alt="hard word" title="+ в сложные слова">
+    <img class="pageItem__icon pageItem__icon_statistic" src="./assets/svg/fact_check.svg" alt="word statistic" title="статистика по слову">
   `;
 
   innerHtmlTemplateControls_HardWords_or_LearnedWords = `
@@ -109,9 +115,19 @@ export default class PageItem {
     imageElem.style.backgroundImage = `url("${this.contentURL}${wordContent.image}")`;
 
     soundElem.addEventListener('click', () => {
-      const audio1 = new Audio(`${this.contentURL}${wordContent.audio}`);
-      const audio2 = new Audio(`${this.contentURL}${wordContent.audioMeaning}`);
-      const audio3 = new Audio(`${this.contentURL}${wordContent.audioExample}`);
+      const audioContainer = document.querySelector('.book__audio-container') as HTMLDivElement;
+      audioContainer.innerHTML = ``;
+
+      const audio1 = document.createElement('audio');
+      audio1.src = `${this.contentURL}${wordContent.audio}`;
+
+      const audio2 = document.createElement('audio');
+      audio2.src = `${this.contentURL}${wordContent.audioMeaning}`;
+
+      const audio3 = document.createElement('audio');
+      audio3.src = `${this.contentURL}${wordContent.audioExample}`;
+
+      audioContainer.append(audio1, audio2, audio3);
 
       soundElem.style.cursor = 'not-allowed';
       audio1.play();
@@ -168,7 +184,8 @@ export default class PageItem {
 
   listeners_ForPageItem_ForLoggedInUser_ForGroupWords(
     pageItemElem: HTMLDivElement,
-    wordContent: WordContent
+    wordContent: WordContent,
+    applyStylesIfLearnedPage: () => void
   ) {
     this.listenerForUserWordStatistic(pageItemElem, wordContent);
 
@@ -182,20 +199,24 @@ export default class PageItem {
       wordContent,
       hardWordIcon,
       'hard',
-      'pageItem_hard-word'
+      'pageItem_hard-word',
+      applyStylesIfLearnedPage
     );
     this.listenerForChangeUserWordDifficulty(
       pageItemElem,
       wordContent,
       learnedWordIcon,
       'learned',
-      'pageItem_learned-word'
+      'pageItem_learned-word',
+      applyStylesIfLearnedPage
     );
   }
 
   listenerForUserWordStatistic(pageItemElem: HTMLElement, wordContent: WordContent) {
     const closeBtn = pageItemElem.querySelector('.pageItem__statistic__close-btn') as HTMLElement;
-    const statisticElem = pageItemElem.querySelector('.pageItem__statistic') as HTMLDivElement;
+    const statisticElem = pageItemElem.querySelector(
+      '.pageItem__statistic-overlay'
+    ) as HTMLDivElement;
     const statisticIcon = pageItemElem.querySelector('.pageItem__icon_statistic') as HTMLElement;
 
     closeBtn.addEventListener('click', () => {
@@ -262,7 +283,8 @@ export default class PageItem {
     wordContent: WordContent,
     iconElem: HTMLElement,
     status: string,
-    styleClass: string
+    styleClass: string,
+    applyStylesIfLearnedPage: () => void
   ) {
     const learnedWordIcon = pageItemElem.querySelector(
       '.pageItem__icon_learned-word'
@@ -278,15 +300,35 @@ export default class PageItem {
         pageItemElem.className = '';
         pageItemElem.classList.add('pageItem');
 
-        // click on used btn => update only userWord 'difficulty' = 'basic'
-        this.serverAPI.updateUserWord({
-          token: this.localStorageAPI.accountStorage.token,
-          id: this.localStorageAPI.accountStorage.id,
-          wordId: wordContent.id,
-          difficulty: 'basic'
-        });
+        if (status === 'learned') {
+          const userWordContent = await this.serverAPI.getUserWordByWordId({
+            token: this.localStorageAPI.accountStorage.token,
+            id: this.localStorageAPI.accountStorage.id,
+            wordId: wordContent.id
+          });
+
+          const updatedOptional = userWordContent.optional;
+          updatedOptional.dateWhenItBecameLearned = false;
+
+          this.serverAPI.updateUserWord({
+            token: this.localStorageAPI.accountStorage.token,
+            id: this.localStorageAPI.accountStorage.id,
+            wordId: wordContent.id,
+            difficulty: 'basic',
+            optional: updatedOptional
+          });
+        } else {
+          // click on used btn => update only userWord 'difficulty' = 'basic'
+          this.serverAPI.updateUserWord({
+            token: this.localStorageAPI.accountStorage.token,
+            id: this.localStorageAPI.accountStorage.id,
+            wordId: wordContent.id,
+            difficulty: 'basic'
+          });
+        }
       } else if (isUsed === false) {
         // isUsed === false => this userWord doesn't exist !!!OR!!! it exists with 'difficulty' = 'basic'
+        // (!!!OR!!! it exists with 'difficulty' opposite to the argument 'status' (example: if status: 'learned' => 'hard')
         // PS It can be 'basic', because of the double click on controls icons
         // Example: (click hardWordIcon => make it hardWord => click hardWordIcon again => make it 'basic')
         // Explanation: The need to change it to the 'basic' (and not to delete it), because of the saving the 'optional' field of the userWord
@@ -300,43 +342,62 @@ export default class PageItem {
 
         // check if it exists =>
         try {
-          await this.serverAPI.getUserWordByWordId({
+          const userWordContent = await this.serverAPI.getUserWordByWordId({
             token: this.localStorageAPI.accountStorage.token,
             id: this.localStorageAPI.accountStorage.id,
             wordId: wordContent.id
           });
+          const updatedOptional = userWordContent.optional;
 
-          // if NO error => this userWord already exists (its 'basic') => only update 'difficulty'
-          this.serverAPI.updateUserWord({
-            token: this.localStorageAPI.accountStorage.token,
-            id: this.localStorageAPI.accountStorage.id,
-            wordId: wordContent.id,
-            difficulty: `${status}`
-          });
+          // if no error => continue
+          if (status === 'learned') {
+            updatedOptional.dateWhenItBecameLearned = new Date().toLocaleDateString('en-US');
+
+            this.serverAPI.updateUserWord({
+              token: this.localStorageAPI.accountStorage.token,
+              id: this.localStorageAPI.accountStorage.id,
+              wordId: wordContent.id,
+              difficulty: `${status}`,
+              optional: updatedOptional
+            });
+          } else {
+            updatedOptional.dateWhenItBecameLearned = false;
+
+            this.serverAPI.updateUserWord({
+              token: this.localStorageAPI.accountStorage.token,
+              id: this.localStorageAPI.accountStorage.id,
+              wordId: wordContent.id,
+              difficulty: `${status}`,
+              optional: updatedOptional
+            });
+          }
         } catch {
           // if error => this userWord doesn't exist => create new one width corresponding 'difficulty' and default 'optional'
-          // 'timestampWhenItWasLearned' = null , because this word did not occur in mini-games
+          // 'dateWhenItBecameNew' = false , because this word did not occur in mini-games
           this.serverAPI.createUserWord({
             token: this.localStorageAPI.accountStorage.token,
             id: this.localStorageAPI.accountStorage.id,
             wordId: wordContent.id,
             difficulty: `${status}`,
             optional: {
-              timestampWhenItWasLearned: false,
+              dateWhenItBecameLearned:
+                status === 'learned' ? new Date().toLocaleDateString('en-US') : false,
+              dateWhenItBecameNew: false,
+              gameInWhichItBecameNew: false,
               sprint: {
                 totalCount: 0,
-                trueCount: 0,
-                bestStreak: 0
+                trueCount: 0
               },
               audioCall: {
                 totalCount: 0,
-                trueCount: 0,
-                bestStreak: 0
+                trueCount: 0
               }
             }
           });
         }
       }
+
+      applyStylesIfLearnedPage();
     });
   }
 

@@ -85,7 +85,7 @@ const main = `
 
   <section class="main__section advantages-section">
   <div class="wrapper wrapper_padding">
-    <h2 class="section-heading">Наши преимущества?</h2>
+    <h2 class="section-heading">Возможности и преимущества приложения</h2>
     <div class="advantages-container">
       <div class="advantages__item card">
         <img src="./assets/svg/advantages_1.svg" alt="Учебник" class="advantages__image">
@@ -97,11 +97,11 @@ const main = `
         </div>
       </div>
       <div class="advantages__item card">
-        <img src="./assets/svg/advantages_2.svg" alt="Игры" class="advantages__image">
+        <img src="./assets/svg/advantages_2.svg" alt="Мини-игры" class="advantages__image">
         <div class="advantages__text">
-          <h3 class="advantages__name">Игры</h3>
+          <h3 class="advantages__name">Мини-игры</h3>
           <p class="advantages__desc">
-            2 интересных игры на развитие запоминания английских слов, восприятия на слух речи и письма.
+            2 интересных мини-игры на развитие запоминания английских слов, восприятия на слух речи и письма.
           </p> 
         </div>
       </div>
@@ -118,19 +118,10 @@ const main = `
   </div>
   ${svgSeparator2}
   </section>
-  <section class="main__section video-section">
-  <div class="wrapper wrapper_padding">
-    <h2 class="section-heading">Как устроено приложение?</h2>
-    <div class="video-container">
-      <iframe width="420" height="315" src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
-    </div>
-  </div>
-  ${svgSeparator3}
-  </section>
 
   <section class="main__section team-section">
   <div class="wrapper wrapper_padding">
-    <h2 class="section-heading">Кто разработал?</h2>
+    <h2 class="section-heading">О команде разработчиков</h2>
     <div class="developer-container">
       <div class="developer card">
         <div class="developer__column">
@@ -152,6 +143,7 @@ const main = `
       </div> 
     </div>
   </div>
+  ${svgSeparator3}
   </section>
 `;
 
