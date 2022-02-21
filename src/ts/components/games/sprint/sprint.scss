@@ -8,6 +8,40 @@
     gap: 40px;
   }
 
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__stat {
+    display: flex;
+    gap: 45px;
+    font-size: 80%;
+    margin: 20px;
+  }
+
+  &__series-count {
+    position: relative;
+
+    .dots-container {
+      display: flex;
+      display: flex;
+      gap: 20px;
+    }
+
+    .dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 1px solid $color-brand-1;
+
+      &.active {
+        background-color: $color-brand-1;
+      }
+    }
+  }
+
   &__timer-container {
     position: relative;
     width: 80px;

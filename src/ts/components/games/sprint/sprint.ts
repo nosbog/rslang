@@ -7,12 +7,31 @@ import { UserWordContent, WordContent } from '../../../interfaces/interfaceServe
 export default class Sprint {
   innerHtmlTemplate = `
     <div class="wrapper">
-      <div class="sprint__timer-container">
-        <div class="sprint__timer"></div>
-        <svg>
-          <circle r="18" cx="20" cy="20"></circle>
-        </svg>
+      <div class="sprint__content">
+        <div class="sprint__timer-container">
+          <div class="sprint__timer"></div>
+          <svg>
+            <circle r="18" cx="20" cy="20"></circle>
+          </svg>
+        </div>
+        <div class="sprint__stat">
+          <div class="sprint__stat-multiply">
+            Умножение: x 1
+            <span class="sprint__stat-current-score">+20</span>
+          </div>
+          <div class="sprint__score">
+            Очки: <span>0</span>
+          </div>
+        </div>
+        <div class="sprint__series-count">
+          <div class="dots-container">
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+        </div>
       </div>
+
       <div class="sprint__round"></div>
     </div>
   `;
