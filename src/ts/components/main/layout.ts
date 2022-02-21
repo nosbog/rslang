@@ -129,7 +129,10 @@ const main = `
         </div>
         <div class="developer__column">
           <h3 class="developer___name">Богдан <a href="https://github.com/nosbog"><i class="fab fa-github"></i></a></h3>
-          <p class="developer___desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae aspernatur voluptatum molestias, harum fuga culpa saepe ipsum ullam? At est delectus totam praesentium, maiores tenetur quas. Doloribus fugit dolor nobis?</p>
+          <p class="developer___desc">
+            Реализовал функционал: учебник, мини-игры, авторизация и регистрация.<br>
+            Остальные задачи: api для общения с сервером, интерфейсы для хранения статистики на сервере и их заполнение на основании игр и действий в учебнике.
+          </p>
         </div>
       </div>
       <div class="developer card">
