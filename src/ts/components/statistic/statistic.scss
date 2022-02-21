@@ -1,0 +1,184 @@
+.statistic {
+  min-height: MAX(calc(100vh - $height-footer), 500px);
+  padding-top: calc($height-header + 20px);
+  font-size: 1.8rem;
+  user-select: none;
+
+  .statistic__message {
+    padding-top: 10%;
+    max-width: 90%;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  &__short-term-container,
+  &__long-term-container {
+    width: 100%;
+
+    p {
+      font-size: 3rem;
+      font-weight: 500;
+    }
+  }
+
+  &__short-term-container {
+    position: relative;
+
+    .svg-separator {
+      z-index: -5;
+    }
+  }
+
+  &__short-term-container__by-all {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 80px;
+    margin-bottom: 100px;
+
+    & > div {
+      width: inherit;
+      display: flex;
+      justify-content: space-around;
+      align-items: end;
+
+      & > div {
+        width: calc(100% / 3 - 30px);
+        min-height: 100px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+
+        & > span {
+          font-size: 5rem;
+          font-weight: 500;
+          margin-top: 20px;
+        }
+      }
+    }
+  }
+
+  &__short-term-container__by-games {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+
+    & > div {
+      width: calc(80% / 2 - 30px);
+      min-height: 200px;
+      padding: 25px;
+      font-size: 1.6rem;
+      @include card;
+      transition: $transition-hover;
+
+      &:hover {
+        @include box-shadow-hover
+      }
+
+      p {
+        margin-bottom: 15px;
+        font-size: 2.4rem;
+        font-weight: 500;
+      }
+
+      & > div {
+        margin-bottom: 10px;
+      }
+    }
+
+    span {
+      font-size: 1.8rem;
+    }
+  }
+
+  &__long-term-container {
+    position: relative;
+    background-color: $color-add-bg;
+
+    .wrapper {
+      position: relative;
+      z-index: 10;
+      gap: 80px;
+    }
+
+    .statistic__long-term-container__chart-container {
+      display: flex;
+      width: 100%;
+
+      & > div {
+        width: calc(100% / 2 - 30px);
+      }
+    } 
+
+    .svg-separator {
+      bottom: -15px;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-laptop-s) {
+  .statistic {
+    &__short-term-container__by-games {
+      & > div {
+        width: calc(100% / 2 - 30px);
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-tablet) {
+  .statistic {
+    &__long-term-container {
+      .statistic__long-term-container__chart-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 80px;
+
+        & > div {
+          width: calc(90% / 1 - 30px);
+        }
+      }
+    }
+
+    &__short-term-container,
+    &__long-term-container {
+      p {
+        font-size: 2.4rem;
+      }
+    }
+
+    &__short-term-container__by-games > div {
+      p {
+        font-size: 2rem;
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .statistic {
+    &__short-term-container__by-all {
+      & > div {
+        flex-direction: column;
+        align-items: center;
+        gap: 60px;
+
+        & > div > span {
+          font-size: 6rem;
+        }
+      }
+    }
+
+    &__short-term-container__by-games  {
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+
+      & > div {
+        width: calc(90% / 1 - 30px);
+      }
+    }
+  }
+}
