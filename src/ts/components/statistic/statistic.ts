@@ -1,4 +1,5 @@
 import { Chart, ChartConfiguration, registerables } from 'chart.js';
+import 'chartjs-adapter-date-fns';
 import ServerAPI from '../../serverAPI';
 import LocalStorageAPI from '../../localStorageAPI';
 import { UserWordContent, StatisticsContent } from '../../interfaces/interfaceServerAPI';
@@ -278,7 +279,7 @@ export default class Statistic {
     uniqueDatesArr.sort((a, b) => sortDates(new Date(a), new Date(b)));
 
     const convertedDatesArr = uniqueDatesArr.map((date) =>
-      new Date(date).toLocaleDateString('en-GB').toString()
+      new Date(date)
     );
 
     const numberOfWordsArr = uniqueDatesArr.map((date) => numberOfWordsPerDate[date]);
@@ -286,18 +287,21 @@ export default class Statistic {
     return { convertedDatesArr, numberOfWordsArr };
   }
 
-  getChartCongig(labels: string[], data: number[], text: string) {
+  getChartCongig(labels: Date[], data: number[], text: string) {
+
+    const timeChartDate = data.map((el, i) => ({ x: labels[i], y: el }));
+
     const chartConfigData = {
-      labels,
       datasets: [
         {
           label: 'Кол-во слов',
-          data,
+          data: timeChartDate,
           borderColor: '#e63946',
           backgroundColor: '#fff',
           pointStyle: 'circle',
           pointRadius: 5,
-          pointHoverRadius: 6
+          pointHoverRadius: 6,
+          tension: 0.4
         }
       ]
     };
@@ -306,6 +310,18 @@ export default class Statistic {
       type: 'line',
       data: chartConfigData,
       options: {
+        scales: {
+          x: {
+            type: 'time',
+            time: {
+              unit: 'day',
+              tooltipFormat: 'MM/dd/yy'
+            }
+          },
+          y: {
+            beginAtZero: true,
+          }
+        },
         responsive: true,
         plugins: {
           title: {
