@@ -65,8 +65,8 @@ export default class Statistic {
 
   async createThisComponent() {
     if (this.localStorageAPI.accountStorage.isLoggedIn === false) {
-      this.componentElem.textContent =
-        'Статистика доступна только авторизированным пользователям';
+      this.componentElem.innerHTML =
+        '<div class="statistic__message">Статистика доступна только авторизированным пользователям</div>';
 
       this.componentElem.classList.add('statistic');
       return;
@@ -225,7 +225,6 @@ export default class Statistic {
     if (this.localStorageAPI.accountStorage.isLoggedIn === true) {
       Chart.register(...registerables);
       Chart.defaults.font.size = 14;
-      // if (screen.width < )
       Chart.defaults.font.family = '"Montserrat", "Helvetica", "Arial", sans-serif';
 
       const [userWordsContent] = await Promise.all([

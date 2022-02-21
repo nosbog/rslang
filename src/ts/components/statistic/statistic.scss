@@ -4,6 +4,13 @@
   font-size: 1.8rem;
   user-select: none;
 
+  .statistic__message {
+    padding-top: 10%;
+    max-width: 90%;
+    margin: 0 auto;
+    text-align: center;
+  }
+
   &__short-term-container,
   &__long-term-container {
     width: 100%;
