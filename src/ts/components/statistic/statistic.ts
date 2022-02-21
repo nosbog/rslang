@@ -1,4 +1,4 @@
-const { Chart, ChartConfiguration, ChartItem, registerables } = require('chart.js');
+import { Chart, ChartConfiguration, registerables } from 'chart.js';
 import ServerAPI from '../../serverAPI';
 import LocalStorageAPI from '../../localStorageAPI';
 import { UserWordContent, StatisticsContent } from '../../interfaces/interfaceServerAPI';
@@ -240,41 +240,46 @@ export default class Statistic {
     }
   }
 
-  getStatistics(userWordsContent: UserWordContent[], dateType: 'dateWhenItBecameLearned' | 'dateWhenItBecameNew') {
-    const getUserDates = (userWordsContent: UserWordContent[], dateType: 'dateWhenItBecameLearned' | 'dateWhenItBecameNew') => {
+  getStatistics(
+    userWordsContent: UserWordContent[],
+    userDateType: 'dateWhenItBecameLearned' | 'dateWhenItBecameNew'
+  ) {
+    const getUserDates = (
+      wordsContent: UserWordContent[],
+      dateType: 'dateWhenItBecameLearned' | 'dateWhenItBecameNew'
+    ) => {
       const dates: Array<string> = [];
 
-      userWordsContent.forEach((userWord) => {
-        const optional = userWord.optional;
-        if (!!optional[dateType]) {
-          dates.push(optional[dateType].toString()); 
+      wordsContent.forEach((wordContent) => {
+        const { optional } = wordContent;
+        if (optional[dateType]) {
+          dates.push(optional[dateType].toString());
         }
       });
       return dates;
-    }
+    };
 
     const sortDates = (dateA: Date, dateB: Date) => dateA.getTime() - dateB.getTime();
-    
-    const datesOfWords = getUserDates(userWordsContent, dateType);
+
+    const datesOfWords = getUserDates(userWordsContent, userDateType);
 
     // object = {date: number of words}
-    const numberOfWordsPerDate = datesOfWords.reduce((
-      result: { [key: string]: number }, 
-      date) => {
-        result[date] = (result[date] || 0) + 1;
-        return result;
-      }, {});
+    const numberOfWordsPerDate = datesOfWords.reduce((result: { [key: string]: number }, date) => {
+      result[date] = (result[date] || 0) + 1;
+      return result;
+    }, {});
 
-    const uniqueDatesArr = [];
-    for (let key in numberOfWordsPerDate) {
-      if (numberOfWordsPerDate.hasOwnProperty(key)) {
-        uniqueDatesArr.push(key);
-      }
-    }
+    const uniqueDatesArr: Array<string> = [];
+
+    Object.keys(numberOfWordsPerDate).forEach((key) => {
+      uniqueDatesArr.push(key);
+    });
 
     uniqueDatesArr.sort((a, b) => sortDates(new Date(a), new Date(b)));
 
-    const convertedDatesArr = uniqueDatesArr.map((date) => new Date(date).toLocaleDateString('en-GB').toString());
+    const convertedDatesArr = uniqueDatesArr.map((date) =>
+      new Date(date).toLocaleDateString('en-GB').toString()
+    );
 
     const numberOfWordsArr = uniqueDatesArr.map((date) => numberOfWordsPerDate[date]);
 
@@ -283,16 +288,18 @@ export default class Statistic {
 
   getChartCongig(labels: string[], data: number[], text: string) {
     const chartConfigData = {
-      labels: labels,
-      datasets: [{
-        label: 'Кол-во слов',
-        data: data,
-        borderColor: '#e63946',
-        backgroundColor: '#fff',
-        pointStyle: 'circle',
-        pointRadius: 5,
-        pointHoverRadius: 6
-      }]
+      labels,
+      datasets: [
+        {
+          label: 'Кол-во слов',
+          data,
+          borderColor: '#e63946',
+          backgroundColor: '#fff',
+          pointStyle: 'circle',
+          pointRadius: 5,
+          pointHoverRadius: 6
+        }
+      ]
     };
 
     const config: typeof ChartConfiguration = {
@@ -303,7 +310,7 @@ export default class Statistic {
         plugins: {
           title: {
             display: true,
-            text: () => text,
+            text: () => text
           },
           legend: {
             labels: {
@@ -315,9 +322,9 @@ export default class Statistic {
                 padding: 10
               }
             },
-            display: false,
-          },
-        },
+            display: false
+          }
+        }
       }
     };
 
@@ -325,18 +332,23 @@ export default class Statistic {
   }
 
   renderChart(chartContainerId: string, config: typeof ChartConfiguration) {
-    const longTermStatosticsChartContainer = this.componentElem.querySelector('.statistic__long-term-container__chart-container') as HTMLElement;
+    const longTermStatosticsChartContainer = this.componentElem.querySelector(
+      '.statistic__long-term-container__chart-container'
+    ) as HTMLElement;
     const thisChartContainer = document.createElement('div');
     thisChartContainer.id = chartContainerId;
 
     const chartElem = document.createElement('canvas');
-    new Chart(chartElem, config);
+    new Chart(chartElem, config); // eslint-disable-line no-new
 
     thisChartContainer.append(chartElem);
     longTermStatosticsChartContainer.append(thisChartContainer);
   }
 
-  showNewWordsStatisctics(userWordsContent: UserWordContent[], dateType: 'dateWhenItBecameLearned' | 'dateWhenItBecameNew') {
+  showNewWordsStatisctics(
+    userWordsContent: UserWordContent[],
+    dateType: 'dateWhenItBecameLearned' | 'dateWhenItBecameNew'
+  ) {
     const { convertedDatesArr, numberOfWordsArr } = this.getStatistics(userWordsContent, dateType);
     const text = 'Количество новых слов по дням';
 
@@ -345,12 +357,21 @@ export default class Statistic {
     this.renderChart('newWordsChart', chartConfig);
   }
 
-  showLearningWordsStatisctics(userWordsContent: UserWordContent[], dateType: 'dateWhenItBecameLearned' | 'dateWhenItBecameNew') {
+  showLearningWordsStatisctics(
+    userWordsContent: UserWordContent[],
+    dateType: 'dateWhenItBecameLearned' | 'dateWhenItBecameNew'
+  ) {
     const { convertedDatesArr, numberOfWordsArr } = this.getStatistics(userWordsContent, dateType);
     const text = 'Количество изученных слов за весь период по дням';
-    const totalNumberOfLearnedWordsToDate = numberOfWordsArr.map((num, i, arr) => arr.slice(0, i + 1).reduce((sum, current) => sum + current, 0));
+    const totalNumberOfLearnedWordsToDate = numberOfWordsArr.map((num, i, arr) =>
+      arr.slice(0, i + 1).reduce((sum, current) => sum + current, 0)
+    );
 
-    const chartConfig = this.getChartCongig(convertedDatesArr, totalNumberOfLearnedWordsToDate, text);
+    const chartConfig = this.getChartCongig(
+      convertedDatesArr,
+      totalNumberOfLearnedWordsToDate,
+      text
+    );
 
     this.renderChart('learnedWordsChart', chartConfig);
   }
