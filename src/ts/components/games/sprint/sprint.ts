@@ -16,8 +16,9 @@ export default class Sprint {
         </div>
         <div class="sprint__stat">
           <div class="sprint__stat-multiply">
-            Умножение: x 1
-            <span class="sprint__stat-current-score">+20</span>
+            Умножение: x 
+            <span class="sprint__multiplier"></span>
+            <span class="sprint__stat-current-score"></span>
           </div>
           <div class="sprint__score">
             Очки: <span>0</span>
@@ -25,7 +26,7 @@ export default class Sprint {
         </div>
         <div class="sprint__series-count">
           <div class="dots-container">
-            <span class="dot active"></span>
+            <span class="dot"></span>
             <span class="dot"></span>
             <span class="dot"></span>
           </div>
@@ -55,6 +56,10 @@ export default class Sprint {
     intervalId: number;
     wordsContent: Array<WordContent>;
     userLearnedWordsContent?: Array<UserWordContent>;
+    totalScore: number;
+    multiplier: number;
+    currentScore: number;
+    seriesCount: number;
   } = {
     answers: [],
     initialPage: 0,
@@ -62,7 +67,11 @@ export default class Sprint {
     currentGroup: 0,
     currentWordContentIndex: 0,
     intervalId: 0,
-    wordsContent: []
+    wordsContent: [],
+    totalScore: 0,
+    multiplier: 1,
+    currentScore: 20,
+    seriesCount: 0
   };
 
   serverAPI: ServerAPI;
@@ -127,7 +136,11 @@ export default class Sprint {
       currentGroup: 0,
       currentWordContentIndex: 0,
       intervalId: 0,
-      wordsContent: hardWordsContent
+      wordsContent: hardWordsContent,
+      totalScore: 0,
+      multiplier: 1,
+      currentScore: 20,
+      seriesCount: 0
     };
 
     this.startTimer();
@@ -137,6 +150,9 @@ export default class Sprint {
   async startRoundWithHardWords() {
     const sprintRoundElem = document.querySelector('.sprint__round') as HTMLDivElement;
     sprintRoundElem.innerHTML = this.innerHtmlTemplateRound;
+
+    // TODO: i was here
+    this.setSprintStat();
 
     // if the 'hard' words are over => end the game
     if (this.gameData.currentWordContentIndex === this.gameData.wordsContent.length) {
@@ -205,7 +221,11 @@ export default class Sprint {
         currentWordContentIndex: 0,
         intervalId: 0,
         userLearnedWordsContent,
-        wordsContent
+        wordsContent,
+        totalScore: 0,
+        multiplier: 1,
+        currentScore: 20,
+        seriesCount: 0
       };
 
       this.startTimer();
@@ -220,7 +240,11 @@ export default class Sprint {
         currentGroup: group,
         currentWordContentIndex: 0,
         intervalId: 0,
-        wordsContent
+        wordsContent,
+        totalScore: 0,
+        multiplier: 1,
+        currentScore: 20,
+        seriesCount: 0
       };
 
       this.startTimer();
@@ -247,7 +271,11 @@ export default class Sprint {
       currentGroup: group,
       currentWordContentIndex: 0,
       intervalId: 0,
-      wordsContent
+      wordsContent,
+      totalScore: 0,
+      multiplier: 1,
+      currentScore: 20,
+      seriesCount: 0
     };
 
     this.startTimer();
@@ -257,6 +285,9 @@ export default class Sprint {
   async startRound({ skipLearnedWords }: { skipLearnedWords: boolean }) {
     const sprintRoundElem = document.querySelector('.sprint__round') as HTMLDivElement;
     sprintRoundElem.innerHTML = this.innerHtmlTemplateRound;
+
+    // TODO
+    this.setSprintStat();
 
     // you can go to the next page if you run out of elements on the current one
     if (this.gameData.currentWordContentIndex >= 20) {
@@ -363,9 +394,11 @@ export default class Sprint {
       if (isOptionTruthy === true) {
         result = true;
         truthyAnswerSound.play();
+        this.updateStat(result);
       } else {
         result = false;
         falsyAnswerSound.play();
+        this.updateStat(result);
       }
 
       this.gameData.answers.push({ result, wordContent: wordContentAnswer });
@@ -382,9 +415,11 @@ export default class Sprint {
       if (isOptionTruthy === true) {
         result = false;
         falsyAnswerSound.play();
+        this.updateStat(result);
       } else {
         result = true;
         truthyAnswerSound.play();
+        this.updateStat(result);
       }
 
       this.gameData.answers.push({ result, wordContent: wordContentAnswer });
@@ -417,5 +452,49 @@ export default class Sprint {
     }, 1000);
 
     this.gameData.intervalId = +`${intervalId}`;
+  }
+
+  setSprintStat() {
+    const statContainer = this.componentElem.querySelector('.sprint__stat');
+    const scoreContainer = statContainer?.querySelector('.sprint__score span') as HTMLElement;
+    const multiplierContainer = statContainer?.querySelector('.sprint__multiplier') as HTMLElement;
+    const currentScoreContainer = statContainer?.querySelector(
+      '.sprint__stat-current-score'
+    ) as HTMLElement;
+    const seriesCountDotsContainer = this.componentElem.querySelector(
+      '.dots-container'
+    ) as HTMLElement;
+
+    scoreContainer.textContent = ` ${this.gameData.totalScore} `;
+    multiplierContainer.textContent = ` ${this.gameData.multiplier} `;
+    currentScoreContainer.textContent = ` +${this.gameData.currentScore} `;
+
+    if (this.gameData.seriesCount !== 0) {
+      seriesCountDotsContainer
+        .querySelector(`.dot:nth-child(${this.gameData.seriesCount})`)
+        ?.classList.add('active');
+    } else {
+      const dots = seriesCountDotsContainer.querySelectorAll('.dot');
+      dots.forEach((dot) => dot.classList.remove('active'));
+    }
+  }
+
+  updateStat(isCorrectAnswer: boolean) {
+    if (isCorrectAnswer) {
+      this.gameData.totalScore += this.gameData.currentScore;
+
+      if (this.gameData.seriesCount === 3) {
+        this.gameData.seriesCount = 0;
+        this.gameData.multiplier += 1;
+        this.gameData.currentScore += 20;
+      } else {
+        this.gameData.seriesCount += 1;
+      }
+
+    } else {
+      this.gameData.seriesCount = 0;
+    }
+
+    this.setSprintStat();
   }
 }
