@@ -278,9 +278,7 @@ export default class Statistic {
 
     uniqueDatesArr.sort((a, b) => sortDates(new Date(a), new Date(b)));
 
-    const convertedDatesArr = uniqueDatesArr.map((date) =>
-      new Date(date)
-    );
+    const convertedDatesArr = uniqueDatesArr.map((date) => new Date(date));
 
     const numberOfWordsArr = uniqueDatesArr.map((date) => numberOfWordsPerDate[date]);
 
@@ -288,7 +286,6 @@ export default class Statistic {
   }
 
   getChartCongig(labels: Date[], data: number[], text: string) {
-
     const timeChartDate = data.map((el, i) => ({ x: labels[i], y: el }));
 
     const chartConfigData = {
@@ -315,11 +312,11 @@ export default class Statistic {
             type: 'time',
             time: {
               unit: 'day',
-              tooltipFormat: 'MM/dd/yy'
+              tooltipFormat: 'dd/MM/yy'
             }
           },
           y: {
-            beginAtZero: true,
+            beginAtZero: true
           }
         },
         responsive: true,
