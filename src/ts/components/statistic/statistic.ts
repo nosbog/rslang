@@ -144,14 +144,14 @@ export default class Statistic {
 
     const sprintNewWordsAmount = this.getTodays_NewWordsAmount_ByGame(userWords, 'sprint');
     const sprintPercentageOfCorrect = this.getTodays_PercentageOfCorrectAnswers_ByGame(
-      userWords,
+      userStatistics,
       'sprint'
     );
     const sprintBestStreak = this.getTodays_BestStreak_ByGame(userStatistics, 'sprint');
 
     const audioCallNewWordsAmount = this.getTodays_NewWordsAmount_ByGame(userWords, 'audioCall');
     const audioCallPercentageOfCorrect = this.getTodays_PercentageOfCorrectAnswers_ByGame(
-      userWords,
+      userStatistics,
       'audioCall'
     );
     const audioCallBestStreak = this.getTodays_BestStreak_ByGame(userStatistics, 'audioCall');
@@ -187,22 +187,20 @@ export default class Statistic {
   }
 
   getTodays_PercentageOfCorrectAnswers_ByGame(
-    userWords: UserWordContent[],
+    userStatistics: StatisticsContent,
     gameName: 'sprint' | 'audioCall'
   ) {
-    if (userWords.length === 0) return 0;
+    const currentDate = new Date().toLocaleDateString('en-US');
 
-    let totalCount = 0;
-    userWords.forEach((userWord) => {
-      totalCount += userWord.optional[gameName].totalCount;
-    });
-    let trueCount = 0;
-    userWords.forEach((userWord) => {
-      trueCount += userWord.optional[gameName].trueCount;
-    });
+    if (currentDate in userStatistics.optional) {
+      return +(
+        (userStatistics.optional[currentDate][gameName].trueCount /
+          userStatistics.optional[currentDate][gameName].totalCount) *
+        100
+      ).toFixed(0);
+    }
 
-    if (totalCount === 0) return 0;
-    return +((trueCount / totalCount) * 100).toFixed(0);
+    return 0;
   }
 
   getTodays_BestStreak_ByGame(userStatistics: StatisticsContent, gameName: 'sprint' | 'audioCall') {

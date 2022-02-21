@@ -136,6 +136,14 @@ export default class GameResult {
     const currentDate = new Date().toLocaleDateString('en-US');
     const currentBestStreak = this.getBestTrueStreak(answers);
 
+    const currentAmountOfRounds = answers.length;
+    let currentAmountOfTruthyAnswers = 0;
+    answers.forEach((answer) => {
+      if (answer.result === true) {
+        currentAmountOfTruthyAnswers += 1;
+      }
+    });
+
     // check if statistics exists
     try {
       const userStatistics = await this.serverAPI.getStatistics({
@@ -146,29 +154,41 @@ export default class GameResult {
       // if no error: it does:
 
       // check if CURRENT statistics exists
-      // if true => check which if better
+      // if true => check which is better
       // if false => create 'current day' statistics
       if (currentDate in userStatistics.optional) {
-        const currentStatistics = userStatistics.optional[currentDate];
+        const currentDateOptionalStatistics = userStatistics.optional[currentDate];
+        const updatedOptionalStatistics = userStatistics.optional;
+
+        // increase totalCount and trueCount
+        updatedOptionalStatistics[currentDate][gameName].totalCount += currentAmountOfRounds;
+        updatedOptionalStatistics[currentDate][gameName].trueCount += currentAmountOfTruthyAnswers;
 
         // check if 'currentBestStreak' is better than one which is already in statistics
         // if true => update
         // if false => skip
-        if (currentStatistics[gameName].bestStreak < currentBestStreak) {
-          const updatedOptionalStatistics = userStatistics.optional;
+        if (currentDateOptionalStatistics[gameName].bestStreak < currentBestStreak) {
           updatedOptionalStatistics[currentDate][gameName].bestStreak = currentBestStreak;
-
-          this.serverAPI.createStatistics({
-            token: this.localStorageAPI.accountStorage.token,
-            id: this.localStorageAPI.accountStorage.id,
-            optional: updatedOptionalStatistics
-          });
         }
+
+        this.serverAPI.createStatistics({
+          token: this.localStorageAPI.accountStorage.token,
+          id: this.localStorageAPI.accountStorage.id,
+          optional: updatedOptionalStatistics
+        });
       } else {
         const updatedOptionalStatistics = userStatistics.optional;
         updatedOptionalStatistics[currentDate] = {
-          sprint: { bestStreak: gameName === 'sprint' ? currentBestStreak : 0 },
-          audioCall: { bestStreak: gameName === 'audioCall' ? currentBestStreak : 0 }
+          sprint: {
+            bestStreak: gameName === 'sprint' ? currentBestStreak : 0,
+            totalCount: gameName === 'sprint' ? currentAmountOfRounds : 0,
+            trueCount: gameName === 'sprint' ? currentAmountOfTruthyAnswers : 0
+          },
+          audioCall: {
+            bestStreak: gameName === 'audioCall' ? currentBestStreak : 0,
+            totalCount: gameName === 'audioCall' ? currentAmountOfRounds : 0,
+            trueCount: gameName === 'audioCall' ? currentAmountOfTruthyAnswers : 0
+          }
         };
 
         this.serverAPI.createStatistics({
@@ -182,8 +202,16 @@ export default class GameResult {
 
       const optionalStatistics: OptionalUserStatistics = {
         [currentDate]: {
-          sprint: { bestStreak: gameName === 'sprint' ? currentBestStreak : 0 },
-          audioCall: { bestStreak: gameName === 'audioCall' ? currentBestStreak : 0 }
+          sprint: {
+            bestStreak: gameName === 'sprint' ? currentBestStreak : 0,
+            totalCount: gameName === 'sprint' ? currentAmountOfRounds : 0,
+            trueCount: gameName === 'sprint' ? currentAmountOfTruthyAnswers : 0
+          },
+          audioCall: {
+            bestStreak: gameName === 'audioCall' ? currentBestStreak : 0,
+            totalCount: gameName === 'audioCall' ? currentAmountOfRounds : 0,
+            trueCount: gameName === 'audioCall' ? currentAmountOfTruthyAnswers : 0
+          }
         }
       };
 

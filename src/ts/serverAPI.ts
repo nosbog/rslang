@@ -1,7 +1,8 @@
 import * as interfaceServer from './interfaces/interfaceServerAPI';
 
 export default class ServerAPI {
-  baseUrl = new URL('https://react-learnwords-example.herokuapp.com/');
+  // baseUrl = new URL('https://react-learnwords-example.herokuapp.com/');
+  baseUrl = new URL('https://rslang-app-2022.herokuapp.com/');
 
   // /users/settings and /users/{id}/aggregatedWords are NOT IMPLEMENTED
 

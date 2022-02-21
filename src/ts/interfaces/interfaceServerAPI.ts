@@ -53,9 +53,13 @@ export interface OptionalUserStatistics {
   [date: string]: {
     sprint: {
       bestStreak: number;
+      totalCount: number;
+      trueCount: number;
     };
     audioCall: {
       bestStreak: number;
+      totalCount: number;
+      trueCount: number;
     };
   };
 }
