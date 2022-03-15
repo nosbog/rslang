@@ -1,0 +1,25 @@
+@import "./constants";
+
+@import "./general";
+
+@import "../ts/components/header/header";
+@import "../ts/components/background/background";
+
+@import "../ts/components/account/account";
+@import "../ts/components/account/logIn/logIn";
+@import "../ts/components/account/singUp/signUp";
+
+@import "../ts/components/footer/footer";
+
+@import "../ts/components/main/main";
+
+@import "../ts/components/book/book";
+@import "../ts/components/book/page/page";
+@import "../ts/components/book/page/pageItem/pageItem.scss";
+
+@import "../ts/components/statistic/statistic";
+
+@import "../ts/components/games/games";
+@import "../ts/components/games/gameResult/gameResult";
+@import "../ts/components/games/sprint/sprint";
+@import "../ts/components/games/audioCall/audioCall";

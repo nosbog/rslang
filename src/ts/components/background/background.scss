@@ -1,0 +1,68 @@
+.bg-anim {
+  &.bg_hide {
+    visibility: hidden;
+  }
+
+  & > div {
+    animation: slide 15s ease-in-out infinite alternate;
+    bottom: 0;
+    left: -50%;
+    opacity: 0.5;
+    position: fixed;
+    right: -50%;
+    top: 0;
+    z-index: -2;
+
+    &:nth-child(2) {
+      animation-direction: alternate-reverse;
+      animation-duration: 25s;
+    }
+  
+    &:nth-child(3) {
+      animation-duration: 25s;
+    }
+  
+    &:nth-child(4) {
+      animation-direction: alternate-reverse;
+      animation-duration: 45s;
+    }
+  
+    &:nth-child(5) {
+      animation-duration: 20s;
+    }
+  }
+  
+  &.bg_sprint div {
+    background-image: linear-gradient(315deg, rgba(4, 52, 59, .7) 50%, rgba(13, 112, 91, .6) 50%);
+
+    &:nth-child(3) {
+      background-image: linear-gradient(45deg, rgba(4, 52, 59, .7)  50%, rgba(13, 112, 91, .6) 50%);
+    }
+  }
+
+  &.bg_audioCall div {
+    background-image: linear-gradient(315deg, rgba(138, 23, 23, .7) 50%, rgba(197, 113, 53, .6) 50%);
+
+    &:nth-child(3) {
+      background-image: linear-gradient(45deg, rgba(138, 23, 23, .7) 50%, rgba(197, 113, 53, .6) 50%);
+    }
+  }
+    
+  @keyframes slide {
+    0% {
+      transform: translateX(-25%);
+    }
+    100% {
+      transform: translateX(25%);
+    }
+  }
+}
+
+.bg-anim:not(.bg_hide) ~ .header {
+  background-color: $color-main-bg;
+}
+
+.bg-anim.bg_sprint:not(.bg_hide) ~ .header,
+.bg-anim.bg_audioCall:not(.bg_hide) ~ .header {
+  box-shadow: 0px 4px 8px 5px rgba(0, 0, 0, .3);
+}

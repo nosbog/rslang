@@ -1,0 +1,63 @@
+.gameResult {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  font-size: 1.6rem;
+  background-color: $color-overlay-bg;
+  z-index: 8;
+
+  ::-webkit-scrollbar-thumb {
+    background-color: $color-brand-1;
+  }
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+    max-height: 500px;
+    padding: 25px 40px;
+    
+    background-color: $color-main-bg;
+    border-radius: 10px;
+    @include box-shadow;
+    position: fixed;
+    z-index: 15;
+    top: 53%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &__title {
+    margin-bottom: 10px;
+    font-size: 1.1em;
+  }
+
+  &__item {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+  }
+
+  &__audio {
+    cursor: pointer;
+  }
+
+  &__btns {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    button {
+      width: 50%;
+      height: 50px;
+      padding: 5px 10px;
+      @include button-styles(1.4rem) 
+    }
+  }
+}

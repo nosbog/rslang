@@ -1,0 +1,142 @@
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: $height-header;
+  font-size: 1.8rem;
+  background-color: transparent;
+  z-index: 10;
+
+  .nav {
+    ul {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+  }
+  
+  .nav__item {
+    position: relative;
+    padding: 22px 10px;
+    cursor: pointer;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: $color-brand-4;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.5s;
+    }
+
+    &:hover {
+      color: $color-dark;
+
+      &::after {
+        transform: scaleX(1);
+        transform-origin: left;
+      }
+    } 
+  }
+
+  .nav__item-account {
+    margin-left: 10px;
+
+    & > span {
+      display: none;
+    }
+
+    .show {
+      display: inline-flex;
+      align-items: center;
+    }
+  }
+
+  .hamburger {
+    display: none;
+    font-size: 2rem;
+    cursor: pointer;
+
+    svg path:nth-child(2) {
+      fill: $color-font-dark;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-tablet) {
+  .header {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .header {
+    justify-content: space-between;
+    padding: 0 10px;
+    font-size: 2rem;
+
+    .hamburger {
+      display: flex;
+
+      .hamburger_close {
+        display: none;
+      }
+    }
+
+    .nav {
+      position: absolute;
+      top: 0;
+      left: -100%;
+      margin-top: 60px;
+      width: 100%;
+      height: calc(100vh - $height-header + 5px);
+      visibility: hidden;
+      transition: $transition-hover;
+
+
+      ul {
+        flex-direction: column;
+      }
+    }
+
+    &.nav_active {
+      background-color: $color-main-bg;
+
+      .hamburger {
+        .hamburger_open {
+          display: none;
+        }
+
+        .hamburger_close {
+          display: block;
+        }  
+      }
+
+      .nav {
+        background-color: $color-main-bg;
+        left: 0;
+        z-index: 15;
+        visibility: visible;
+        
+        .nav__item {
+          width: 100%;
+          padding-left: 40px;
+        }
+      }
+
+      .nav__item {
+        &::after {
+          background: $color-brand-2;
+        }
+      }
+    }
+  }
+}

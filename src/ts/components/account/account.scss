@@ -1,0 +1,131 @@
+.account {
+  height: MAX(calc(100vh - $height-footer), 500px);
+  font-size: 1.8rem;
+
+  .wrapper {
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding-top: max(10%, 85px);
+  }
+
+  h2 {
+    margin-bottom: 15px;
+    font-size: 2rem;
+  }
+
+  .account__image {
+    width: 40%;
+    position: absolute;
+    right: 0;
+    bottom: 10%;
+    z-index: -5;
+  }
+
+  .account__data,
+  .account__content {
+    padding: 20px;
+    @include card($color-add-bg-transparent);
+  }
+
+  .account__content {
+    min-height: 400px;
+    border-top-left-radius: 0;
+
+    div {
+      display: flex;
+      flex-direction: column;
+
+      form {
+        display: flex;
+        flex-direction: column;
+
+        & > * {
+          padding: 14px;
+            margin-bottom: 20px;
+        }
+      }
+    }
+
+    .account__input {
+      font-size: 1.6rem;
+      color: $color-brand-1;
+      border: 1px solid $color-brand-2;
+      border-radius: 4px;
+
+      &.invalid {
+        border-color: $color-brand-4;
+      }
+
+      &:focus {
+        border-color: $color-dark;
+      }
+    }
+  }
+
+  .account__data {
+    p {
+      margin-bottom: 10px;
+
+      span {
+        font-style: italic;
+      }
+    }
+  }
+
+  .account__loggedIn-container {
+    button {
+      width: 100%;
+      padding: 14px;
+    }
+  }
+
+  .account__content,
+  .account__loggedIn-container {
+    button {
+      margin-top: 20px;
+      @include button-styles;
+    } 
+  }
+  
+  .account__NotLoggedIn-container .account__btn {
+    padding: 10px;
+    font-size: 1.6rem;
+    background-color: transparent;
+    border: 2px solid $color-add-bg;
+    border-radius: 10px 10px 0 0;
+    cursor: pointer;
+
+    &.account__btn_active {
+      background-color: $color-add-bg;
+    }
+  }
+
+  .account__loggedIn-container,
+  .account__NotLoggedIn-container {
+    width: min(80%, 600px);
+  }
+
+  .account__error-box {
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    color: $color-brand-4;
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .account {
+    .wrapper {
+      align-items: center;
+    }
+
+    .account__image {
+      display: none;
+    }
+
+    .account__content {
+      button {
+        font-size: 1.4rem;
+      }
+    }
+  }
+}
